@@ -13,14 +13,16 @@ if (POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW)
 endif ()
 
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(vcpkg_setup)
+
 project(vast
     LANGUAGES C CXX
     VERSION 0.0.0
     DESCRIPTION "A utility library to bridge llvm and mlir gaps"
     HOMEPAGE_URL "https://github.com/lifting-bits/gap"
 )
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(GNUInstallDirs)
 
@@ -37,7 +39,6 @@ endif()
 #
 # GAP build settings
 #
-
 add_library(gap_settings INTERFACE)
 
 include(compiler_warnings)
