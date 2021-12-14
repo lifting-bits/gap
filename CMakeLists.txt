@@ -55,6 +55,11 @@ enable_sanitizers(gap_settings)
 # allow for static analysis options
 include(static_analyzers)
 
+#
+# Core GAP libraries
+#
+add_subdirectory(core)
+
 # test options
 option(ENABLE_TESTING "Enable Test Builds" ON)
 
