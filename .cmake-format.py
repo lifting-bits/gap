@@ -7,9 +7,6 @@ with section("parse"):
   additional_commands = { 'foo': { 'flags': ['BAR', 'BAZ'],
              'kwargs': {'DEPENDS': '*', 'HEADERS': '*', 'SOURCES': '*'}}}
 
-  # Override configurations per-command where available
-  override_spec = {}
-
   # Specify variable tags.
   vartags = []
 
@@ -34,7 +31,7 @@ with section("format"):
   # <tab_size> space characters (utf-8 0x20). In cases where the layout would
   # require a fractional tab character, the behavior of the  fractional
   # indentation is governed by <fractional_tab_policy>
-  use_tabchars = False
+  use_tabchars = True
 
   # If <use_tabchars> is True, then the value of this variable indicates how
   # fractional indentions are handled during whitespace replacement. If set to
@@ -45,15 +42,15 @@ with section("format"):
 
   # If an argument group contains more than this many sub-groups (parg or kwarg
   # groups) then force it to a vertical layout.
-  # max_subgroups_hwrap = 2
+  max_subgroups_hwrap = 2
 
   # If a positional argument group contains more than this many arguments, then
   # force it to a vertical layout.
-  # max_pargs_hwrap = 6
+  max_pargs_hwrap = 6
 
   # If a cmdline positional group consumes more than this many lines without
   # nesting, then invalidate the layout (and nest)
-  # max_rows_cmdline = 2
+  max_rows_cmdline = 2
 
   # If true, separate flow control names from their parentheses with a space
   separate_ctrl_name_with_space = True
@@ -210,7 +207,7 @@ with section("lint"):
   # Require no more than this many newlines between statements
   max_statement_spacing = 2
   max_returns = 6
-  max_branches = 12
+  max_branches = 20
   max_arguments = 5
   max_localvars = 15
   max_statements = 50
