@@ -1,5 +1,7 @@
 ﻿---
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: AlwaysBreak
+AlignArrayOfStructures: Right
+AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveMacros: 'true'
 AlignConsecutiveAssignments: 'true'
 AlignEscapedNewlines: Left
@@ -18,7 +20,7 @@ AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: 'false'
 AlwaysBreakTemplateDeclarations: 'Yes'
 BinPackArguments: 'true'
-BinPackParameters: 'true'
+BinPackParameters: 'false'
 BreakBeforeBinaryOperators: All
 BreakBeforeTernaryOperators: 'true'
 BreakConstructorInitializers: BeforeComma
@@ -61,8 +63,21 @@ SpacesInCStyleCastParentheses: 'false'
 SpacesInContainerLiterals: 'false'
 SpacesInParentheses: 'false'
 SpacesInSquareBrackets: 'false'
-Standard: Cpp11
+Standard: Latest
 TabWidth: '4'
 UseTab: ForIndentation
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: true
+  AfterStruct: true
+  AfterFunction: false
+  AfterNamespace: true
+  AfterExternBlock: true
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  SplitEmptyFunction: false
+
 
 ...
