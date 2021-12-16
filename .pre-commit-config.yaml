@@ -12,10 +12,8 @@ repos:
     rev: v1.3.4
     hooks:
       - id: clang-format
-      - id: clang-tidy
       - id: cppcheck
       - id: cpplint
-      - id: include-what-you-use
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.10
     hooks:
