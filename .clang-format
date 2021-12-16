@@ -65,7 +65,7 @@ SpacesInParentheses: 'false'
 SpacesInSquareBrackets: 'false'
 Standard: Latest
 TabWidth: '4'
-UseTab: ForIndentation
+UseTab: Never
 
 BreakBeforeBraces: Custom
 BraceWrapping:
