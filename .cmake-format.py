@@ -31,7 +31,7 @@ with section("format"):
   # <tab_size> space characters (utf-8 0x20). In cases where the layout would
   # require a fractional tab character, the behavior of the  fractional
   # indentation is governed by <fractional_tab_policy>
-  use_tabchars = True
+  use_tabchars = False
 
   # If <use_tabchars> is True, then the value of this variable indicates how
   # fractional indentions are handled during whitespace replacement. If set to
