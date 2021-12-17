@@ -28,8 +28,8 @@ jobs:
     - name: Install static analysis tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y clang-tidy cppcheck
- 
+        sudo apt-get install -y clang-tidy cppcheck clang gcc
+
     - name: "Create directory '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}'"
       run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
       shell: bash
@@ -52,4 +52,4 @@ jobs:
           configurePreset: 'ninja-multi-vcpkg'
 
           # This is the name of the CMakePresets.json's configuration to build the project.
-          buildPreset: 'ninja-multi-vcpkg'     
+          buildPreset: 'ninja-multi-vcpkg'
