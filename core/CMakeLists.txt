@@ -7,6 +7,6 @@ target_include_directories(
 	gap-core PUBLIC $<INSTALL_INTERFACE:include> ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(gap-core INTERFACE gap_project_options gap_project_warnings)
+target_link_libraries(gap-core INTERFACE gap_settings)
 
 add_library(gap::core ALIAS gap-core)
