@@ -14,29 +14,24 @@ namespace gap
         static constexpr source_location current(
             file_name file     = __builtin_FILE(),
             func_name function = __builtin_FUNCTION(),
-            unsigned line      = __builtin_LINE(),
-            unsigned column    = __builtin_COLUMN()) noexcept {
-            return source_location(file, function, line, column);
+            unsigned line      = __builtin_LINE()) noexcept {
+            return source_location(file, function, line);
         }
 
-        constexpr source_location(
-            file_name file, func_name func, unsigned line, unsigned column) noexcept
+        constexpr source_location(file_name file, func_name func, unsigned line) noexcept
             : _file(file)
             , _func(func)
-            , _line(line)
-            , _column(column) {}
+            , _line(line) {}
 
         constexpr file_name file() const noexcept { return _file; }
         constexpr func_name function() const noexcept { return _func; }
 
         constexpr unsigned line() const noexcept { return _line; }
-        constexpr unsigned column() const noexcept { return _column; }
 
       private:
         file_name _file;
         func_name _func;
         unsigned _line;
-        unsigned _column;
     };
 
     template< typename stream >
