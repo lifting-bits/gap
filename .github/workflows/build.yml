@@ -49,8 +49,7 @@ jobs:
           # This is the name of the CMakePresets.json's configuration to use to generate
           # the project files. This configuration leverages the vcpkg.cmake toolchain file to
           # run vcpkg and install all dependencies specified in vcpkg.json.
-          configurePreset: 'ninja-multi-vcpkg'
-          configurePresetCmdString: '-DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12'
+          configurePresetCmdString: "[`--preset`, 'ninja-multi-vcpkg', '-DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12']"
 
           # This is the name of the CMakePresets.json's configuration to build the project.
           buildPreset: 'ninja-multi-vcpkg'
