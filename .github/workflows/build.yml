@@ -7,6 +7,8 @@ on:
     branches: [ main ]
 
 env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
   # Indicates the location of the vcpkg as a Git submodule of the project repository.
   VCPKG_ROOT: ${{ github.workspace }}/vcpkg
   # Tells vcpkg where binary packages are stored.
@@ -43,14 +45,18 @@ jobs:
         vcpkgGitCommitId: '${{ env.VCPKG_COMMIT_ID }}'
         vcpkgJsonGlob: 'vcpkg.json'
 
-    - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
-      uses: lukka/run-cmake@v10
-      with:
-          # This is the name of the CMakePresets.json's configuration to use to generate
-          # the project files. This configuration leverages the vcpkg.cmake toolchain file to
-          # run vcpkg and install all dependencies specified in vcpkg.json.
-          configurePreset: 'ninja-multi-vcpkg'
-          configurePresetCmdString: "[`--preset`, 'ninja-multi-vcpkg', '-DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12']"
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build \
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+        -DCMAKE_C_COMPILER=clang-12 \
+        -DCMAKE_CXX_COMPILER=clang++-12 \
+        -DCMAKE_VERBOSE_MAKEFILE=True \
+        -DENABLE_TESTING=ON \
+        --preset ninja-multi-vcpkg
 
-          # This is the name of the CMakePresets.json's configuration to build the project.
-          buildPreset: 'ninja-multi-vcpkg'
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --preset ninja-multi-vcpkg
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}}
