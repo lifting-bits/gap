@@ -7,8 +7,7 @@
 
 namespace gap
 {
-    struct source_location
-    {
+    struct source_location {
         using file_name = std::string_view;
         using func_name = std::string_view;
 

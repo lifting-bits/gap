@@ -70,7 +70,8 @@ UseTab: Never
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterEnum: true
-  AfterStruct: true
+  AfterStruct: false
+  AfterClass: false
   AfterFunction: false
   AfterNamespace: true
   AfterExternBlock: true
@@ -78,6 +79,6 @@ BraceWrapping:
   BeforeLambdaBody: false
   BeforeWhile: false
   SplitEmptyFunction: false
-
+  SplitEmptyRecord: false
 
 ...
