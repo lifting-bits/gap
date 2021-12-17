@@ -1,3 +1,26 @@
-# Copyright (c) 2021-present, Trail of Bits, Inc. All rights reserved.
+# Copyright 2021-present, Trail of Bits, Inc. All rights reserved.
 
-find_package(doctest REQUIRED)
+find_package(doctest CONFIG REQUIRED)
+
+add_executable(test-gap
+  main.cpp
+
+  core/strong_type.cpp
+)
+
+target_compile_features(test-gap PRIVATE cxx_std_20)
+
+target_link_libraries(test-gap
+  PRIVATE
+    gap_settings
+    gap::core
+    doctest::doctest
+)
+
+target_include_directories(test-gap PUBLIC ${DOCTEST_INCLUDE_DIR})
+
+add_test(
+  NAME test-gap
+  COMMAND "$<TARGET_FILE:test-gap>"
+  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+)
