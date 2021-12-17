@@ -28,7 +28,7 @@ jobs:
     - name: Install static analysis tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y clang-tidy cppcheck clang gcc
+        sudo apt-get install -y clang-tidy cppcheck clang-12
 
     - name: "Create directory '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}'"
       run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
@@ -50,6 +50,7 @@ jobs:
           # the project files. This configuration leverages the vcpkg.cmake toolchain file to
           # run vcpkg and install all dependencies specified in vcpkg.json.
           configurePreset: 'ninja-multi-vcpkg'
+          configurePresetCmdString: '-DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12'
 
           # This is the name of the CMakePresets.json's configuration to build the project.
           buildPreset: 'ninja-multi-vcpkg'
