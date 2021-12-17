@@ -23,11 +23,6 @@ if (NOT USE_SYSTEM_DEPENDENCIES)
     endif ()
 
     set(VCPKG_ROOT_INSTALL_DIR "${VCPKG_ROOT}/installed")
-    if (NOT EXISTS "${VCPKG_ROOT_INSTALL_DIR}")
-      message(
-        FATAL_ERROR "VCPKG_ROOT installation directory does not exist: '${VCPKG_ROOT_INSTALL_DIR}'"
-      )
-    endif ()
 
     set(CMAKE_TOOLCHAIN_FILE
         "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
