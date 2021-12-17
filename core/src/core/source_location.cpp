@@ -4,8 +4,4 @@
 
 namespace gap
 {
-    constexpr source_location source_location::current(
-        file_name file, func_name function, unsigned line, unsigned column) noexcept {
-        return source_location(file, function, line, column);
-    }
 } // namespace gap
