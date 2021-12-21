@@ -112,7 +112,10 @@
       },
       {
         "name": "ninja-multi-vcpkg-clang-12",
-        "configurePreset": "ninja-multi-vcpkg-clang-12"
+        "configurePreset": "ninja-multi-vcpkg-clang-12",
+        "output": {
+          "verbosity": "verbose"
+        }
       },
       {
         "name": "default-vs",
