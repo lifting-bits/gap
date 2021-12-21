@@ -1,3 +1,5 @@
+[![Build and Test](https://github.com/lifting-bits/gap/actions/workflows/build.yml/badge.svg)](https://github.com/lifting-bits/gap/actions/workflows/build.yml)
+
 # GAP
 A utility library to bridge llvm and mlir gaps.
 
