@@ -33,6 +33,7 @@
 
 # Build
 /build
+/builds
 .cache/
 
 Testing/
