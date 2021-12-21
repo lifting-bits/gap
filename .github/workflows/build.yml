@@ -43,7 +43,7 @@ jobs:
         vcpkgGitCommitId: '${{ env.VCPKG_COMMIT_ID }}'
         vcpkgJsonGlob: 'vcpkg.json'
 
-    - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
+    - name: Run cmake
       uses: lukka/run-cmake@v10
       with:
           # This is the name of the CMakePresets.json's configuration to use to generate
@@ -53,3 +53,5 @@ jobs:
 
           # This is the name of the CMakePresets.json's configuration to build the project.
           buildPreset: 'ninja-multi-vcpkg-clang-12'
+
+          testPreset: 'ninja-multi-vcpkg-clang-12'
