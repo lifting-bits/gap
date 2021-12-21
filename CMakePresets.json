@@ -7,9 +7,22 @@
     },
     "configurePresets": [
       {
-        "name": "ninja-multi-vcpkg-clang-12",
+        "name": "ninja-multi-vcpkg",
         "displayName": "Ninja Multi-Config Configure Settings",
         "description": "Configure with vcpkg toolchain",
+        "binaryDir": "${sourceDir}/builds/${presetName}",
+        "generator": "Ninja Multi-Config",
+        "cacheVariables": {
+            "CMAKE_TOOLCHAIN_FILE": {
+            "type": "FILEPATH",
+            "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+            }
+        }
+      },
+      {
+        "name": "ninja-multi-vcpkg-clang-12",
+        "displayName": "Ninja Multi-Config Clang-12 Configure Settings",
+        "description": "Configure with vcpkg toolchain & clang-12",
         "binaryDir": "${sourceDir}/builds/${presetName}",
         "generator": "Ninja Multi-Config",
         "cacheVariables": {
@@ -26,6 +39,12 @@
     ],
     "buildPresets": [
       {
+        "name": "ninja-multi-vcpkg",
+        "configurePreset": "ninja-multi-vcpkg",
+        "displayName": "Build ninja-multi-vcpkg",
+        "description": "Build ninja-multi-vcpkg Configurations"
+      },
+      {
         "name": "ninja-multi-vcpkg-clang-12",
         "configurePreset": "ninja-multi-vcpkg-clang-12",
         "displayName": "Build ninja-multi-vcpkg-clang-12",
@@ -33,6 +52,14 @@
       }
     ],
     "testPresets": [
+      {
+        "name": "ninja-multi-vcpkg",
+        "configurePreset": "ninja-multi-vcpkg",
+        "output": {
+          "verbosity": "verbose"
+        },
+        "configuration": "Debug"
+      },
       {
         "name": "ninja-multi-vcpkg-clang-12",
         "configurePreset": "ninja-multi-vcpkg-clang-12",
