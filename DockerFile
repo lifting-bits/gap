@@ -1,0 +1,29 @@
+FROM ubuntu:latest AS base
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+
+RUN apt-get update -y
+RUN apt-get install -y gpg wget curl zip unzip tar git pkg-config gcc-11 g++-11
+
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+RUN echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ bionic main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+
+RUN apt-get update -y
+RUN apt-get install -y clang-tidy cppcheck clang-12 cmake ninja-build
+
+FROM base AS vcpkg
+
+RUN git clone https://github.com/Microsoft/vcpkg.git /opt/vcpkg
+
+WORKDIR /opt/vcpkg
+
+RUN ./bootstrap-vcpkg.sh && ./vcpkg integrate install && \
+    ./vcpkg integrate bash && \
+    echo 'export PATH=$PATH:/opt/vcpkg' >>~/.bashrc \
+    echo 'export VCPKG_ROOT=/opt/vcpkg' >>~/.bashrc
+
+WORKDIR /root
