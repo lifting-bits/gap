@@ -3,12 +3,34 @@
 # GAP
 A utility library to bridge llvm and mlir gaps.
 
+## Build & Configure
+
+```
+cmake --preset ninja-multi-vcpkg
+```
+
+```
+cmake  --build --preset ninja-multi-vcpkg
+```
+
+## Test
+
+```
+ctest ./builds/ --preset ninja-multi-vcpkg
+```
+
 ## Dependencies
 
-- [doctest](https://github.com/doctest/doctest)
-- [spdlog](https://github.com/gabime/spdlog)
+| Name | Version |
+| ---- | ------- |
+| [Git](https://git-scm.com/) | Latest |
+| [CMake](https://cmake.org/) | 3.21+ |
+| [Clang](http://clang.llvm.org/) | 12+ |
+| [ccache](https://ccache.dev/) | Latest |
 
-## Dependencies for developement
+Cmake takes care of downloading and building the vcpkg dependencies listed in `vcpkg.json`.
+
+## Dependencies for development
 
 - [pre-commit] `pip install pre-commit`
 - [cmake-format] `pip install cmakelang`
