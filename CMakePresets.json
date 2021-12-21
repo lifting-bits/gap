@@ -35,6 +35,23 @@
         }
       },
       {
+        "name": "ninja-multi-vcpkg-clang-12",
+        "displayName": "Ninja Multi-Config Configure Settings",
+        "description": "Configure with vcpkg toolchain",
+        "binaryDir": "${sourceDir}/builds/${presetName}",
+        "generator": "Ninja Multi-Config",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": {
+            "type": "FILEPATH",
+            "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          }
+        },
+        "environment": {
+          "CC": "clang-12",
+          "CXX": "clang++-12"
+        }
+      },
+      {
         "name": "msbuild-vcpkg",
         "displayName": "MSBuild (vcpkg toolchain) Configure Settings",
         "description": "Configure with VS generators and with vcpkg toolchain",
@@ -66,6 +83,12 @@
         "description": "Build ninja-multi-vcpkg Configurations"
       },
       {
+        "name": "ninja-multi-vcpkg-clang-12",
+        "configurePreset": "ninja-multi-vcpkg-clang-12",
+        "displayName": "Build ninja-multi-vcpkg-clang-12",
+        "description": "Build ninja-multi-vcpkg-ckang-12 Configurations"
+      },
+      {
         "name": "ninja-toolchain",
         "configurePreset": "ninja-toolchain",
         "displayName": "Build ninja-toolchain",
@@ -86,6 +109,10 @@
       {
         "name": "ninja-multi-vcpkg",
         "configurePreset": "ninja-multi-vcpkg"
+      },
+      {
+        "name": "ninja-multi-vcpkg-clang-12",
+        "configurePreset": "ninja-multi-vcpkg-clang-12"
       },
       {
         "name": "default-vs",
