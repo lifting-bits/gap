@@ -15,12 +15,6 @@ namespace gap
 
     namespace detail
     {
-        // TODO(heno): remove once supported in macos libc++
-        template< class From, class To >
-        concept convertible_to = std::is_convertible_v< From, To > && requires {
-            static_cast< To >(std::declval< From >());
-        };
-
         template< typename T >
         struct generator_promise_type {
             using suspend_always = std::experimental::suspend_always;
