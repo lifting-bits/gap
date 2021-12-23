@@ -5,6 +5,7 @@ find_package(doctest CONFIG REQUIRED)
 add_executable(test-gap
   main.cpp
 
+  core/generator.cpp
   core/strong_type.cpp
 )
 

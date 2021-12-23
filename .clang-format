@@ -67,6 +67,8 @@ Standard: Latest
 TabWidth: '4'
 UseTab: Never
 
+PenaltyReturnTypeOnItsOwnLine: 10000
+
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterEnum: true
