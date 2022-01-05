@@ -32,6 +32,6 @@ Cmake takes care of downloading and building the vcpkg dependencies listed in `v
 
 ## Dependencies for development
 
-- [pre-commit] `pip install pre-commit`
-- [cmake-format] `pip install cmakelang`
+- [pre-commit](https://pre-commit.com/) `pip install pre-commit`
+- [cmake-format](https://cmake-format.readthedocs.io/en/latest/) `pip install cmakelang`
   recommended together with vscode cmake-format extension
