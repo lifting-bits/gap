@@ -1,9 +1,12 @@
 // Copyright (c) 2021-present, Trail of Bits, Inc.
 
+#pragma once
+
+#include "gap/core/coroutine.hpp"
+
 #include <concepts>
 #include <cstddef>
 #include <exception>
-#include <experimental/coroutine>
 #include <iterator>
 #include <type_traits>
 #include <utility>
@@ -17,8 +20,6 @@ namespace gap
     {
         template< typename T >
         struct generator_promise_type {
-            using suspend_always = std::experimental::suspend_always;
-
             using value_type     = std::remove_reference_t< T >;
             using reference_type = std::conditional_t< std::is_reference_v< T >, T, T& >;
             using pointer_type   = value_type*;
@@ -27,15 +28,15 @@ namespace gap
 
             generator< T > get_return_object() noexcept;
 
-            constexpr suspend_always initial_suspend() const noexcept { return {}; }
-            constexpr suspend_always final_suspend() const noexcept { return {}; }
+            constexpr gap::suspend_always initial_suspend() const noexcept { return {}; }
+            constexpr gap::suspend_always final_suspend() const noexcept { return {}; }
 
-            suspend_always yield_value(std::remove_reference_t< T >& value) noexcept {
+            gap::suspend_always yield_value(std::remove_reference_t< T >& value) noexcept {
                 _value = std::addressof(value);
                 return {};
             }
 
-            suspend_always yield_value(std::remove_reference_t< T >&& value) noexcept {
+            gap::suspend_always yield_value(std::remove_reference_t< T >&& value) noexcept {
                 _value = std::addressof(value);
                 return {};
             }
@@ -48,7 +49,7 @@ namespace gap
 
             // Don't allow any use of 'co_await' inside the generator coroutine.
             template< typename U >
-            std::experimental::suspend_never await_transform(U&& value) = delete;
+            gap::suspend_never await_transform(U&& value) = delete;
 
             void rethrow_if_exception() {
                 if (_exception) {
@@ -65,7 +66,7 @@ namespace gap
         using promise_type = detail::generator_promise_type< T >;
 
         template< typename T >
-        using coroutine_handle = std::experimental::coroutine_handle< promise_type< T > >;
+        using coroutine_handle = gap::coroutine_handle< promise_type< T > >;
 
         struct generator_sentinel {};
 
