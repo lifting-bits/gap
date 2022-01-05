@@ -29,6 +29,14 @@
           "CMAKE_TOOLCHAIN_FILE": {
             "type": "FILEPATH",
             "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          },
+          "CMAKE_CXX_FLAGS": {
+            "type": "STRING",
+            "value": "-stdlib=libc++"
+          },
+          "CMAKE_EXE_LINKER_FLAGS": {
+            "type": "STRING",
+            "value": "-stdlib=libc++ -lc++abi"
           }
         },
         "environment": {

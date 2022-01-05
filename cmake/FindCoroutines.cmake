@@ -308,6 +308,6 @@ set(COROUTINES_FOUND
 
 if (Coroutines_FIND_REQUIRED AND NOT COROUTINES_FOUND)
   message(
-    FATAL_ERROR "Cannot compile simple program using std::coroutines. Is C++17 or later activated?"
+    FATAL_ERROR "Cannot compile simple program using std::coroutines."
   )
 endif ()
