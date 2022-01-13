@@ -11,14 +11,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(vcpkg_setup)
 
 project(
-  vast
+  gap
   LANGUAGES C CXX
   VERSION 0.0.0
   DESCRIPTION "A utility library to bridge llvm and mlir gaps"
   HOMEPAGE_URL "https://github.com/lifting-bits/gap"
 )
-
-include(GNUInstallDirs)
 
 include(project_settings)
 
@@ -33,19 +31,20 @@ endif ()
 #
 # GAP build settings
 #
-add_library(gap_settings INTERFACE)
+add_library(gap-settings INTERFACE)
 
 include(compiler_warnings)
-set_project_warnings(gap_settings)
+set_project_warnings(gap-settings)
 
-target_include_directories(
-  gap_settings INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                         $<INSTALL_INTERFACE:include>
+target_include_directories(gap-settings
+  INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
 
 # sanitizer options if supported by compiler
 include(sanitizers)
-enable_sanitizers(gap_settings)
+enable_sanitizers(gap-settings)
 
 # allow for static analysis options
 include(static_analyzers)
@@ -53,9 +52,12 @@ include(static_analyzers)
 #
 # Core GAP libraries
 #
+
 add_subdirectory(core)
 
-# test options
+#
+# testing support
+#
 option(ENABLE_TESTING "Enable Test Builds" ON)
 
 if (ENABLE_TESTING)
