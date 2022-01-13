@@ -13,8 +13,8 @@ target_compile_features(test-gap PRIVATE cxx_std_20)
 
 target_link_libraries(test-gap
   PRIVATE
-    gap_settings
-    gap::core
+    gap-settings
+    gap-core
     doctest::doctest
 )
 
