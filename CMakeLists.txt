@@ -64,3 +64,26 @@ if (ENABLE_TESTING)
   enable_testing()
   add_subdirectory(test)
 endif ()
+
+#
+# instalation support
+#
+
+include(GNUInstallDirs)
+install(TARGETS gap-core gap-settings
+	EXPORT gap-core-export
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		COMPONENT Gap_Runtime
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		COMPONENT Gap_Runtime
+		NAMELINK_COMPONENT Gap_Development
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		COMPONENT Gap_Development
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(EXPORT gap-core-export
+	FILE GapTargets.cmake
+  NAMESPACE gap::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/gap-core
+)
