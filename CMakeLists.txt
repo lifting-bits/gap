@@ -32,6 +32,15 @@ endif()
 
 include(project_settings)
 
+# adds header paths of library to list named var
+function(add_headers lib var)
+  set(headers ${${var}})
+  foreach (header ${ARGN})
+    set(headers ${headers} ${CMAKE_CURRENT_SOURCE_DIR}/include/gap/${lib}/${header})
+  endforeach()
+  set(${var} ${headers} PARENT_SCOPE)
+endfunction()
+
 #
 # CCACHE
 #
@@ -67,6 +76,10 @@ include(static_analyzers)
 
 add_subdirectory(core)
 
+set(GAP_HEADERS
+  ${GAP_CORE_HEADERS}
+)
+
 add_library(gap INTERFACE)
 target_link_libraries(gap
   INTERFACE
@@ -79,6 +92,8 @@ target_include_directories(gap
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+
+set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
 
 add_library(gap::gap ALIAS gap)
 
@@ -96,61 +111,66 @@ endif ()
 # instalation support
 #
 
-set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/gap)
-install(TARGETS gap-core gap-settings
-	EXPORT gap-export
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-		COMPONENT Gap_Runtime
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-		COMPONENT Gap_Runtime
-		NAMELINK_COMPONENT Gap_Development
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-		COMPONENT Gap_Development
-  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+option(GAP_INSTALL "Generate the install target." ${GAP_MASTER_PROJECT})
 
-install(EXPORT gap-export
-	FILE GapTargets.cmake
-  NAMESPACE gap::
-  DESTINATION ${GAP_CMAKE_INSTALL_DIR}
-)
+if (GAP_INSTALL)
+  set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/gap)
 
-#
-# packaging support
-#
+  set(GAP_INSTALL_TARGETS gap gap-core gap-settings)
+  set(GAP_EXPORT_NAME gap-targets)
 
-set(CPACK_PACKAGE_VENDOR "Trail of Bits")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-  "A utility library to bridge llvm and mlir gaps."
-)
-set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+  install(TARGETS gap-core gap-settings
+    EXPORT ${GAP_EXPORT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gap/core
+  )
 
-include(CPack)
+  install(EXPORT ${GAP_EXPORT_NAME}
+    FILE ${GAP_EXPORT_NAME}.cmake
+    NAMESPACE gap::
+    DESTINATION ${GAP_CMAKE_INSTALL_DIR}
+  )
 
-set(GAP_CONFIG_NAME "GapConfig")
-set(GAP_PACKAGE_CONFIG_FILE "${GAP_CONFIG_NAME}.cmake")
-set(GAP_PACKAGE_CONFIG_VERSION_FILE "${GAP_CONFIG_NAME}Version.cmake")
+  #
+  # packaging support
+  #
 
-include(CMakePackageConfigHelpers)
+  set(CPACK_PACKAGE_VENDOR "Trail of Bits")
+  set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+    "A utility library to bridge llvm and mlir gaps."
+  )
+  set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
+  set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+  set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+  set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_FILE}"
-  INSTALL_DESTINATION ${GAP_CMAKE_INSTALL_DIR}
-  NO_CHECK_REQUIRED_COMPONENTS_MACRO
-)
+  include(CPack)
 
-write_basic_package_version_file(
-  ${GAP_PACKAGE_CONFIG_VERSION_FILE}
-  VERSION ${PACKAGE_VERSION}
-  COMPATIBILITY SameMajorVersion
-)
+  set(GAP_CONFIG_NAME "gap-config")
+  set(GAP_PACKAGE_CONFIG_FILE "${GAP_CONFIG_NAME}.cmake")
+  set(GAP_PACKAGE_CONFIG_VERSION_FILE "${GAP_CONFIG_NAME}Version.cmake")
 
-install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_FILE}"
-  "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_VERSION_FILE}"
-  DESTINATION ${GAP_CMAKE_INSTALL_DIR}
-)
+  include(CMakePackageConfigHelpers)
+
+  configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/gap-config.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_FILE}"
+    INSTALL_DESTINATION ${GAP_CMAKE_INSTALL_DIR}
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO
+  )
+
+  write_basic_package_version_file(
+    ${GAP_PACKAGE_CONFIG_VERSION_FILE}
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY SameMajorVersion
+  )
+
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_FILE}"
+    "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_VERSION_FILE}"
+    DESTINATION ${GAP_CMAKE_INSTALL_DIR}
+  )
+
+endif()
