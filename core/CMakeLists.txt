@@ -1,4 +1,13 @@
 # Copyright (c) 2021-present, Trail of Bits, Inc. All rights reserved.
+
+add_headers(core GAP_CORE_HEADERS
+	config.hpp
+	coroutine.hpp
+	generator.hpp
+	source_location.hpp
+	strong_type.hpp
+)
+
 add_library(gap-core
 	src/source_location.cpp
 )
@@ -10,6 +19,8 @@ target_include_directories(gap-core
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     	$<INSTALL_INTERFACE:include>
 )
+
+set_target_properties(gap-core PROPERTIES PUBLIC_HEADER "${GAP_CORE_HEADERS}")
 
 find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
 
