@@ -19,3 +19,5 @@ target_link_libraries(gap-core
 	PRIVATE
 		std::coroutines
 )
+
+add_library(gap::core ALIAS gap-core)
