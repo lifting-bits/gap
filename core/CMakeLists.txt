@@ -25,10 +25,8 @@ set_target_properties(gap-core PROPERTIES PUBLIC_HEADER "${GAP_CORE_HEADERS}")
 find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
 
 target_link_libraries(gap-core
+	PUBLIC
+		std::coroutines
 	INTERFACE
 		gap-settings
-	PRIVATE
-		std::coroutines
 )
-
-add_library(gap::core ALIAS gap-core)
