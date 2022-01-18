@@ -7,6 +7,7 @@ add_executable(test-gap
 
   core/generator.cpp
   core/strong_type.cpp
+  core/concepts.cpp
 )
 
 target_compile_features(test-gap PRIVATE cxx_std_20)
