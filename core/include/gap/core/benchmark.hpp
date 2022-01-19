@@ -19,7 +19,7 @@ namespace gap::bench
 
     constexpr double standard_deviation(sample auto s) {
         double avg     = mean(s);
-        auto deviation = [avg](auto acc, auto val) { return acc + (avg - val) * (avg - val); };
+        auto deviation = [avg](double acc, auto val) { return acc + (avg - val) * (avg - val); };
         return gap::ranges::accumulate(s, 0l, deviation) / ssize(s);
     }
 
