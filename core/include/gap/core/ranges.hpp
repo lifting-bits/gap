@@ -4,6 +4,7 @@
 
 #include <gap/core/concepts.hpp>
 #include <iterator>
+#include <numeric>
 
 namespace gap::ranges
 {
@@ -26,5 +27,13 @@ namespace gap::ranges
 
     template< typename R >
     concept arithmetic_range = range< R > && arithmetic< typename R::value_type >;
+
+    constexpr auto accumulate(range auto r, auto init) {
+        return std::accumulate(r.begin(), r.end(), init);
+    }
+
+    constexpr auto accumulate(range auto r, auto init, auto bop) {
+        return std::accumulate(r.begin(), r.end(), init, bop);
+    }
 
 } // namespace gap::ranges
