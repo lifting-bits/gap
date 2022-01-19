@@ -5,9 +5,10 @@ find_package(doctest CONFIG REQUIRED)
 add_executable(test-gap
   main.cpp
 
-  core/generator.cpp
-  core/strong_type.cpp
   core/concepts.cpp
+  core/generator.cpp
+  core/ranges.cpp
+  core/strong_type.cpp
 )
 
 target_compile_features(test-gap PRIVATE cxx_std_20)
