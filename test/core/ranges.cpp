@@ -16,4 +16,8 @@ namespace gap::test
     static_assert(gr::range< std::array< int, 10 > >);
     static_assert(gr::range< int > == false);
 
+    static_assert(gr::arithmetic_range< std::vector< int > >);
+    static_assert(gr::arithmetic_range< std::vector< float > >);
+    static_assert(gr::arithmetic_range< std::vector< dummy > > == false);
+
 } // namespace gap::test

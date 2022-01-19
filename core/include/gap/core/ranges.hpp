@@ -9,6 +9,7 @@ namespace gap::ranges
 {
     template< typename R >
     concept range = requires(R&& r) {
+        typename R::value_type;
         std::begin(r);
         std::end(r);
     };
@@ -18,9 +19,12 @@ namespace gap::ranges
         return std::size(r);
     }
 
-    template< class R >
+    template< typename R >
     concept sized_range = range< R > && requires(R&& r) {
         ranges::size(r);
     };
+
+    template< typename R >
+    concept arithmetic_range = range< R > && arithmetic< typename R::value_type >;
 
 } // namespace gap::ranges
