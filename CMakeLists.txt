@@ -115,6 +115,7 @@ option(GAP_INSTALL "Generate the install target." ${GAP_MASTER_PROJECT})
 
 if (GAP_INSTALL)
   set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+  set(GAP_SCRIPTS_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/scripts/)
 
   set(GAP_INSTALL_TARGETS gap gap-core gap-settings)
   set(GAP_EXPORT_NAME GapTargets)
@@ -172,6 +173,14 @@ if (GAP_INSTALL)
     "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_FILE}"
     "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_VERSION_FILE}"
     DESTINATION ${GAP_CMAKE_INSTALL_DIR}
+  )
+
+  install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg_setup.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/prevent_in_source_builds.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sanitizers.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/static_analyzers.cmake"
+    DESTINATION ${GAP_SCRIPTS_INSTALL_DIR}
   )
 
 endif()
