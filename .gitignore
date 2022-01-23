@@ -35,6 +35,7 @@
 /build
 /builds
 .cache/
+CMakeCache.txt
 
 Testing/
 
