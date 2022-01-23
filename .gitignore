@@ -37,3 +37,6 @@
 .cache/
 
 Testing/
+
+# Install
+install/*
