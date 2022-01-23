@@ -18,6 +18,10 @@ project(
   HOMEPAGE_URL "https://github.com/lifting-bits/gap"
 )
 
+# Globally set the required C++ standard
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(GNUInstallDirs)
 
 # heck if gap is being used directly or via add_subdirectory,
@@ -181,6 +185,7 @@ if (GAP_INSTALL)
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg_setup.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sanitizers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/static_analyzers.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_settings.cmake"
     DESTINATION ${GAP_SCRIPTS_INSTALL_DIR}
   )
 
