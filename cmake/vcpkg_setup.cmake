@@ -32,7 +32,6 @@ if (NOT USE_SYSTEM_DEPENDENCIES)
     message(
       FATAL_ERROR
         "Please define a path to VCPKG_ROOT."
-        "See https://github.com/trailofbits/cxx-common for more details."
         "Or if you don't want to use vcpkg dependencies," "add '-DUSE_SYSTEM_DEPENDENCIES=ON'"
     )
   endif ()
