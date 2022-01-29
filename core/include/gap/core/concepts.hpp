@@ -2,7 +2,9 @@
 
 #pragma once
 
+#include <concepts>
 #include <iterator>
+#include <ostream>
 #include <type_traits>
 
 namespace gap
@@ -40,6 +42,12 @@ namespace gap
     template< typename T >
     concept can_reference = requires {
         typename detail::with_ref< T >;
+    };
+
+    /* common concepts */
+    template< typename T >
+    concept printable = requires(std::ostream& os, T t) {
+        { os << t } -> std::same_as< std::ostream& >;
     };
 
 } // namespace gap
