@@ -113,6 +113,15 @@ if (ENABLE_TESTING)
 endif ()
 
 #
+# examples
+#
+option(ENABLE_EXAMPLES "Enable Examples Builds" ON)
+
+if (ENABLE_EXAMPLES)
+  add_subdirectory(examples)
+endif ()
+
+#
 # instalation support
 #
 
