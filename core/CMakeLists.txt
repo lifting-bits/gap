@@ -19,7 +19,7 @@ target_compile_features(gap-core PRIVATE cxx_std_20)
 target_include_directories(gap-core
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    	$<INSTALL_INTERFACE:include>
+    	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 set_target_properties(gap-core PROPERTIES PUBLIC_HEADER "${GAP_CORE_HEADERS}")

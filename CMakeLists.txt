@@ -65,7 +65,7 @@ set_project_warnings(gap-settings)
 target_include_directories(gap-settings
   INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 # sanitizer options if supported by compiler
@@ -97,7 +97,7 @@ target_link_libraries(gap
 target_include_directories(gap
   INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
