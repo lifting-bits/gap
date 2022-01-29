@@ -12,6 +12,8 @@ add_library(gap-core
 	src/source_location.cpp
 )
 
+add_library(gap::gap-core ALIAS gap-core)
+
 target_compile_features(gap-core PRIVATE cxx_std_20)
 
 target_include_directories(gap-core

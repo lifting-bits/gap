@@ -57,6 +57,7 @@ endif ()
 # GAP build settings
 #
 add_library(gap-settings INTERFACE)
+add_library(gap::gap-settings ALIAS gap-settings)
 
 include(compiler_warnings)
 set_project_warnings(gap-settings)
@@ -85,6 +86,8 @@ set(GAP_HEADERS
 )
 
 add_library(gap INTERFACE)
+add_library(gap::gap ALIAS gap)
+
 target_link_libraries(gap
   INTERFACE
     gap-core
@@ -98,8 +101,6 @@ target_include_directories(gap
 )
 
 set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
-
-add_library(gap::gap ALIAS gap)
 
 #
 # testing support
