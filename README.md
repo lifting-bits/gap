@@ -13,6 +13,28 @@ cmake --preset ninja-multi-vcpkg
 cmake  --build --preset ninja-multi-vcpkg
 ```
 
+## Install & Integrate
+
+Simply use cmake install infrastructure:
+
+```
+cmake -DCMAKE_INSTALL_PREFIX:PATH=<path> --build --preset ninja-multi-vcpkg --target install
+```
+
+where installation path might be for example `~/opt/gap`.
+
+To integrate into other `cmake` project simply include:
+
+```
+find_package(gap CONFIG REQUIRED)
+```
+
+and point `cmake` to `gap` install directory:
+
+```
+cmake -Dgap_DIR=~/opt/gap/lib/cmake/gap ...
+```
+
 ## Test
 
 ```
