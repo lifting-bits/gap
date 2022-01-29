@@ -129,10 +129,9 @@ option(GAP_INSTALL "Generate the install target." ${GAP_MASTER_PROJECT})
 
 if (GAP_INSTALL)
   set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
-  set(GAP_SCRIPTS_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/scripts/)
 
   set(GAP_INSTALL_TARGETS gap gap-core gap-settings)
-  set(GAP_EXPORT_NAME GapTargets)
+  set(GAP_EXPORT_NAME gapTargets)
 
   install(TARGETS ${GAP_INSTALL_TARGETS}
     EXPORT ${GAP_EXPORT_NAME}
@@ -164,7 +163,7 @@ if (GAP_INSTALL)
 
   include(CPack)
 
-  set(GAP_CONFIG_NAME "GapConfig")
+  set(GAP_CONFIG_NAME "gapConfig")
   set(GAP_PACKAGE_CONFIG_FILE "${GAP_CONFIG_NAME}.cmake")
   set(GAP_PACKAGE_CONFIG_VERSION_FILE "${GAP_CONFIG_NAME}Version.cmake")
 
@@ -173,7 +172,6 @@ if (GAP_INSTALL)
   configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/${GAP_CONFIG_NAME}.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/${GAP_PACKAGE_CONFIG_FILE}"
     INSTALL_DESTINATION ${GAP_CMAKE_INSTALL_DIR}
-    NO_CHECK_REQUIRED_COMPONENTS_MACRO
   )
 
   write_basic_package_version_file(
@@ -196,7 +194,7 @@ if (GAP_INSTALL)
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sanitizers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/static_analyzers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_settings.cmake"
-    DESTINATION ${GAP_SCRIPTS_INSTALL_DIR}
+    DESTINATION ${GAP_CMAKE_INSTALL_DIR}
   )
 
 endif()
