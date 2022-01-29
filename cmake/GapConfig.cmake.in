@@ -1,7 +1,3 @@
-if (TARGET gap::gap)
-    return()
-endif()
-
 @PACKAGE_INIT@
 
 # Provide path for scripts
@@ -12,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 # break build even if gap is not required
 find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
 
-include("${CMAKE_CURRENT_LIST_DIR}/GapTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
 check_required_components("@PROJECT_NAME@")
 
 if (NOT DEFINED @PROJECT_NAME@_FIND_QUIETLY)
