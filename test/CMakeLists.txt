@@ -8,6 +8,7 @@ add_executable(test-gap
   core/concepts.cpp
   core/benchmark.cpp
   core/generator.cpp
+  core/parser.cpp
   core/ranges.cpp
   core/strong_type.cpp
 )

@@ -6,6 +6,7 @@
 #include <iterator>
 #include <ostream>
 #include <type_traits>
+#include <utility> // for forward
 
 namespace gap
 {
@@ -48,6 +49,11 @@ namespace gap
     template< typename T >
     concept printable = requires(std::ostream& os, T t) {
         { os << t } -> std::same_as< std::ostream& >;
+    };
+
+    template< typename F, typename... Args >
+    concept invocable = requires(F&& f, Args&&... args) {
+        std::invoke(std::forward< F >(f), std::forward< Args >(args)...);
     };
 
 } // namespace gap
