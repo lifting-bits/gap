@@ -108,6 +108,7 @@ set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
 option(ENABLE_TESTING "Enable Test Builds" ON)
 
 if (ENABLE_TESTING)
+  include(CTest)
   enable_testing()
   add_subdirectory(test)
 endif ()
@@ -212,6 +213,7 @@ if (GAP_INSTALL)
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sanitizers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/static_analyzers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_settings.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/prevent_in_source_builds.cmake"
     DESTINATION ${GAP_CMAKE_INSTALL_DIR}
   )
 
