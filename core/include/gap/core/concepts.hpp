@@ -56,4 +56,22 @@ namespace gap
         std::invoke(std::forward< F >(f), std::forward< Args >(args)...);
     };
 
+    /* operator concepts */
+    template< typename T >
+    concept incrementable = requires(T value) {
+        ++value;
+        value++;
+    };
+
+    template< typename T >
+    concept decrementable = requires(T value) {
+        --value;
+        value--;
+    };
+
+    template< typename A, typename B >
+    concept comparable = requires(const A& a, const B& b) {
+        a == b;
+    };
+
 } // namespace gap
