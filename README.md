@@ -57,3 +57,34 @@ Cmake takes care of downloading and building the vcpkg dependencies listed in `v
 - [pre-commit](https://pre-commit.com/) `pip install pre-commit`
 - [cmake-format](https://cmake-format.readthedocs.io/en/latest/) `pip install cmakelang`
   recommended together with vscode cmake-format extension
+  
+## Structure
+
+1. __Core GAP__
+
+    - contracts
+    - error handling
+    - parsing
+    - logging
+    - coroutines
+    - ranges
+    - benchmarks
+    - data structures
+    - cmake utils
+
+2. __LLVM GAP__
+
+    - ranges
+    - single context library (sc)
+    - monadic builders
+
+3. __MLIR GAP__
+
+    - parser
+    - fmt
+    - single context library (sc)
+    - ranges
+
+4. __Any IR GAP__
+
+    - serialize/deserialize uniform ir representation
