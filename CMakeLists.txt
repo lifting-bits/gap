@@ -24,7 +24,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(GNUInstallDirs)
 
-# heck if gap is being used directly or via add_subdirectory,
+# check if gap is being used directly or via add_subdirectory,
 # but allow overriding
 if(NOT DEFINED GAP_MASTER_PROJECT)
     if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)

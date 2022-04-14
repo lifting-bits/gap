@@ -15,10 +15,9 @@
         "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "installDir": "${sourceDir}/install",
         "cacheVariables": {
-            "CMAKE_CONFIGURATION_TYPES": {
-              "type": "STRING",
-              "value": "Release;RelWithDebInfo;Debug"
-            }
+            "CMAKE_CONFIGURATION_TYPES": "Release;RelWithDebInfo;Debug",
+            "VCPKG_TARGET_TRIPLET": "x64-osx",
+            "VCPKG_HOST_TRIPLET": "x64-osx"
         }
       },
       {
