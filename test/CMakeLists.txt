@@ -11,6 +11,7 @@ add_executable(test-gap
   core/parser.cpp
   core/ranges.cpp
   core/strong_type.cpp
+  core/union_find.cpp
 )
 
 target_compile_features(test-gap PRIVATE cxx_std_20)
