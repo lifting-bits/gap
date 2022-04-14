@@ -5,6 +5,7 @@
 #pragma once
 
 #include <compare>
+#include <gap/core/concepts.hpp>
 #include <string>
 #include <type_traits>
 #include <utility> // for swap
@@ -32,6 +33,28 @@ namespace gap
 
         constexpr underlying_t &ref() noexcept { return _value; }
         constexpr const underlying_t &ref() const noexcept { return _value; }
+
+        strong_type &operator++() requires incrementable< underlying_t > {
+            ++_value;
+            return *this;
+        }
+
+        strong_type operator++(int) requires incrementable< underlying_t > {
+            strong_type tmp = *this;
+            ++_value;
+            return tmp;
+        }
+
+        strong_type &operator--() requires decrementable< underlying_t > {
+            --_value;
+            return *this;
+        }
+
+        strong_type operator--(int) requires decrementable< underlying_t > {
+            strong_type tmp = *this;
+            --_value;
+            return tmp;
+        }
 
         friend constexpr void swap(strong_type &a, strong_type &b) noexcept {
             using std::swap;
