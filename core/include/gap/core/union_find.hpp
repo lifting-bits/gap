@@ -37,6 +37,17 @@ namespace gap
                 friend constexpr auto operator<=>(const element_type_t &, const element_type_t &)
                     = default;
 
+                element_type_t &operator++() requires incrementable< union_type > {
+                    ++parent;
+                    return *this;
+                }
+
+                element_type_t operator++(int) requires incrementable< union_type > {
+                    element_type_t tmp = *this;
+                    ++parent;
+                    return tmp;
+                }
+
                 union_type parent = union_type(0);
                 rank_type rank    = rank_type(0);
             };
@@ -50,7 +61,7 @@ namespace gap
 
             explicit union_find_t(std::size_t size)
                 : _data(size) {
-                std::iota(std::begin(_data), std::end(_data), union_type(0));
+                std::iota(std::begin(_data), std::end(_data), element_type_t(union_type(0)));
             }
 
             [[nodiscard]] union_type find(union_type idx) requires(thread_safe) {
