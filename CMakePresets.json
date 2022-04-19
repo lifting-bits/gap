@@ -58,10 +58,17 @@
       },
       {
         "name": "ninja-multi-vcpkg-clang-12-debug",
-        "configurePreset": "ninja-multi-vcpkg-clang-12",
+        "configurePreset": "ninja-multi-vcpkg-clang-12-debug",
         "displayName": "Build ninja-multi-vcpkg-clang-12-debug",
         "description": "Build ninja-multi-vcpkg-ckang-12-debug Configurations",
         "configuration": "Debug"
+      },
+      {
+        "name": "ninja-multi-vcpkg-clang-12-release",
+        "configurePreset": "ninja-multi-vcpkg-clang-12-release",
+        "displayName": "Build ninja-multi-vcpkg-clang-12-release",
+        "description": "Build ninja-multi-vcpkg-ckang-12-release Configurations",
+        "configuration": "Release"
       }
     ],
 
