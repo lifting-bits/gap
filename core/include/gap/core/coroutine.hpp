@@ -2,11 +2,13 @@
 
 #pragma once
 
-#include "gap/core/config.hpp"
+#ifdef GAP_ENABLE_COROUTINES
 
-#ifdef GAP_COROHEADER_FOUND_AND_USABLE
+    #include "gap/core/config.hpp"
 
-    #include <coroutine>
+    #ifdef GAP_COROHEADER_FOUND_AND_USABLE
+
+        #include <coroutine>
 
 namespace gap
 {
@@ -17,9 +19,9 @@ namespace gap
 
 } // namespace gap
 
-#elif __has_include(<experimental/coroutine>)
+    #elif __has_include(<experimental/coroutine>)
 
-    #include <experimental/coroutine>
+        #include <experimental/coroutine>
 
 namespace gap
 {
@@ -27,11 +29,13 @@ namespace gap
     using std::experimental::suspend_always;
     using std::experimental::suspend_never;
 
-    #if GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER
+        #if GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER
     using std::experimental::noop_coroutine;
-    #endif
+        #endif
 } // namespace gap
 
-#else
-    #error gap requires a C++20 compiler with coroutine support
+    #else
+        #error gap requires a C++20 compiler with coroutine support
+    #endif
+
 #endif

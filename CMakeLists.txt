@@ -75,6 +75,8 @@ enable_sanitizers(gap-settings)
 # allow for static analysis options
 include(static_analyzers)
 
+option(GAP_ENABLE_COROUTINES "Enable coroutines" ON)
+
 #
 # Core GAP libraries
 #
