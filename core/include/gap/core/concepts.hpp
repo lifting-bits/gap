@@ -3,6 +3,7 @@
 #pragma once
 
 #include <concepts>
+#include <functional>
 #include <iterator>
 #include <ostream>
 #include <type_traits>
