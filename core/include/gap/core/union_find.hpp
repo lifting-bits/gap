@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <cassert>
 #include <deque>
 #include <doctest/doctest.h>
 #include <gap/core/strong_type.hpp>

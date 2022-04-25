@@ -2,14 +2,16 @@
 
 #pragma once
 
-#include "gap/core/coroutine.hpp"
+#ifdef GAP_ENABLE_COROUTINES
 
-#include <concepts>
-#include <cstddef>
-#include <exception>
-#include <iterator>
-#include <type_traits>
-#include <utility>
+    #include "gap/core/coroutine.hpp"
+
+    #include <concepts>
+    #include <cstddef>
+    #include <exception>
+    #include <iterator>
+    #include <type_traits>
+    #include <utility>
 
 namespace gap
 {
@@ -181,3 +183,5 @@ namespace gap
     } // namespace detail
 
 } // namespace gap
+
+#endif
