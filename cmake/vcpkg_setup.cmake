@@ -22,8 +22,6 @@ if (NOT USE_SYSTEM_DEPENDENCIES)
       message(FATAL_ERROR "VCPKG_ROOT directory does not exist: '${VCPKG_ROOT}'")
     endif ()
 
-    set(VCPKG_ROOT_INSTALL_DIR "${VCPKG_ROOT}/installed")
-
     set(CMAKE_TOOLCHAIN_FILE
         "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
         CACHE FILEPATH "" FORCE
@@ -31,8 +29,8 @@ if (NOT USE_SYSTEM_DEPENDENCIES)
   else ()
     message(
       FATAL_ERROR
-        "Please define a path to VCPKG_ROOT."
-        "Or if you don't want to use vcpkg dependencies," "add '-DUSE_SYSTEM_DEPENDENCIES=ON'"
+        "Please define a path to VCPKG_ROOT." "Or if you don't want to use vcpkg dependencies,"
+        "add '-DUSE_SYSTEM_DEPENDENCIES=ON'"
     )
   endif ()
 
@@ -46,32 +44,12 @@ if (NOT USE_SYSTEM_DEPENDENCIES)
       message(FATAL_ERROR "Could not detect default release triplet")
     endif ()
 
-    if (NOT EXISTS "${VCPKG_ROOT_INSTALL_DIR}/${_project_vcpkg_triplet}")
-      message(STATUS "Could not find installed project-default triplet '${_project_vcpkg_triplet}'"
-                     "using vcpkg-default for your system"
-      )
-    else ()
-      set(VCPKG_TARGET_TRIPLET
-          "${_project_vcpkg_triplet}"
-          CACHE STRING ""
-      )
-      message(STATUS "Setting default vcpkg triplet to release-only libraries:"
-                     "${VCPKG_TARGET_TRIPLET}"
-      )
-    endif ()
-  endif ()
-
-  if (DEFINED VCPKG_TARGET_TRIPLET AND NOT EXISTS
-                                       "${VCPKG_ROOT_INSTALL_DIR}/${VCPKG_TARGET_TRIPLET}"
-  )
+    set(VCPKG_TARGET_TRIPLET
+        "${_project_vcpkg_triplet}"
+        CACHE STRING ""
+    )
     message(
-      FATAL_ERROR "Could not find vcpkg triplet (${VCPKG_TARGET_TRIPLET})"
-                  "installation libraries '${VCPKG_ROOT_INSTALL_DIR}/${VCPKG_TARGET_TRIPLET}'."
+      STATUS "Setting default vcpkg triplet to release-only libraries: ${VCPKG_TARGET_TRIPLET}"
     )
   endif ()
-
-  message(
-    STATUS
-      "Using vcpkg installation directory at '${VCPKG_ROOT_INSTALL_DIR}/${VCPKG_TARGET_TRIPLET}'"
-  )
 endif ()
