@@ -22,7 +22,7 @@ namespace gap::parser
     // optional result and remaining (unparsed) string.
 
     template< typename P >
-    concept Parser = invocable< P, parse_input_t >;
+    concept parser_function = invocable< P, parse_input_t >;
 
     template< typename T >
     using parse_result_t = std::optional< std::pair< T, std::string_view > >;
@@ -30,17 +30,17 @@ namespace gap::parser
     template< typename T >
     using parse_result_t = std::optional< std::pair< T, std::string_view > >;
 
-    template< Parser P >
+    template< parser_function P >
     using parse_invoke_result = std::invoke_result_t< P, parse_input_t >;
 
-    template< Parser P >
+    template< parser_function P >
     using parse_result_type = typename parse_invoke_result< P >::value_type;
 
-    template< Parser P >
+    template< parser_function P >
     using parse_type = typename parse_result_type< P >::first_type;
 
-    template< typename P, typename T >
-    concept parser = Parser< P > && std::is_same_v< parse_invoke_result< P >, parse_result_t< T > >;
+    template< parser_function P, typename T >
+    concept parser = std::is_same_v< parse_invoke_result< P >, parse_result_t< T > >;
 
     template< typename T >
     using parser_t = auto (*)(parse_input_t) -> parse_result_t< T >;
@@ -330,7 +330,7 @@ namespace gap::parser
     namespace detail
     {
         template< integral I >
-        constexpr parser< I > auto digit_parser(std::string_view allowed_digits) {
+        constexpr parser< I > auto digit_parser(const std::string_view &allowed_digits) {
             using namespace std::literals; // NOLINT
             auto to_digit = [](char c) { return static_cast< I >(c - '0'); };
             return fmap(to_digit, one_of(allowed_digits));
