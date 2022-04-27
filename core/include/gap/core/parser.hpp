@@ -8,7 +8,7 @@
 #include <stddef.h>    // for size_t
 #include <string_view> // for string_view, operator""sv
 #include <tuple>       // for tuple, make_from_tuple, make_tuple, tuple_cat
-#include <type_traits> // for forward, invoke_result_t, decay_t, enable_if_t
+#include <type_traits> // for forward, invoke_result_t, decay_t
 #include <utility>     // for pair
 #include <variant>     // for monostate
 
@@ -112,8 +112,10 @@ namespace gap::parser
     template<
         typename P1,
         typename P2,
-        typename T = std::enable_if_t< std::is_same_v< parse_type< P1 >, parse_type< P2 > > > >
-    constexpr parser< T > auto operator|(P1 &&p1, P2 &&p2) {
+        typename T = parse_type< P1 > >
+    constexpr parser< T > auto operator|(P1 &&p1, P2 &&p2)
+        requires( std::is_same_v< parse_type< P1 >, parse_type< P2 > > )
+    {
         return [=](parse_input_t in) {
             if (auto r1 = p1(in))
                 return r1;
