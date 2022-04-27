@@ -39,8 +39,8 @@ namespace gap::parser
     template< parser_function P >
     using parse_type = typename parse_result_type< P >::first_type;
 
-    template< parser_function P, typename T >
-    concept parser = std::is_same_v< parse_invoke_result< P >, parse_result_t< T > >;
+    template< typename P, typename T >
+    concept parser = parser_function< P > && std::is_same_v< parse_invoke_result< P >, parse_result_t< T > >;
 
     template< typename T >
     using parser_t = auto (*)(parse_input_t) -> parse_result_t< T >;
