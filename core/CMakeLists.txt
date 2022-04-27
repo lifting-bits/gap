@@ -9,6 +9,7 @@ add_headers(core GAP_CORE_HEADERS
 	source_location.hpp
 	strong_type.hpp
 	fixed_string.hpp
+	type_traits.hpp
 )
 
 add_library(gap-core
