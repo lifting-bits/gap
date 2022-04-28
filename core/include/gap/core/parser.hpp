@@ -4,6 +4,7 @@
 
 #include <chrono>     // for literals
 #include <functional> // for invoke
+#include <gap/core/concepts.hpp>
 #include <optional>    // for nullopt, optional
 #include <stddef.h>    // for size_t
 #include <string_view> // for string_view, operator""sv
@@ -11,8 +12,7 @@
 #include <type_traits> // for forward, invoke_result_t, decay_t
 #include <utility>     // for pair
 #include <variant>     // for monostate
-
-#include <gap/core/concepts.hpp>
+#include <vector>
 
 namespace gap::parser
 {
@@ -40,7 +40,8 @@ namespace gap::parser
     using parse_type = typename parse_result_type< P >::first_type;
 
     template< typename P, typename T >
-    concept parser = parser_function< P > && std::is_same_v< parse_invoke_result< P >, parse_result_t< T > >;
+    concept parser
+        = parser_function< P > && std::is_same_v< parse_invoke_result< P >, parse_result_t< T > >;
 
     template< typename T >
     using parser_t = auto (*)(parse_input_t) -> parse_result_t< T >;
@@ -109,13 +110,9 @@ namespace gap::parser
 
     // alternation: frirst try P1, and if it fails, try P2.
     // Both parsers have to return the same type.
-    template<
-        typename P1,
-        typename P2,
-        typename T = parse_type< P1 > >
-    constexpr parser< T > auto operator|(P1 &&p1, P2 &&p2)
-        requires( std::is_same_v< parse_type< P1 >, parse_type< P2 > > )
-    {
+    template< typename P1, typename P2, typename T = parse_type< P1 > >
+    constexpr parser< T > auto operator|(P1 &&p1, P2 &&p2) requires(
+        std::is_same_v< parse_type< P1 >, parse_type< P2 > >) {
         return [=](parse_input_t in) {
             if (auto r1 = p1(in))
                 return r1;
@@ -402,7 +399,8 @@ namespace gap::parser
     template< typename Pred >
     constexpr auto skip(Pred &&predicate) {
         auto parser = char_parser(std::forward< Pred >(predicate));
-        return many(parser, std::monostate{}, [](auto m, auto) { return m; });
+        auto next   = [](auto m, auto) { return m; };
+        return many(parser, std::monostate{}, next);
     }
 
     template< typename Pred >
@@ -429,7 +427,18 @@ namespace gap::parser
 
     template< typename P, typename T = parse_type< P > >
     constexpr parser< T > auto parenthesized(P &&p) {
-        return char_parser('(') < p > char_parser(')');
+        return char_parser('(')< p > char_parser(')');
+    }
+
+    template< typename P >
+    static inline parser< std::vector< parse_type< P > > > auto to_vector_parser(P &&p) {
+        using parsed_type = parse_type< P >;
+        auto push         = [](std::vector< parsed_type > vec, parsed_type v) {
+            vec.push_back(std::move(v));
+            return std::move(vec);
+        };
+
+        return separated(std::forward< P >(p), skip(isspace), std::vector< parsed_type >(), push);
     }
 
 } // namespace gap::parser
