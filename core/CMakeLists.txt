@@ -5,6 +5,7 @@ add_headers(core GAP_CORE_HEADERS
 	config.hpp
 	coroutine.hpp
 	generator.hpp
+	overloads.hpp
 	parser.hpp
 	ranges.hpp
 	source_location.hpp
