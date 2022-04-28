@@ -426,4 +426,10 @@ namespace gap::parser
             return std::nullopt;
         };
     }
+
+    template< typename P, typename T = parse_type< P > >
+    constexpr parser< T > auto parenthesized(P &&p) {
+        return char_parser('(') < p > char_parser(')');
+    }
+
 } // namespace gap::parser
