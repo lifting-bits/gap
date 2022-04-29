@@ -61,15 +61,7 @@ namespace gap
             swap(static_cast< underlying_t & >(a), static_cast< underlying_t & >(b));
         }
 
-        friend constexpr auto operator<=>(const strong_type &a, const strong_type &b) = default;
-
-        friend constexpr auto operator<=>(const strong_type &a, const underlying_t &b) {
-            return a.ref() <=> b;
-        }
-
-        friend constexpr auto operator<=>(const underlying_t &a, const strong_type &b) {
-            return a <=> b.ref();
-        }
+        constexpr auto operator<=>(const strong_type &other) const = default;
 
         template< typename stream >
         friend auto operator<<(stream &out, const strong_type &a) noexcept -> decltype(out << "") {
@@ -83,6 +75,17 @@ namespace gap
       private:
         underlying_t _value;
     };
+
+    template< typename U, typename T >
+    constexpr auto operator<=>(const strong_type< U, T > &a, const U &b) {
+        return a.ref() <=> b;
+    }
+
+    template< typename U, typename T >
+    constexpr auto operator<=>(const U &a, const strong_type< U, T > &b) {
+        return a <=> b.ref();
+    }
+
 } // namespace gap
 
 namespace std
