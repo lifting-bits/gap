@@ -3,10 +3,9 @@
 # Provide path for scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
-# TODO(Heno): use find_dependency, which fails because FindCoroutines produces
-# errors during feature testings find_package is not optimal because it may
-# break build even if gap is not required
-find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
+if (@GAP_ENABLE_COROUTINES@)
+    find_dependency(Coroutines COMPONENTS Experimental Final REQUIRED)
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
 check_required_components("@PROJECT_NAME@")
