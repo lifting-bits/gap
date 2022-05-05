@@ -1,3 +1,5 @@
+include(CMakeFindDependencyMacro)
+
 @PACKAGE_INIT@
 
 # Provide path for scripts
