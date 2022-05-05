@@ -27,4 +27,12 @@ namespace gap::test
 
     static_assert(tagged_struct() == tagged_struct());
 
+    struct string_tag {};
+    using tagged_string = gap::strong_type< std::string, string_tag >;
+
+    TEST_CASE("tagged string") {
+        tagged_string a1("a"), a2("a");
+        CHECK(a1 == a2);
+    }
+
 } // namespace gap::test
