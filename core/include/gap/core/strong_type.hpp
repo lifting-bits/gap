@@ -61,8 +61,6 @@ namespace gap
             swap(static_cast< underlying_t & >(a), static_cast< underlying_t & >(b));
         }
 
-        constexpr auto operator<=>(const strong_type &other) const = default;
-
         template< typename stream >
         friend auto operator<<(stream &out, const strong_type &a) noexcept -> decltype(out << "") {
             if constexpr (std::is_integral_v< underlying_t >) {
@@ -75,6 +73,21 @@ namespace gap
       private:
         underlying_t _value;
     };
+
+    template< typename U, typename T >
+    constexpr bool operator==(const strong_type< U, T > &a, const strong_type< U, T > &b) {
+        return a.ref() == b.ref();
+    }
+
+    template< typename U, typename T >
+    constexpr bool operator>(const strong_type< U, T > &a, const strong_type< U, T > &b) {
+        return a.ref() > b.ref();
+    }
+
+    template< typename U, typename T >
+    constexpr bool operator<(const strong_type< U, T > &a, const strong_type< U, T > &b) {
+        return a.ref() < b.ref();
+    }
 
     template< typename U, typename T >
     constexpr auto operator<=>(const strong_type< U, T > &a, const U &b) {
