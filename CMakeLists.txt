@@ -212,7 +212,6 @@ if (GAP_INSTALL)
   install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/compiler_warnings.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg_setup.cmake"
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg_setup.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sanitizers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/static_analyzers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_settings.cmake"
