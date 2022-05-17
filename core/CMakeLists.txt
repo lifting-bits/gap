@@ -14,16 +14,14 @@ add_headers(core GAP_CORE_HEADERS
 	type_traits.hpp
 )
 
-add_library(gap-core
-	src/source_location.cpp
-)
+add_library(gap-core INTERFACE)
 
 add_library(gap::gap-core ALIAS gap-core)
 
-target_compile_features(gap-core PRIVATE cxx_std_20)
+target_compile_features(gap-core INTERFACE cxx_std_20)
 
 target_include_directories(gap-core
-	PUBLIC
+	INTERFACE
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
