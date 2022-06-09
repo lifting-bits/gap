@@ -25,6 +25,8 @@ namespace gap
     {
         template< bool thread_safe >
         struct union_find_t {
+            static constexpr bool is_thread_safe = thread_safe;
+
             struct element_type_t {
                 constexpr element_type_t() = default;
 
@@ -53,10 +55,8 @@ namespace gap
                 rank_type rank    = rank_type(0);
             };
 
-            static consteval bool is_thread_safe() { return thread_safe; }
-
-            using element_type
-                = std::conditional_t< thread_safe, std::atomic< element_type_t >, element_type_t >;
+            using element_type = std::
+                conditional_t< is_thread_safe, std::atomic< element_type_t >, element_type_t >;
 
             static_assert(sizeof(element_type) == 8);
 
@@ -65,7 +65,7 @@ namespace gap
                 std::iota(std::begin(_data), std::end(_data), element_type_t(union_type(0)));
             }
 
-            [[nodiscard]] union_type find(union_type idx) requires(thread_safe) {
+            [[nodiscard]] union_type find(union_type idx) requires(is_thread_safe) {
                 while (idx != parent(idx)) {
                     auto value  = at(idx).load();
                     auto update = element_type_t(parent(value), rank(value));
@@ -76,7 +76,7 @@ namespace gap
                 return idx;
             }
 
-            [[nodiscard]] union_type find(union_type idx) requires(!thread_safe) {
+            [[nodiscard]] union_type find(union_type idx) requires(!is_thread_safe) {
                 while (idx != parent(idx)) {
                     auto &par = parent(idx);
                     par       = parent(par);
@@ -89,7 +89,7 @@ namespace gap
             [[nodiscard]] std::uint32_t size() const { return std::uint32_t(_data.size()); }
 
             [[nodiscard]] rank_type rank(const element_type &elem) const {
-                if constexpr (thread_safe)
+                if constexpr (is_thread_safe)
                     return elem.load().rank;
                 else
                     return elem.rank;
@@ -98,7 +98,7 @@ namespace gap
             [[nodiscard]] rank_type rank(union_type idx) const { return rank(at(idx)); }
 
             [[nodiscard]] const union_type &parent(const element_type &elem) const {
-                if constexpr (thread_safe)
+                if constexpr (is_thread_safe)
                     return elem.load().parent;
                 else
                     return elem.parent;
@@ -144,17 +144,17 @@ namespace gap
         template< typename base >
         struct resizable
             : base
-            , resizable_base< base::thread_safe() > {
+            , resizable_base< base::is_thread_safe > {
             using base::_data;
 
             // TODO(heno) return new set
-            auto &make_new_set() requires(base::thread_safe()) {
+            auto &make_new_set() requires(base::is_thread_safe) {
                 using base::size;
                 std::lock_guard guard(this->_mutex);
                 return _data.emplace_back(union_type(size()));
             }
 
-            auto &make_new_set() requires(!base::thread_safe()) {
+            auto &make_new_set() requires(!base::is_thread_safe) {
                 using base::size;
                 return _data.emplace_back(union_type(size()));
             }
@@ -175,8 +175,8 @@ namespace gap
             using base::_data;
             using base::_elements;
 
-            union_type make_set(element_t &&elem) requires(base::thread_safe()) {
-                // TODO(heno) make thread_safe
+            union_type make_set(element_t &&elem) requires(base::is_thread_safe) {
+                // TODO(heno) make is_thread_safe
                 _elements.push_back(std::forward< element_t >(elem));
                 make_new_set();
                 assert(_elements.size() == _data.size());
