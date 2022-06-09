@@ -3,6 +3,8 @@
 #include <doctest/doctest.h>
 #include <gap/core/generator.hpp>
 
+#ifdef GAP_ENABLE_COROUTINES
+
 namespace gap::test
 {
     generator< int > iota() {
@@ -22,3 +24,5 @@ namespace gap::test
     }
 
 } // namespace gap::test
+
+#endif
