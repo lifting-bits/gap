@@ -60,7 +60,7 @@ namespace gap
 
             static_assert(sizeof(element_type) == 8);
 
-            explicit union_find_t(std::size_t size)
+            explicit union_find_t(std::size_t size = 0)
                 : _data(size) {
                 std::iota(std::begin(_data), std::end(_data), element_type_t(union_type(0)));
             }
@@ -78,8 +78,7 @@ namespace gap
 
             [[nodiscard]] union_type find(union_type idx) requires(!is_thread_safe) {
                 while (idx != parent(idx)) {
-                    auto &par = parent(idx);
-                    par       = parent(par);
+                    auto &par = parent(parent(idx));
                     idx       = par;
                 }
 
@@ -136,7 +135,7 @@ namespace gap
 
         template< bool thread_safe >
         struct resizable_base
-            : std::conditional<
+            : std::conditional_t<
                   thread_safe,
                   thread_safe_resizable_base,
                   non_thread_safe_resizable_base > {};
@@ -147,16 +146,22 @@ namespace gap
             , resizable_base< base::is_thread_safe > {
             using base::_data;
 
-            // TODO(heno) return new set
-            auto &make_new_set() requires(base::is_thread_safe) {
-                using base::size;
+            using element_type_t = typename base::element_type_t;
+
+            union_type make_new_set() requires(base::is_thread_safe) {
                 std::lock_guard guard(this->_mutex);
-                return _data.emplace_back(union_type(size()));
+                return make_new_set_impl();
             }
 
-            auto &make_new_set() requires(!base::is_thread_safe) {
-                using base::size;
-                return _data.emplace_back(union_type(size()));
+            union_type &make_new_set() requires(!base::is_thread_safe) {
+                return make_new_set_impl();
+            }
+
+          private:
+            union_type make_new_set_impl() {
+                union_type value{ base::size() };
+                _data.emplace_back(element_type_t{ value });
+                return value;
             }
         };
 
@@ -177,12 +182,15 @@ namespace gap
 
             union_type make_set(element_t &&elem) requires(base::is_thread_safe) {
                 // TODO(heno) make is_thread_safe
-                _elements.push_back(std::forward< element_t >(elem));
-                make_new_set();
-                assert(_elements.size() == _data.size());
+                return make_set_impl(std::forward< element_t >(elem));
             }
 
             union_type make_set(element_t &&elem) {
+                return make_set_impl(std::forward< element_t >(elem));
+            }
+
+          private:
+            union_type make_set_impl(element_t &&elem) {
                 _elements.push_back(std::forward< element_t >(elem));
                 make_new_set();
                 assert(_elements.size() == _data.size());
