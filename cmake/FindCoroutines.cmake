@@ -301,12 +301,12 @@ endif ()
 
 cmake_pop_check_state()
 
-set(COROUTINES_FOUND
+set(Coroutines_FOUND
     ${_found}
     CACHE BOOL "TRUE if we can compile and link a program using std::coroutines" FORCE
 )
 
-if (Coroutines_FIND_REQUIRED AND NOT COROUTINES_FOUND)
+if (Coroutines_FIND_REQUIRED AND NOT Coroutines_FOUND)
   message(
     FATAL_ERROR "Cannot compile simple program using std::coroutines."
   )
