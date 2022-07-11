@@ -77,7 +77,9 @@ include(static_analyzers)
 
 option(GAP_ENABLE_COROUTINES "Enable coroutines" ON)
 if (${GAP_ENABLE_COROUTINES})
-  add_compile_definitions(GAP_ENABLE_COROUTINES)
+  find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
+  target_compile_definitions(gap-settings INTERFACE GAP_ENABLE_COROUTINES)
+  target_link_libraries(gap-settings INTERFACE std::coroutines)
 endif()
 
 #
