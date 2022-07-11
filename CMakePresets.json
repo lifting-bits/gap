@@ -15,8 +15,7 @@
       "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
       "installDir": "~/opt/gap",
       "cacheVariables": {
-        "CMAKE_CONFIGURATION_TYPES": "Release;RelWithDebInfo;Debug",
-        "GAP_ENABLE_COROUTINES": "OFF"
+        "CMAKE_CONFIGURATION_TYPES": "Release;RelWithDebInfo;Debug"
       }
     },
     {
