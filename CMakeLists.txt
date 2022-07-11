@@ -76,6 +76,7 @@ enable_sanitizers(gap-settings)
 include(static_analyzers)
 
 option(GAP_ENABLE_COROUTINES "Enable coroutines" ON)
+
 if (${GAP_ENABLE_COROUTINES})
   find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
   target_compile_definitions(gap-settings INTERFACE GAP_ENABLE_COROUTINES)
