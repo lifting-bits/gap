@@ -1,7 +1,9 @@
 // Copyright (c) 2021-present, Trail of Bits, Inc.
 
-#include <doctest/doctest.h>
-#include <gap/core/generator.hpp>
+#ifdef GAP_ENABLE_COROUTINES
+
+    #include <doctest/doctest.h>
+    #include <gap/core/generator.hpp>
 
 namespace gap::test
 {
@@ -22,3 +24,5 @@ namespace gap::test
     }
 
 } // namespace gap::test
+
+#endif // GAP_ENABLE_COROUTINES
