@@ -75,4 +75,14 @@ namespace gap
         a == b;
     };
 
+    template< typename From, typename To >
+    concept convertible_to = std::is_convertible_v< From, To > && requires {
+        static_cast< To >(std::declval< From >());
+    };
+
+    template< typename Derived, typename Base >
+    concept derived_from =
+        std::is_base_of_v< Base, Derived > &&
+        std::is_convertible_v< const volatile Derived*, const volatile Base* >;
+
 } // namespace gap
