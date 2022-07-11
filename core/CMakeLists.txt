@@ -32,5 +32,5 @@ target_link_libraries(gap-core INTERFACE gap-settings)
 
 if (GAP_ENABLE_COROUTINES)
 	find_package(Coroutines COMPONENTS Experimental Final REQUIRED)
-	target_link_libraries(gap-core PUBLIC std::coroutines)
+	target_link_libraries(gap-core INTERFACE std::coroutines)
 endif()
