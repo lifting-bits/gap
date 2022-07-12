@@ -113,9 +113,9 @@ set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
 #
 # testing support
 #
-option(ENABLE_TESTING "Enable Test Builds" ON)
+option(GAP_ENABLE_TESTING "Enable Test Builds" ON)
 
-if (ENABLE_TESTING)
+if (GAP_ENABLE_TESTING)
   include(CTest)
   enable_testing()
   add_subdirectory(test)
