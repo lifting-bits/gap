@@ -2,7 +2,7 @@
 
 # setups available compiler warnings
 function (set_project_warnings project)
-  option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
+  option(GAP_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 
   set(clang_warnings
       -Wall
@@ -24,7 +24,7 @@ function (set_project_warnings project)
       -Wno-gnu-zero-variadic-macro-arguments
   )
 
-  if (WARNINGS_AS_ERRORS)
+  if (GAP_WARNINGS_AS_ERRORS)
     set(clang_warnings ${clang_warnings} -Werror)
   endif ()
 
