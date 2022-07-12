@@ -113,7 +113,7 @@ set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
 #
 # testing support
 #
-option(GAP_ENABLE_TESTING "Enable Test Builds" ON)
+option(GAP_ENABLE_TESTING "Enable GAP Test Builds" ON)
 
 if (GAP_ENABLE_TESTING)
   include(CTest)
@@ -124,9 +124,9 @@ endif ()
 #
 # examples
 #
-option(ENABLE_EXAMPLES "Enable Examples Builds" ON)
+option(GAP_ENABLE_EXAMPLES "Enable GAP Examples Builds" ON)
 
-if (ENABLE_EXAMPLES)
+if (GAP_ENABLE_EXAMPLES)
   add_subdirectory(examples)
 endif ()
 
