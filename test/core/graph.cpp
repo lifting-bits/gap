@@ -116,6 +116,7 @@ namespace gap::test
             std::make_shared< node_t >('B'),
             std::make_shared< node_t >('C'),
             std::make_shared< node_t >('D'),
+            std::make_shared< node_t >('E')
         }};
 
         auto &nodes = g._nodes;
@@ -127,10 +128,21 @@ namespace gap::test
 
         constexpr auto yield_on_close = graph::yield_node::on_close;
 
-        std::vector topo = { 'D', 'B', 'C', 'A' };
-        auto expected = std::begin(topo);
-        for (auto n : graph::dfs< yield_on_close >(nodes[0])) {
-            CHECK(n->value == *(expected++));
+        SUBCASE("DFS from single root") {
+            std::vector topo = { 'D', 'B', 'C', 'A' };
+            auto expected = std::begin(topo);
+            for (auto n : graph::dfs< yield_on_close >(nodes[0])) {
+                CHECK(n->value == *(expected++));
+            }
+        }
+
+        SUBCASE("DFS over full graph") {
+            std::vector topo = { 'D', 'B', 'C', 'A', 'E' };
+            auto expected = std::begin(topo);
+            for (auto n : graph::dfs< yield_on_close >(g)) {
+                CHECK(n->value == *(expected++));
+            }
+
         }
     }
 
