@@ -86,6 +86,18 @@ namespace gap::graph
 
     } // namespace detail
 
+    template< yield_node when, graph_like graph_type >
+    generator< typename graph_type::node_pointer > dfs(const graph_type &graph) {
+        detail::seen_set< typename graph_type::node_pointer > seen;
+        for (auto root : graph.nodes()) {
+            if (!seen.count(root)) {
+                for (auto node : detail::dfs< when >(root, seen)) {
+                    co_yield node;
+                }
+            }
+        }
+    }
+
     template< yield_node when, typename node_pointer >
     requires node_like< typename node_pointer::element_type >
     generator< node_pointer > dfs(node_pointer root) {
