@@ -43,9 +43,56 @@ namespace gap::graph
         { g.edges() } -> ranges::value_range< typename graph_type::edge_type >;
     };
 
-        { g.nodes() } -> nodes_range;
-        { g.edges() } -> edges_range;
+    enum class yield_node
+    {
+        never, on_open, on_close
     };
+
+    namespace detail
+    {
+        template< typename node_pointer >
+        using seen_set = std::unordered_set< node_pointer >;
+
+        template< yield_node when, typename node_pointer >
+        requires node_like< typename node_pointer::element_type >
+        generator< node_pointer > dfs(node_pointer root, seen_set< node_pointer >& seen) {
+            seen.insert(root);
+
+            if constexpr (when == yield_node::on_open) {
+                co_yield root;
+            }
+
+            for (auto child : root->children()) {
+                if (!seen.count(child)) {
+                    for (auto succ : dfs< when >(child, seen)) {
+                        co_yield succ;
+                    }
+                }
+            }
+
+            if constexpr (when == yield_node::on_close) {
+                co_yield root;
+            };
+        }
+
+        template< yield_node when, typename node_pointer >
+        requires node_like< typename node_pointer::element_type >
+        generator< node_pointer > dfs(node_pointer root) {
+            seen_set< node_pointer > seen;
+            for (auto node : dfs< when >(root, seen)) {
+                co_yield node;
+            }
+        }
+
+    } // namespace detail
+
+    template< yield_node when, typename node_pointer >
+    requires node_like< typename node_pointer::element_type >
+    generator< node_pointer > dfs(node_pointer root) {
+        for (auto node : detail::dfs< when >(root)) {
+            co_yield node;
+        }
+    }
 
 } // namespace gap::graph
 
