@@ -4,6 +4,7 @@ add_headers(core GAP_CORE_HEADERS
 	concepts.hpp
 	config.hpp
 	coroutine.hpp
+	graph.hpp
 	generator.hpp
 	overloads.hpp
 	parser.hpp
