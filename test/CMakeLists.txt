@@ -1,6 +1,7 @@
 # Copyright 2021-present, Trail of Bits, Inc. All rights reserved.
 
 find_package(doctest CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 add_executable(test-gap
   main.cpp
@@ -8,6 +9,7 @@ add_executable(test-gap
   core/concepts.cpp
   core/benchmark.cpp
   core/generator.cpp
+  core/graph.cpp
   core/parser.cpp
   core/ranges.cpp
   core/strong_type.cpp
@@ -21,6 +23,7 @@ target_link_libraries(test-gap
     gap-settings
     gap-core
     doctest::doctest
+    spdlog::spdlog
 )
 
 target_include_directories(test-gap PUBLIC ${DOCTEST_INCLUDE_DIR})
