@@ -131,6 +131,8 @@ namespace gap
         using promise_type     = detail::promise_type< T >;
         using coroutine_handle = detail::coroutine_handle< T >;
 
+        using value_type       = typename promise_type::reference_type;
+
         generator(generator&& other) noexcept
             : _coroutine(other._coroutine) {
             other._coroutine = nullptr;
