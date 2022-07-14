@@ -17,7 +17,7 @@ namespace gap::graph
     //
     template< typename node_type >
     concept node_like = requires(node_type n) {
-        { n.children() } -> ranges::value_range< typename node_type::node_pointer >;
+        { n.children() } -> ranges::value_range< typename node_type::child_type >;
     };
 
     //

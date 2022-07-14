@@ -14,8 +14,9 @@ namespace gap::test
     {
         struct node_t {
             using node_pointer = std::shared_ptr< node_t >;
+            using child_type   = node_pointer;
 
-            generator< node_pointer > children() const;
+            generator< child_type > children() const;
         };
 
         static_assert(graph::node_like< node_t >);
@@ -56,18 +57,19 @@ namespace gap::test
     //
     struct node_t {
         using node_pointer = std::shared_ptr< node_t >;
+        using child_type   = node_pointer;
 
         explicit node_t(char value)
             : value(value) {}
 
-        generator< node_pointer > children() const {
+        generator< child_type > children() const {
             for (auto ch : _children)
                 co_yield ch;
         }
 
         char value;
 
-        std::vector< node_pointer > _children;
+        std::vector< child_type > _children;
     };
 
     static_assert(graph::node_like< node_t >);
@@ -113,8 +115,10 @@ namespace gap::test
 
     TEST_CASE("DFS") {
         graph_t g{
-            {std::make_shared< node_t >('A'), std::make_shared< node_t >('B'),
-             std::make_shared< node_t >('C'), std::make_shared< node_t >('D'),
+            {std::make_shared< node_t >('A'),
+             std::make_shared< node_t >('B'),
+             std::make_shared< node_t >('C'),
+             std::make_shared< node_t >('D'),
              std::make_shared< node_t >('E')}
         };
 
