@@ -48,11 +48,11 @@ namespace gap::graph
         never, on_open, on_close
     };
 
+    template< typename node_pointer >
+    using seen_set = std::unordered_set< node_pointer >;
+
     namespace detail
     {
-        template< typename node_pointer >
-        using seen_set = std::unordered_set< node_pointer >;
-
         template< yield_node when, typename node_pointer >
         requires node_like< typename node_pointer::element_type >
         generator< node_pointer > dfs(node_pointer root, seen_set< node_pointer >& seen) {
@@ -86,9 +86,9 @@ namespace gap::graph
 
     } // namespace detail
 
-    template< yield_node when, graph_like graph_type >
-    generator< typename graph_type::node_pointer > dfs(const graph_type &graph) {
-        detail::seen_set< typename graph_type::node_pointer > seen;
+    template< yield_node when, graph_like graph_type, typename node_pointer = typename graph_type::node_pointer >
+    generator< node_pointer > dfs(const graph_type &graph) {
+        seen_set< node_pointer > seen;
         for (auto root : graph.nodes()) {
             if (!seen.count(root)) {
                 for (auto node : detail::dfs< when >(root, seen)) {
@@ -101,10 +101,15 @@ namespace gap::graph
     template< yield_node when, typename node_pointer >
     requires node_like< typename node_pointer::element_type >
     generator< node_pointer > dfs(node_pointer root) {
-        for (auto node : detail::dfs< when >(root)) {
-            co_yield node;
-        }
+        return detail::dfs< when >(root);
     }
+
+    template< typename node_pointer >
+    requires node_like< typename node_pointer::element_type >
+    generator< node_pointer > toposort(node_pointer root) {
+        return dfs< yield_node::on_close >(root);
+    }
+
 
 } // namespace gap::graph
 
