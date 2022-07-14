@@ -1,6 +1,6 @@
 # Copyright 2021-present, Trail of Bits, Inc. All rights reserved.
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 
 # Fix behavior of CMAKE_CXX_STANDARD when targeting macOS.
 if (POLICY CMP0025)
@@ -17,10 +17,6 @@ project(
   DESCRIPTION "A utility library to bridge llvm and mlir gaps"
   HOMEPAGE_URL "https://github.com/lifting-bits/gap"
 )
-
-# Globally set the required C++ standard
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(GNUInstallDirs)
 
