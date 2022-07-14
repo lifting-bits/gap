@@ -6,6 +6,9 @@ include(CMakeFindDependencyMacro)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
 if (@GAP_ENABLE_COROUTINES@)
+    set( CMAKE_CXX_STANDARD 20 )
+    set( CMAKE_CXX_EXTENSIONS OFF )
+
     find_dependency(Coroutines COMPONENTS Experimental Final REQUIRED)
 endif()
 
