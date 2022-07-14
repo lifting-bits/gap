@@ -18,6 +18,10 @@ project(
   HOMEPAGE_URL "https://github.com/lifting-bits/gap"
 )
 
+# Globally set the required C++ standard
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(GNUInstallDirs)
 
 # check if gap is being used directly or via add_subdirectory,
