@@ -57,7 +57,8 @@ namespace gap::test
     struct node_t {
         using node_pointer = std::shared_ptr< node_t >;
 
-        explicit node_t(char value) : value(value) {}
+        explicit node_t(char value)
+            : value(value) {}
 
         generator< node_pointer > children() const {
             for (auto ch : _children)
@@ -98,7 +99,7 @@ namespace gap::test
         generator< edge_type > edges() const {
             for (auto node : _nodes) {
                 for (auto child : node->children()) {
-                    co_yield edge_type{node, child};
+                    co_yield edge_type{ node, child };
                 }
             }
         }
@@ -111,26 +112,24 @@ namespace gap::test
     using node_ptr = node_t::node_pointer;
 
     TEST_CASE("DFS") {
-        graph_t g {{
-            std::make_shared< node_t >('A'),
-            std::make_shared< node_t >('B'),
-            std::make_shared< node_t >('C'),
-            std::make_shared< node_t >('D'),
-            std::make_shared< node_t >('E')
-        }};
+        graph_t g{
+            {std::make_shared< node_t >('A'), std::make_shared< node_t >('B'),
+             std::make_shared< node_t >('C'), std::make_shared< node_t >('D'),
+             std::make_shared< node_t >('E')}
+        };
 
         auto &nodes = g._nodes;
 
-        nodes[0]->_children = {nodes[1], nodes[2]};
-        nodes[1]->_children = {nodes[3]};
-        nodes[2]->_children = {nodes[3]};
-        nodes[3]->_children = {nodes[0]};
+        nodes[0]->_children = { nodes[1], nodes[2] };
+        nodes[1]->_children = { nodes[3] };
+        nodes[2]->_children = { nodes[3] };
+        nodes[3]->_children = { nodes[0] };
 
         constexpr auto yield_on_close = graph::yield_node::on_close;
 
         SUBCASE("DFS from single root") {
             std::vector topo = { 'D', 'B', 'C', 'A' };
-            auto expected = std::begin(topo);
+            auto expected    = std::begin(topo);
             for (auto n : graph::dfs< yield_on_close >(nodes[0])) {
                 CHECK(n->value == *(expected++));
             }
@@ -138,11 +137,18 @@ namespace gap::test
 
         SUBCASE("DFS over full graph") {
             std::vector topo = { 'D', 'B', 'C', 'A', 'E' };
-            auto expected = std::begin(topo);
+            auto expected    = std::begin(topo);
             for (auto n : graph::dfs< yield_on_close >(g)) {
                 CHECK(n->value == *(expected++));
             }
+        }
 
+        SUBCASE("toposort from single root") {
+            std::vector topo = { 'D', 'B', 'C', 'A' };
+            auto expected    = std::begin(topo);
+            for (auto n : graph::toposort(nodes[0])) {
+                CHECK(n->value == *(expected++));
+            }
         }
     }
 
