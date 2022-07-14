@@ -50,9 +50,9 @@ Imported Targets
     be defined.
 
     .. note::
-        This target has ``cxx_std_17`` as an ``INTERFACE``
+        This target has ``cxx_std_20`` as an ``INTERFACE``
         :ref:`compile language standard feature <req-lang-standards>`. Linking
-        to this target will automatically enable C++17 if no later standard
+        to this target will automatically enable C++20 if no later standard
         version is already required on the linking target.
 
 
@@ -287,6 +287,7 @@ if (CXX_COROUTINES_HAVE_COROUTINES)
 
   if (COROUTINES_CAN_LINK)
     add_library(std::coroutines INTERFACE IMPORTED)
+    target_compile_features(std::coroutines INTERFACE cxx_std_20)
     set(_found TRUE)
 
     if (CXX_COROUTINES_NO_AWAIT_NEEDED)
