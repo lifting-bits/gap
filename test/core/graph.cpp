@@ -31,8 +31,11 @@ namespace gap::test
             using node_type    = node_t;
             using node_pointer = node_type::node_pointer;
 
-            node_pointer source() const { return src; }
-            node_pointer target() const { return dst; }
+            using source_type  = node_pointer;
+            using target_type  = node_pointer;
+
+            source_type source() const { return src; }
+            target_type target() const { return dst; }
 
           private:
             node_pointer src, dst;
@@ -79,8 +82,11 @@ namespace gap::test
         using node_type    = node_t_;
         using node_pointer = typename node_type::node_pointer;
 
-        node_pointer source() const { return _src; }
-        node_pointer target() const { return _dst; }
+        using source_type  = node_pointer;
+        using target_type  = node_pointer;
+
+        source_type source() const { return _src; }
+        target_type target() const { return _dst; }
 
         node_pointer _src, _dst;
     };

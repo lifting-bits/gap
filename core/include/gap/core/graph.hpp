@@ -25,10 +25,11 @@ namespace gap::graph
     //
     template< typename edge_type >
     concept edge_like = requires(edge_type&& e) {
-        node_like< typename edge_type::node_type >;
+        node_like< typename edge_type::source_type >;
+        node_like< typename edge_type::target_type >;
 
-        { e.source() } -> std::same_as< typename edge_type::node_pointer >;
-        { e.target() } -> std::same_as< typename edge_type::node_pointer >;
+        { e.source() } -> std::same_as< typename edge_type::source_type >;
+        { e.target() } -> std::same_as< typename edge_type::target_type >;
     };
 
     //
