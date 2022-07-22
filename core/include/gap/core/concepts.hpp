@@ -46,6 +46,9 @@ namespace gap
         typename detail::with_ref< T >;
     };
 
+    template< typename T, typename... Args >
+    concept constructible_from = std::destructible< T > && std::is_constructible_v< T, Args... >;
+
     /* common concepts */
     template< typename T >
     concept printable = requires(std::ostream& os, T t) {
@@ -73,6 +76,11 @@ namespace gap
     template< typename A, typename B >
     concept comparable = requires(const A& a, const B& b) {
         a == b;
+    };
+
+    template<typename T>
+    concept hashable = requires(T a) {
+        { std::hash< std::decay_t< T > >{}(a) } -> std::convertible_to<std::size_t>;
     };
 
 } // namespace gap

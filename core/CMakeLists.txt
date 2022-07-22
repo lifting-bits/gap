@@ -6,6 +6,7 @@ add_headers(core GAP_CORE_HEADERS
 	coroutine.hpp
 	graph.hpp
 	generator.hpp
+	hash.hpp
 	overloads.hpp
 	parser.hpp
 	ranges.hpp

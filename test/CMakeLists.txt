@@ -10,6 +10,7 @@ add_executable(test-gap
   core/benchmark.cpp
   core/generator.cpp
   core/graph.cpp
+  core/hash.cpp
   core/parser.cpp
   core/ranges.cpp
   core/strong_type.cpp
