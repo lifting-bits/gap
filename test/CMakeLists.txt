@@ -11,6 +11,7 @@ add_executable(test-gap
   core/generator.cpp
   core/graph.cpp
   core/hash.cpp
+  core/memoize.cpp
   core/parser.cpp
   core/ranges.cpp
   core/strong_type.cpp
