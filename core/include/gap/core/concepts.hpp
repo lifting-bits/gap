@@ -78,9 +78,12 @@ namespace gap
         a == b;
     };
 
+    template< typename T, typename U >
+    concept convertible_to = std::is_convertible_v< T, U >;
+
     template<typename T>
     concept hashable = requires(T a) {
-        { std::hash< std::decay_t< T > >{}(a) } -> std::convertible_to<std::size_t>;
+        { std::hash< std::decay_t< T > >{}(a) } -> convertible_to< std::size_t >;
     };
 
 } // namespace gap

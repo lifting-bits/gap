@@ -27,7 +27,7 @@ namespace gap
     };
 
     template< typename T >
-    concept hash_code_like = std::convertible_to< T, hash_code >;
+    concept hash_code_like = convertible_to< T, hash_code >;
 
     namespace detail
     {

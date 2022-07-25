@@ -30,7 +30,7 @@ namespace gap::ranges
 
     template< typename R, typename V >
     concept value_range = range< R >
-        && std::convertible_to< typename R::value_type, V >;
+        && convertible_to< typename R::value_type, V >;
 
     constexpr auto accumulate(range auto r, auto init) {
         return std::accumulate(r.begin(), r.end(), init);
