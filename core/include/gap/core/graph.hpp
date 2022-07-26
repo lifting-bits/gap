@@ -7,7 +7,6 @@
     #include <gap/core/generator.hpp>
     #include <gap/core/ranges.hpp>
 
-    #include <ranges>
     #include <unordered_set>
 
 namespace gap::graph
@@ -110,7 +109,6 @@ namespace gap::graph
     generator< node_pointer > toposort(node_pointer root) {
         return dfs< yield_node::on_close >(root);
     }
-
 
 } // namespace gap::graph
 
