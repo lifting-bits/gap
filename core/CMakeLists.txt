@@ -7,6 +7,7 @@ add_headers(core GAP_CORE_HEADERS
 	graph.hpp
 	generator.hpp
 	hash.hpp
+	memoize.hpp
 	overloads.hpp
 	parser.hpp
 	ranges.hpp
