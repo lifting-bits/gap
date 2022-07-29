@@ -19,10 +19,9 @@ namespace gap::trait
     inline constexpr auto type = type_wrapper< T >{};
 
     template< typename T >
-    constexpr auto typeof(T &&) {
+    constexpr auto type_of(T &&) {
         return type< T >;
     }
-
 
     namespace detail
     {
@@ -100,9 +99,9 @@ namespace gap::trait
         template< typename T, typename U >
         constexpr bool check(T &&a, U &&b) {
             if constexpr (type< T > == type< U >) {
-                return typeof(a) == typeof(b);
+                return type_of(a) == type_of(b);
             } else {
-                return typeof(a) != typeof(b);
+                return type_of(a) != type_of(b);
             }
         }
 
