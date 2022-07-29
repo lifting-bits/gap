@@ -4,6 +4,7 @@
 
 #include <gap/core/concepts.hpp>
 #include <gap/core/hash.hpp>
+#include <gap/core/type_traits.hpp>
 
 #include <tuple>
 #include <unordered_map>
@@ -13,68 +14,6 @@ namespace gap
 {
     namespace detail
     {
-        template< typename T, typename enable_t = void >
-        struct function_signature;
-
-        template< typename T >
-        struct function_signature< T, std::enable_if_t< std::is_class_v< std::remove_cvref_t< T > > > >
-            : function_signature< decltype(&std::remove_cvref_t< T >::operator()) >
-        {};
-
-        template< typename T, typename result_t, typename... args_t >
-        struct function_signature< result_t (T::*)(args_t...) > {
-            using type = result_t(args_t...);
-        };
-
-        template< typename T, typename result_t, typename... args_t >
-        struct function_signature< result_t (T::*)(args_t...) const > {
-            using type = result_t(args_t...);
-        };
-
-        template< typename result_t, typename... args_t >
-        struct function_signature< result_t(args_t...) > {
-            using type = result_t(args_t...);
-        };
-
-        template< typename result_t, typename... args_t >
-        struct function_signature< result_t (&)(args_t...) > {
-            using type = result_t(args_t...);
-        };
-
-        template< typename result_t, typename... args_t >
-         struct function_signature< result_t (*)(args_t...) > {
-            using type = result_t(args_t...);
-        };
-
-        template< typename T >
-        using function_signature_t = typename function_signature< T >::type;
-
-        template< typename T >
-        struct drop_first_arg;
-
-        template< typename result_t, typename first_t, typename... args_t >
-        struct drop_first_arg< result_t(first_t, args_t...) > {
-            using type = result_t(args_t...);
-        };
-
-        struct dummy {};
-
-        template< typename T, typename result_t = dummy, typename enable_t = void >
-        struct recursive_function_signature;
-
-        template< typename T, typename result_t >
-        struct recursive_function_signature<
-            T,
-            result_t,
-            std::enable_if_t< std::is_class_v< std::remove_cvref_t< T > > > >
-        {
-            using type = typename drop_first_arg< function_signature_t<
-                decltype(&std::remove_cvref_t< T >::template operator()< result_t (*)(...) >) > >::type;
-        };
-
-        template< typename... T >
-        using recursive_function_signature_t = typename recursive_function_signature< T... >::type;
-
         template< typename T, typename U >
         inline constexpr bool is_same_base
             = std::is_same_v< std::remove_cvref_t< T >, std::remove_cvref_t< U > >;
@@ -147,7 +86,7 @@ namespace gap
 
     template< typename function_t >
     inline auto memoize(function_t &&fn) {
-        return memoizer< detail::function_signature_t< function_t >, function_t >(
+        return memoizer< trait::function_signature_t< function_t >, function_t >(
             std::forward< function_t >(fn)
         );
     }
@@ -157,7 +96,7 @@ namespace gap
         if constexpr (std::is_function_v< signature >) {
             return memoizer< signature, function_t, true >(std::forward< function_t >(fn));
         } else {
-            using rec_sig = detail::recursive_function_signature_t< function_t, signature >;
+            using rec_sig = trait::recursive_function_signature_t< function_t, signature >;
             return memoizer< rec_sig, function_t, true >(std::forward< function_t >(fn));
         }
     }
@@ -165,7 +104,7 @@ namespace gap
     template< typename function_t >
     inline auto recursive_memoize(function_t &&fn) {
         return memoizer<
-            detail::recursive_function_signature_t< function_t >, function_t, true >(
+            trait::recursive_function_signature_t< function_t >, function_t, true >(
             std::forward< function_t >(fn)
         );
     }
