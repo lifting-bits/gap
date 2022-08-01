@@ -4,7 +4,7 @@
 
 #ifdef GAP_ENABLE_COROUTINES
 
-    #include <gap/core/generator.hpp>
+    #include <gap/core/recursive_generator.hpp>
     #include <gap/core/ranges.hpp>
 
     #include <unordered_set>
@@ -55,7 +55,7 @@ namespace gap::graph
     {
         template< yield_node when, typename node_pointer >
         requires node_like< typename node_pointer::element_type >
-        generator< node_pointer > dfs(node_pointer root, seen_set< node_pointer >& seen) {
+        recursive_generator< node_pointer > dfs(node_pointer root, seen_set< node_pointer >& seen) {
             seen.insert(root);
 
             if constexpr (when == yield_node::on_open) {
@@ -64,9 +64,7 @@ namespace gap::graph
 
             for (auto child : root->children()) {
                 if (!seen.count(child)) {
-                    for (auto succ : dfs< when >(child, seen)) {
-                        co_yield succ;
-                    }
+                    co_yield dfs< when >(child, seen);
                 }
             }
 
@@ -77,36 +75,32 @@ namespace gap::graph
 
         template< yield_node when, typename node_pointer >
         requires node_like< typename node_pointer::element_type >
-        generator< node_pointer > dfs(node_pointer root) {
+        recursive_generator< node_pointer > dfs(node_pointer root) {
             seen_set< node_pointer > seen;
-            for (auto node : dfs< when >(root, seen)) {
-                co_yield node;
-            }
+            co_yield dfs< when >(root, seen);
         }
 
     } // namespace detail
 
     template< yield_node when, graph_like graph_type, typename node_pointer = typename graph_type::node_pointer >
-    generator< node_pointer > dfs(const graph_type &graph) {
+    recursive_generator< node_pointer > dfs(const graph_type &graph) {
         seen_set< node_pointer > seen;
         for (auto root : graph.nodes()) {
             if (!seen.count(root)) {
-                for (auto node : detail::dfs< when >(root, seen)) {
-                    co_yield node;
-                }
+                co_yield detail::dfs< when >(root, seen);
             }
         }
     }
 
     template< yield_node when, typename node_pointer >
     requires node_like< typename node_pointer::element_type >
-    generator< node_pointer > dfs(node_pointer root) {
+    recursive_generator< node_pointer > dfs(node_pointer root) {
         return detail::dfs< when >(root);
     }
 
     template< typename node_pointer >
     requires node_like< typename node_pointer::element_type >
-    generator< node_pointer > toposort(node_pointer root) {
+    recursive_generator< node_pointer > toposort(node_pointer root) {
         return dfs< yield_node::on_close >(root);
     }
 

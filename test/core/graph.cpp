@@ -162,6 +162,39 @@ namespace gap::test
         }
     }
 
+    TEST_CASE("DFS bigger") {
+        graph_t g{
+            {std::make_shared< node_t >('A'),
+             std::make_shared< node_t >('B'),
+             std::make_shared< node_t >('C'),
+             std::make_shared< node_t >('D'),
+             std::make_shared< node_t >('E'),
+             std::make_shared< node_t >('F'),
+             std::make_shared< node_t >('G'),
+             std::make_shared< node_t >('H'),
+            }
+        };
+
+        auto &nodes = g._nodes;
+
+        nodes[0]->_children = { nodes[1], nodes[2] };
+        nodes[1]->_children = { nodes[3] };
+        nodes[2]->_children = { nodes[3], nodes[4] };
+        nodes[3]->_children = { nodes[5] };
+        nodes[4]->_children = { nodes[5], nodes[7] };
+        nodes[5]->_children = { nodes[6], nodes[7] };
+
+        constexpr auto yield_on_close = graph::yield_node::on_close;
+
+        SUBCASE("DFS over full graph") {
+            std::vector topo = { 'G', 'H', 'F', 'D', 'B', 'E', 'C', 'A' };
+            auto expected    = std::begin(topo);
+            for (auto n : graph::dfs< yield_on_close >(g)) {
+                CHECK(n->value == *(expected++));
+            }
+        }
+    }
+
 } // namespace gap::test
 
 #endif // GAP_ENABLE_COROUTINES
