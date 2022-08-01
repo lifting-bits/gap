@@ -7,6 +7,7 @@
     #include "gap/core/coroutine.hpp"
     #include "gap/core/generator.hpp"
 
+    #include <cassert>
     #include <concepts>
     #include <cstddef>
     #include <exception>
