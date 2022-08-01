@@ -15,6 +15,7 @@ add_executable(test-gap
   core/parser.cpp
   core/ranges.cpp
   core/strong_type.cpp
+  core/recursive_generator.cpp
   core/union_find.cpp
 )
 
