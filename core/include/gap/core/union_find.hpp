@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include <deque>
-#include <doctest/doctest.h>
 #include <gap/core/strong_type.hpp>
 #include <numeric>
 #include <utility>
