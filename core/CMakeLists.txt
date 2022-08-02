@@ -16,6 +16,7 @@ add_headers(core GAP_CORE_HEADERS
 	strong_type.hpp
 	fixed_string.hpp
 	type_traits.hpp
+	union_find.hpp
 )
 
 add_library(gap-core INTERFACE)
