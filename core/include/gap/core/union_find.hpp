@@ -96,14 +96,24 @@ namespace gap
 
             [[nodiscard]] rank_type rank(union_type idx) const { return rank(at(idx)); }
 
-            [[nodiscard]] const union_type &parent(const element_type &elem) const {
+            [[nodiscard]] const union_type &parent_impl(const element_type &elem) const {
                 if constexpr (thread_safe)
                     return elem.load().parent;
                 else
                     return elem.parent;
             }
 
-            [[nodiscard]] const union_type &parent(union_type idx) const { return parent(at(idx)); }
+            [[nodiscard]] const union_type &parent(union_type idx) const { return parent_impl(at(idx)); }
+            [[nodiscard]] const union_type &parent(element_type elem) const { return parent(elem.parent); }
+
+            union_type merge(union_type a, union_type b) noexcept requires(!thread_safe) {
+                assert(a == parent(a));
+                assert(b == parent(b));
+                assert(a != b);
+
+                at(b).parent = a;
+                return a;
+            }
 
             template< typename stream >
             friend auto operator<<(stream &os, const union_find_t &uf) -> decltype(os << "") {
@@ -117,6 +127,11 @@ namespace gap
             [[nodiscard]] inline const std::deque< element_type > &data() const { return _data; }
 
             [[nodiscard]] inline const element_type &at(union_type idx) const {
+                assert(size() > idx.ref());
+                return _data[idx.ref()];
+            }
+
+            [[nodiscard]] inline element_type &at(union_type idx) {
                 assert(size() > idx.ref());
                 return _data[idx.ref()];
             }
@@ -138,23 +153,26 @@ namespace gap
             : std::conditional<
                   thread_safe,
                   thread_safe_resizable_base,
-                  non_thread_safe_resizable_base > {};
+                  non_thread_safe_resizable_base >
+        {};
 
         template< typename base >
         struct resizable
             : base
-            , resizable_base< base::thread_safe() > {
+            , resizable_base< base::is_thread_safe() >
+        {
+            using base::base;
+
+            using base::size;
             using base::_data;
 
             // TODO(heno) return new set
-            auto &make_new_set() requires(base::thread_safe()) {
-                using base::size;
+            auto &make_new_set() requires(base::is_thread_safe()) {
                 std::lock_guard guard(this->_mutex);
                 return _data.emplace_back(union_type(size()));
             }
 
-            auto &make_new_set() requires(!base::thread_safe()) {
-                using base::size;
+            auto &make_new_set() requires(!base::is_thread_safe()) {
                 return _data.emplace_back(union_type(size()));
             }
         };
