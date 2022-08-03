@@ -27,8 +27,8 @@ namespace gap::graph
         node_like< typename edge_type::source_type >;
         node_like< typename edge_type::target_type >;
 
-        { e.source() } -> std::same_as< typename edge_type::source_type >;
-        { e.target() } -> std::same_as< typename edge_type::target_type >;
+        { e.source() } -> std::convertible_to< typename edge_type::source_type >;
+        { e.target() } -> std::convertible_to< typename edge_type::target_type >;
     };
 
     //
