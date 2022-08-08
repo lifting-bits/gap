@@ -50,6 +50,6 @@ jobs:
     - name: Run cmake
       uses: lukka/run-cmake@v10
       with:
-          configurePreset: 'ninja-multi-vcpkg-clang-12'
-          buildPreset: 'ninja-vcpkg-clang-12-deb'
-          testPreset: 'ninja-vcpkg-clang-12-deb'
+          configurePreset: 'ninja-multi-vcpkg'
+          buildPreset: 'ninja-vcpkg-deb'
+          testPreset: 'ninja-vcpkg-deb'
