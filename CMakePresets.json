@@ -17,26 +17,6 @@
       "cacheVariables": {
         "CMAKE_CONFIGURATION_TYPES": "Release;RelWithDebInfo;Debug"
       }
-    },
-    {
-      "name": "ninja-multi-vcpkg-clang-12",
-      "displayName": "Ninja Multi-Config Clang-12 Configure Settings",
-      "description": "Configure with vcpkg toolchain & clang-12",
-      "inherits": "ninja-multi-vcpkg",
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS": {
-          "type": "STRING",
-          "value": "-stdlib=libc++"
-        },
-        "CMAKE_EXE_LINKER_FLAGS": {
-          "type": "STRING",
-          "value": "-stdlib=libc++ -lc++abi"
-        }
-      },
-      "environment": {
-        "CC": "clang-12",
-        "CXX": "clang++-12"
-      }
     }
   ],
 
@@ -54,20 +34,6 @@
       "displayName": "Build ninja-multi-vcpkg-release",
       "description": "Build ninja-multi-vcpkg-release Configurations",
       "configuration": "Release"
-    },
-    {
-      "name": "ninja-vcpkg-clang-12-deb",
-      "configurePreset": "ninja-multi-vcpkg-clang-12",
-      "displayName": "Build ninja-vcpkg-clang-12-debug",
-      "description": "Build ninja-vcpkg-clang-12-debug Configurations",
-      "configuration": "Debug"
-    },
-    {
-      "name": "ninja-vcpkg-clang-12-rel",
-      "configurePreset": "ninja-multi-vcpkg-clang-12",
-      "displayName": "Build ninja-vcpkg-clang-12-debug",
-      "description": "Build ninja-vcpkg-clang-12-debug Configurations",
-      "configuration": "Release"
     }
   ],
 
@@ -78,12 +44,6 @@
       "output": {
         "verbosity": "verbose"
       },
-      "configuration": "Debug"
-    },
-    {
-      "name": "ninja-vcpkg-clang-12-deb",
-      "inherits": "ninja-vcpkg-deb",
-      "configurePreset": "ninja-multi-vcpkg-clang-12",
       "configuration": "Debug"
     }
   ]
