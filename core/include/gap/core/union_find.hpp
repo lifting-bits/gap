@@ -28,12 +28,11 @@ namespace gap
             struct element_type_t {
                 constexpr element_type_t() = default;
 
-                explicit constexpr element_type_t(union_type parent)
-                    : parent(parent) {}
+                explicit constexpr element_type_t(union_type p)
+                    : parent(p) {}
 
-                explicit constexpr element_type_t(union_type parent, rank_type rank)
-                    : parent(parent)
-                    , rank(rank) {}
+                explicit constexpr element_type_t(union_type p, rank_type r)
+                    : parent(p), rank(r) {}
 
                 friend constexpr auto operator<=>(const element_type_t &, const element_type_t &)
                     = default;

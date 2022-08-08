@@ -67,10 +67,10 @@ namespace gap::test
     }
 
     TEST_CASE("simple recursive yield") {
-        auto f = [](std::uint32_t n, auto& f) -> recursive_generator< const std::uint32_t > {
+        auto f = [](std::uint32_t n, auto& self) -> recursive_generator< const std::uint32_t > {
             co_yield n;
             if (n > 0) {
-                co_yield f(n - 1, f);
+                co_yield self(n - 1, self);
                 co_yield n;
             }
         };
