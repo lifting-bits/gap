@@ -31,9 +31,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y \
              gpg wget curl zip unzip tar git pkg-config \
-             clang-14 clang++-14 ninja-build libstdc++-12-dev \
-             clang-tidy cppcheck ccache build-essential \
-             libc6-dev doctest-dev
+             ninja-build clang-tidy cppcheck ccache build-essential \
+             doctest-dev
 
     - name: "Create directory '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}'"
       run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
@@ -50,9 +49,6 @@ jobs:
 
     - name: Run cmake
       uses: lukka/run-cmake@v10
-      env:
-        CC: clang-14
-        CXX: clang++-14
       with:
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-vcpkg-deb'

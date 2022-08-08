@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <cassert>
 #include <deque>
 #include <gap/core/strong_type.hpp>
