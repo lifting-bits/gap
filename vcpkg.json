@@ -3,7 +3,6 @@
     "version-string": "latest",
     "dependencies": [
       "fmt",
-      "doctest",
       "spdlog"
     ]
 }
