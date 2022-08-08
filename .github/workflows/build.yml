@@ -33,7 +33,7 @@ jobs:
              gpg wget curl zip unzip tar git pkg-config \
              clang-14 clang++-14 ninja-build libstdc++-12-dev \
              clang-tidy cppcheck ccache build-essential \
-             libc6-dev
+             libc6-dev doctest-dev
 
     - name: "Create directory '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}'"
       run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
