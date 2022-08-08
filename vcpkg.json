@@ -4,5 +4,13 @@
     "dependencies": [
       "fmt",
       "spdlog"
-    ]
+    ],
+    "features": {
+      "with-doctest": {
+        "description": "Use doctest package",
+        "dependencies": [
+          "doctest"
+        ]
+      }
+    }
 }
