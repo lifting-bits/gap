@@ -35,7 +35,7 @@ namespace gap
         using hash_type  = gap::hash< tuple_type >;
         using cache_type = std::unordered_map< tuple_type, result_type, hash_type >;
 
-        explicit memoizer(function_type &&fn) : fn(std::forward< function_type >(fn)) {}
+        explicit memoizer(function_type &&f) : fn(std::forward< function_type >(f)) {}
 
         template< typename... call_args_t >
         return_reference operator()(call_args_t &&...args) {
@@ -60,8 +60,8 @@ namespace gap
                 return res->second;
             } else {
                 if constexpr (recursive) {
-                    return cache_call([this] (auto && ...args) {
-                            return fn(*this, std::forward<decltype(args)>(args)...);
+                    return cache_call([this] (auto && ...as) {
+                            return fn(*this, std::forward<decltype(as)>(as)...);
                         }, std::move(tuple))->second;
                 } else {
                     return cache_call(fn, std::move(tuple))->second;
