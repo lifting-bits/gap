@@ -7,6 +7,14 @@
   },
   "configurePresets": [
     {
+      "name": "with-doctest",
+      "hidden": true,
+      "description": "Use doctest package",
+      "cacheVariables": {
+        "VCPKG_MANIFEST_FEATURES": "with-doctest"
+      }
+    },
+    {
       "name": "ninja-multi-vcpkg",
       "displayName": "Ninja Multi-Config Configure Settings",
       "description": "Configure with vcpkg toolchain",
@@ -17,6 +25,11 @@
       "cacheVariables": {
         "CMAKE_CONFIGURATION_TYPES": "Release;RelWithDebInfo;Debug"
       }
+    },
+    {
+      "name": "ninja-multi-vcpkg-doctest",
+      "displayName": "Ninja Multi-Config Configure Settings with doctest",
+      "inherits": [ "ninja-multi-vcpkg", "with-doctest" ]
     }
   ],
 
@@ -25,14 +38,24 @@
       "name": "ninja-vcpkg-deb",
       "configurePreset": "ninja-multi-vcpkg",
       "displayName": "Build ninja-multi-vcpkg-debug",
-      "description": "Build ninja-multi-vcpkg-debug Configurations",
       "configuration": "Debug"
     },
     {
       "name": "ninja-vcpkg-rel",
       "configurePreset": "ninja-multi-vcpkg",
       "displayName": "Build ninja-multi-vcpkg-release",
-      "description": "Build ninja-multi-vcpkg-release Configurations",
+      "configuration": "Release"
+    },
+    {
+      "name": "ninja-vcpkg-deb-doctest",
+      "configurePreset": "ninja-multi-vcpkg-doctest",
+      "displayName": "Build ninja-multi-vcpkg-debug-doctest",
+      "configuration": "Debug"
+    },
+    {
+      "name": "ninja-vcpkg-rel-doctest",
+      "configurePreset": "ninja-multi-vcpkg-doctest",
+      "displayName": "Build ninja-multi-vcpkg-release-doctest",
       "configuration": "Release"
     }
   ],
@@ -41,6 +64,14 @@
     {
       "name": "ninja-vcpkg-deb",
       "configurePreset": "ninja-multi-vcpkg",
+      "output": {
+        "verbosity": "verbose"
+      },
+      "configuration": "Debug"
+    },
+    {
+      "name": "ninja-vcpkg-deb-doctest",
+      "configurePreset": "ninja-multi-vcpkg-doctest",
       "output": {
         "verbosity": "verbose"
       },
