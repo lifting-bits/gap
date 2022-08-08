@@ -74,18 +74,15 @@ namespace gap
 
         template< typename T >
         struct generator_iterator {
-            using coroutine_handle = coroutine_handle< T >;
-            using promise_type     = promise_type< T >;
-
             using iterator_category = std::input_iterator_tag;
             using difference_type   = std::ptrdiff_t;
-            using value_type        = typename promise_type::value_type;
-            using reference         = typename promise_type::reference_type;
-            using pointer           = typename promise_type::pointer_type;
+            using value_type        = typename promise_type< T >::value_type;
+            using reference         = typename promise_type< T >::reference_type;
+            using pointer           = typename promise_type< T >::pointer_type;
 
             generator_iterator() noexcept = default;
 
-            explicit generator_iterator(coroutine_handle coroutine) noexcept
+            explicit generator_iterator(coroutine_handle< T > coroutine) noexcept
                 : _coroutine(coroutine) {}
 
             friend bool operator==(const generator_iterator& it, generator_sentinel) noexcept {
@@ -120,7 +117,7 @@ namespace gap
             pointer operator->() const noexcept { return std::addressof(operator*()); }
 
           private:
-            coroutine_handle _coroutine = nullptr;
+            coroutine_handle< T > _coroutine = nullptr;
         };
 
     } // namespace detail

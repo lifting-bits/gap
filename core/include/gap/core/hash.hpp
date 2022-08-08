@@ -20,7 +20,7 @@ namespace gap
     // hash_code serves to keep hash function state and pass it along
     //
     struct hash_code {
-        constexpr explicit hash_code(std::size_t state) : state(state) {}
+        constexpr explicit hash_code(std::size_t s) : state(s) {}
         constexpr operator std::size_t() const { return state; }
 
         std::size_t state;

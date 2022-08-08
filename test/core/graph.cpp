@@ -62,8 +62,8 @@ namespace gap::test
         using node_pointer = std::shared_ptr< node_t >;
         using child_type   = node_pointer;
 
-        explicit node_t(char value)
-            : value(value) {}
+        explicit node_t(char val)
+            : value(val) {}
 
         generator< child_type > children() const {
             for (auto ch : _children)
