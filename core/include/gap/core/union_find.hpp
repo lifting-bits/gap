@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <cassert>
 #include <deque>
 #include <gap/core/strong_type.hpp>
@@ -27,12 +28,11 @@ namespace gap
             struct element_type_t {
                 constexpr element_type_t() = default;
 
-                explicit constexpr element_type_t(union_type parent)
-                    : parent(parent) {}
+                explicit constexpr element_type_t(union_type p)
+                    : parent(p) {}
 
-                explicit constexpr element_type_t(union_type parent, rank_type rank)
-                    : parent(parent)
-                    , rank(rank) {}
+                explicit constexpr element_type_t(union_type p, rank_type r)
+                    : parent(p), rank(r) {}
 
                 friend constexpr auto operator<=>(const element_type_t &, const element_type_t &)
                     = default;
@@ -103,8 +103,17 @@ namespace gap
                     return elem.parent;
             }
 
+            [[nodiscard]] union_type &parent_impl(element_type &elem) {
+                if constexpr (thread_safe)
+                    return elem.load().parent;
+                else
+                    return elem.parent;
+            }
+
             [[nodiscard]] const union_type &parent(union_type idx) const { return parent_impl(at(idx)); }
+            [[nodiscard]] union_type &parent(union_type idx) { return parent_impl(at(idx)); }
             [[nodiscard]] const union_type &parent(element_type elem) const { return parent(elem.parent); }
+            [[nodiscard]] union_type &parent(element_type elem) { return parent(elem.parent); }
 
             union_type merge(union_type a, union_type b) noexcept requires(!thread_safe) {
                 assert(a == parent(a));
