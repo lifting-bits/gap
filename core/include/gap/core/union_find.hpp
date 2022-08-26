@@ -103,8 +103,17 @@ namespace gap
                     return elem.parent;
             }
 
+            [[nodiscard]] union_type &parent_impl(element_type &elem) {
+                if constexpr (thread_safe)
+                    return elem.load().parent;
+                else
+                    return elem.parent;
+            }
+
             [[nodiscard]] const union_type &parent(union_type idx) const { return parent_impl(at(idx)); }
+            [[nodiscard]] union_type &parent(union_type idx) { return parent_impl(at(idx)); }
             [[nodiscard]] const union_type &parent(element_type elem) const { return parent(elem.parent); }
+            [[nodiscard]] union_type &parent(element_type elem) { return parent(elem.parent); }
 
             union_type merge(union_type a, union_type b) noexcept requires(!thread_safe) {
                 assert(a == parent(a));
