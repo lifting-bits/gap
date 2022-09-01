@@ -25,6 +25,12 @@ namespace gap
     concept integral = std::is_integral_v< T >;
 
     template< typename T >
+    concept signed_integral = integral< T > && std::is_signed_v< T >;
+
+    template< typename T >
+    concept unsigned_integral = integral< T > && !signed_integral< T >;
+
+    template< typename T >
     concept floating = std::is_floating_point_v< T >;
 
     /* value concepts */
