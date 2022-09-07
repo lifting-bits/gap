@@ -261,7 +261,7 @@ namespace gap
                 return bits;
 
             unsigned count = 0;
-            for (word_type shift = bits_per_word() >> 1; shift; shift >>= 1) {
+            for (unsigned shift = bits_per_word() >> 1; shift; shift >>= 1) {
                 if (word_type tmp = word >> shift) {
                     word = tmp;
                 } else {
