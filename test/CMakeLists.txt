@@ -6,8 +6,9 @@ find_package(spdlog CONFIG REQUIRED)
 add_executable(test-gap
   main.cpp
 
-  core/concepts.cpp
+  core/bigint.cpp
   core/benchmark.cpp
+  core/concepts.cpp
   core/generator.cpp
   core/graph.cpp
   core/hash.cpp
