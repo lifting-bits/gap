@@ -1,6 +1,7 @@
 # Copyright (c) 2021-present, Trail of Bits, Inc. All rights reserved.
 
 add_headers(core GAP_CORE_HEADERS
+	bigint.hpp
 	concepts.hpp
 	config.hpp
 	coroutine.hpp
