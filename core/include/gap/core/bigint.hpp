@@ -10,13 +10,19 @@
 #include <vector>
 #include <limits>
 #include <span>
-
-// TODO negative numbers
-
-// TODO tests
+#include <string>
+#include <utility>
 
 namespace gap
 {
+
+    //
+    // This class is a compatible tiny llvm::APInt port.
+    // It allows for efficient storage and formating of
+    // unsigned bitvectors of dynamic size.
+    //
+    // This representation does not support arithmetic, yet.
+    //
     struct [[nodiscard]] bigint {
         using word_type = std::uint64_t;
         using half_type = std::uint32_t;
