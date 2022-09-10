@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <gap/core/concepts.hpp>
+#include <gap/core/parser.hpp>
 #include <vector>
 #include <limits>
 #include <span>
@@ -15,6 +16,8 @@
 
 namespace gap
 {
+    using radix_type = std::uint8_t;
+    using bitwidth_t = std::size_t;
 
     //
     // This class is a compatible tiny llvm::APInt port.
@@ -33,15 +36,15 @@ namespace gap
             storage.value = 0;
         }
 
-        explicit constexpr bigint(unsigned num_of_bits)
+        explicit constexpr bigint(bitwidth_t num_of_bits)
             : bigint(num_of_bits, 0u)
         {}
 
-        constexpr bigint(unsigned num_of_bits, const bigint &other)
+        constexpr bigint(bitwidth_t num_of_bits, const bigint &other)
             : bigint(num_of_bits, other.as_span())
         {}
 
-        constexpr bigint(unsigned num_of_bits, gap::unsigned_integral auto value)
+        constexpr bigint(bitwidth_t num_of_bits, gap::unsigned_integral auto value)
             : bits(num_of_bits)
         {
             if (is_single_word()) {
@@ -53,7 +56,7 @@ namespace gap
             clear_unused_bits();
         }
 
-        constexpr bigint(unsigned num_of_bits, std::span< const word_type > buff)
+        constexpr bigint(bitwidth_t num_of_bits, std::span< const word_type > buff)
             : bits(num_of_bits)
         {
             if (is_single_word()) {
@@ -68,7 +71,7 @@ namespace gap
             clear_unused_bits();
         }
 
-        constexpr bigint(unsigned num_of_bits, std::string_view str, std::uint8_t radix)
+        constexpr bigint(bitwidth_t num_of_bits, std::string_view str, radix_type radix)
             : bits(num_of_bits)
         {
             assert(!str.empty() && "invalid string");
@@ -190,7 +193,7 @@ namespace gap
             return *this;
         }
 
-        constexpr void reallocate(unsigned new_bitwidth) {
+        constexpr void reallocate(bitwidth_t new_bitwidth) {
             if (get_num_words() == get_num_words(new_bitwidth)) {
                 bits = new_bitwidth;
                 return;
@@ -206,13 +209,13 @@ namespace gap
             }
         }
 
-        static constexpr unsigned bits_per_word() { return sizeof(word_type) * 8; }
+        static constexpr bitwidth_t bits_per_word() { return sizeof(word_type) * 8; }
 
-        constexpr unsigned last_word_bits() const {
+        constexpr bitwidth_t last_word_bits() const {
             return ((bits - 1) % bits_per_word()) + 1;
         }
 
-        constexpr unsigned bits_per_word(unsigned index) const {
+        constexpr bitwidth_t bits_per_word(std::size_t index) const {
             if (index == get_num_words() - 1)
                 return last_word_bits();
             return bits_per_word();
@@ -220,11 +223,11 @@ namespace gap
 
         constexpr bool is_single_word() const { return bits <= bits_per_word(); }
 
-        static constexpr unsigned get_num_words(unsigned bw) {
+        static constexpr std::size_t get_num_words(bitwidth_t bw) {
             return (bw + bits_per_word() - 1) / bits_per_word();
         }
 
-        constexpr unsigned get_num_words() const { return get_num_words(bits); }
+        constexpr std::size_t get_num_words() const { return get_num_words(bits); }
 
         constexpr word_type &last_word() {
             if (is_single_word())
@@ -262,7 +265,7 @@ namespace gap
 
         constexpr operator bool() const { return !is_zero(); }
 
-        static constexpr unsigned count_leading_zeros(unsigned bits, word_type word) {
+        static constexpr std::size_t count_leading_zeros(bitwidth_t bits, word_type word) {
             if (!word)
                 return bits;
 
@@ -278,10 +281,10 @@ namespace gap
             return bits - (bits_per_word() - count);
         }
 
-        constexpr unsigned count_leading_zeros_slow() const {
-            unsigned count = 0;
-            for (unsigned i = 0; i < get_num_words(); ++i) {
-                auto index = get_num_words() - i - 1;
+        constexpr std::size_t count_leading_zeros_slow() const {
+            std::size_t count = 0;
+            for (std::size_t i = 0; i < get_num_words(); ++i) {
+                std::size_t index = get_num_words() - i - 1;
                 auto value = storage.buffer[index];
                 if (value == 0) {
                     count += bits_per_word(index);
@@ -294,13 +297,13 @@ namespace gap
             return std::min(count, bits);
         }
 
-        constexpr unsigned count_leading_zeros() const {
+        constexpr std::size_t count_leading_zeros() const {
             if (is_single_word())
                 return count_leading_zeros(bits, storage.value);
             return count_leading_zeros_slow();
         }
 
-        constexpr unsigned active_bits() const {
+        constexpr std::size_t active_bits() const {
             return bits - count_leading_zeros();
         }
 
@@ -355,7 +358,7 @@ namespace gap
             return clear_unused_bits();
         }
 
-        static constexpr inline word_type low_bit_mask(unsigned bw) {
+        static constexpr inline word_type low_bit_mask(bitwidth_t bw) {
             assert(bw != 0 && bw <= bits_per_word());
             return ~word_type(0) >> (bits_per_word() - bw);
         }
@@ -413,16 +416,16 @@ namespace gap
             return clear_unused_bits();
         }
 
-        static constexpr void shift_left_multiword(std::span< word_type > words, unsigned shift) {
+        static constexpr void shift_left_multiword(std::span< word_type > words, std::size_t shift) {
             if (!shift)
                 return;
 
-            const auto word_shift = std::min(shift / bits_per_word(), unsigned(words.size()));
+            const auto word_shift = std::min(shift / bits_per_word(), words.size());
             const auto bit_shift  = shift % bits_per_word();
 
             if (bit_shift == 0) {
                 // fastpath for moving by whole words
-                std::shift_right(words.begin(), words.end(), word_shift);
+                std::shift_right(words.begin(), words.end(), std::int64_t(word_shift));
             } else {
                 for (auto i = words.size() - 1; i >= word_shift; --i) {
                     words[i] = words[i - word_shift] << bit_shift;
@@ -454,18 +457,18 @@ namespace gap
             return clear_unused_bits();
         }
 
-        static constexpr void shift_right_multiword(std::span< word_type > words, unsigned shift) {
+        static constexpr void shift_right_multiword(std::span< word_type > words, std::size_t shift) {
             if (!shift)
                 return;
 
-            const auto word_shift = std::min(shift / bits_per_word(), unsigned(words.size()));
+            const auto word_shift = std::min(shift / bits_per_word(), words.size());
             const auto bit_shift  = shift % bits_per_word();
 
             const auto words_to_move = words.size() - word_shift;
 
             if (bit_shift == 0) {
                 // fastpath for moving by whole words
-                std::shift_left(words.begin(), words.end(), int(words_to_move));
+                std::shift_left(words.begin(), words.end(), std::int64_t(words_to_move));
             } else {
                 for (unsigned i = 0; i < words_to_move; ++i) {
                     words[i] = words[i - word_shift] >> bit_shift;
@@ -602,12 +605,34 @@ namespace gap
             return storage.buffer;
         }
 
-        unsigned bits;
+        bitwidth_t bits;
 
         union {
             word_type value;
             word_type *buffer;
         } storage;
     };
+
+    template< typename T >
+    concept integral_like = integral< T > || std::is_same_v< T, gap::bigint >;
+
+    // template< integral I >
+    // constexpr parser< I > auto value_parser() {
+    //     return bind(nonzero_parser< I >(), [](I head, parse_input_t rest) -> parse_result_t< I > {
+    //         auto accum = [](I res, I d) { return (res * 10) + d; };
+    //         return many(digit_parser< I >(), std::move(head), accum)(rest);
+    //     });
+    // }
+
+    // // parses bigint from [digits]:[bitwidth] providing the radix
+    // static inline constexpr parser< gap::bigint > auto bigint_parser(radix_type radix = 10) {
+    //     auto bitwidth = value<
+    // }
+
+    // // parses bigint from [digits]:[bitwidth] determines redix from prefix:
+    // // none -> 10, 0b -> 2, 0 -> 8, 0x -> 16
+    // static inline constexpr parser< gap::bigint > auto bigint_parser() {
+
+    // }
 
 } // namespace gap
