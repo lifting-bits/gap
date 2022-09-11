@@ -29,6 +29,23 @@ TEST_SUITE("parser") {
             CHECK_EQ(parser::result(p), 7);
         }
 
+        SUBCASE("digit parser - radix") {
+            CHECK(parser::digit_parser< int >(2)("0"sv));
+            CHECK(parser::digit_parser< int >(2)("1"sv));
+            CHECK(!parser::digit_parser< int >(2)("2"sv));
+            CHECK(!parser::digit_parser< int >(2)("7"sv));
+
+            CHECK(parser::digit_parser< int >(8)("7"sv));
+            CHECK(!parser::digit_parser< int >(8)("8"sv));
+
+            CHECK(parser::digit_parser< int >(16)("8"sv));
+            CHECK(parser::digit_parser< int >(16)("F"sv));
+            CHECK(!parser::digit_parser< int >(16)("G"sv));
+
+            CHECK(!parser::nonzero_parser< int >(16)("0"sv));
+            CHECK(!parser::nonzero_parser< int >(16)("G"sv));
+        }
+
         SUBCASE("letter parser") {
             auto p = parser::letter_parser()("a"sv);
             CHECK(p);
@@ -39,6 +56,158 @@ TEST_SUITE("parser") {
             constexpr auto p = parser::value_parser< int >()("123"sv);
             CHECK(p);
             CHECK_EQ(parser::result(p), 123);
+        }
+    }
+
+    TEST_CASE("numbers") {
+        SUBCASE("unsigned") {
+            CHECK(parser::unsigned_number_parser< unsigned >()("123"sv));
+            CHECK(!parser::unsigned_number_parser< unsigned >()("-123"sv));
+        }
+
+        SUBCASE("signed") {
+            CHECK(parser::signed_number_parser< int >()("123"sv));
+            CHECK(parser::signed_number_parser< int >()("-123"sv));
+        }
+
+        SUBCASE("radix 2") {
+            constexpr auto p1 = parser::unsigned_number_parser< unsigned, 2 >();
+            {
+                auto result = p1("100"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 4);
+            }
+
+            {
+                auto result = p1("110"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 6);
+            }
+
+
+            CHECK(!p1("3"sv));
+            CHECK(!p1("2"sv));
+
+            constexpr auto p2 = parser::unsigned_number_parser< unsigned >();
+            {
+                auto result = p2("0b100"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 4);
+            }
+
+            {
+                auto result = p2("0b110"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 6);
+            }
+
+            {
+                auto result = p2("0b0"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 0);
+            }
+        }
+
+        SUBCASE("radix 8") {
+            constexpr auto p1 = parser::unsigned_number_parser< unsigned, 8 >();
+            {
+                auto result = p1("10"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 8);
+            }
+
+            {
+                auto result = p1("110"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 72);
+            }
+
+
+            CHECK(!p1("8"sv));
+            CHECK(!p1("9"sv));
+
+            constexpr auto p2 = parser::unsigned_number_parser< unsigned >();
+            {
+                auto result = p2("07"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 7);
+            }
+
+            {
+                auto result = p2("011"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 9);
+            }
+
+            {
+                auto result = p2("00"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 0);
+            }
+        }
+
+        SUBCASE("radix 10") {
+
+        }
+
+        SUBCASE("radix 16") {
+            constexpr auto p1 = parser::unsigned_number_parser< unsigned, 16 >();
+            {
+                auto result = p1("10"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 16);
+            }
+
+            {
+                auto result = p1("110"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 272);
+            }
+
+            {
+                auto result = p1("FF"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 255);
+            }
+
+            CHECK(!p1("G"sv));
+
+            constexpr auto p2 = parser::unsigned_number_parser< unsigned >();
+            {
+                auto result = p2("0xF"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 15);
+            }
+
+            {
+                auto result = p2("0xF0F"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 3855);
+            }
+
+            {
+                auto result = p2("0x0"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 0);
+            }
+        }
+    }
+
+    TEST_CASE("bigint") {
+        SUBCASE("radix 2") {
+
+        }
+
+        SUBCASE("radix 8") {
+
+        }
+
+        SUBCASE("radix 10") {
+
+        }
+
+        SUBCASE("radix 16") {
+
         }
     }
 }
