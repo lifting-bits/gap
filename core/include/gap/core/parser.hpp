@@ -4,6 +4,7 @@
 
 #include <chrono>     // for literals
 #include <functional> // for invoke
+#include <gap/core/common.hpp>
 #include <gap/core/concepts.hpp>
 #include <optional>    // for nullopt, optional
 #include <stddef.h>    // for size_t
@@ -328,24 +329,31 @@ namespace gap::parser
 
     namespace detail
     {
+        constexpr std::string_view digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
         template< integral I >
-        constexpr parser< I > auto digit_parser(const std::string_view &allowed_digits) {
+        constexpr parser< I > auto digit_parser(std::string_view allowed_digits) {
             using namespace std::literals; // NOLINT
-            auto to_digit = [](char c) { return static_cast< I >(c - '0'); };
+            auto to_digit = [](char c) {
+                if (c >= '0' && c <= '9')     return static_cast< I >(c - '0');
+                else if (c >= 'a' && c <='f') return static_cast< I >(c - 'a' + 10);
+                else if (c >= 'A' && c <='F') return static_cast< I >(c - 'A' + 10);
+                __builtin_unreachable();
+            };
             return fmap(to_digit, one_of(allowed_digits));
         }
     } // namespace detail
 
     template< integral I >
-    constexpr parser< I > auto digit_parser() {
+    constexpr parser< I > auto digit_parser(radix_t radix = 10) {
         using namespace std::literals; // NOLINT
-        return detail::digit_parser< I >("0123456789"sv);
+        return detail::digit_parser< I >(detail::digits.substr(0, radix));
     }
 
     template< integral I >
-    constexpr parser< I > auto nonzero_parser() {
+    constexpr parser< I > auto nonzero_parser(radix_t radix = 10) {
         using namespace std::literals; // NOLINT
-        return detail::digit_parser< I >("123456789"sv);
+        return detail::digit_parser< I >(detail::digits.substr(1, radix - 1));
     }
 
     template< integral I >
@@ -355,19 +363,73 @@ namespace gap::parser
     }
 
     template< integral I >
-    constexpr parser< I > auto value_parser() {
-        return bind(nonzero_parser< I >(), [](I head, parse_input_t rest) -> parse_result_t< I > {
-            auto accum = [](I res, I d) { return (res * 10) + d; };
-            return many(digit_parser< I >(), std::move(head), accum)(rest);
+    constexpr parser< I > auto value_parser(radix_t radix = 10) {
+        return bind(nonzero_parser< I >(radix), [radix] (I head, parse_input_t rest) -> parse_result_t< I > {
+            auto accum = [radix] (I res, I d) {
+                return (res * radix) + d;
+            };
+            return many(digit_parser< I >(radix), std::move(head), accum)(rest);
         });
     }
 
     template< integral I >
-    constexpr parser< I > auto number_parser() {
+    constexpr parser< I > auto number_parser(radix_t radix = 10) {
         auto sign_parser = option('+', char_parser('-'));
         return combine(
-            sign_parser, zero_parser< I >() | value_parser< I >(),
+            sign_parser, zero_parser< I >() | value_parser< I >(radix),
             [](auto sign, auto value) { return sign == '+' ? value : -value; });
+    }
+
+    namespace detail {
+        template< unsigned_integral I, std::size_t radix >
+        constexpr parser< I > auto unsigned_number_parser() {
+            return zero_parser< I >() | value_parser< I >(radix);
+        }
+
+        template< unsigned_integral I >
+        constexpr parser< I > auto bin_unsigned_number_parser() {
+            return (string_parser("0b") < unsigned_number_parser< I, 2 >());
+        }
+
+        template< unsigned_integral I >
+        constexpr parser< I > auto oct_unsigned_number_parser() {
+            return (string_parser("0") < unsigned_number_parser< I, 8 >());
+        }
+
+        template< unsigned_integral I >
+        constexpr parser< I > auto hex_unsigned_number_parser() {
+            return (string_parser("0x") < unsigned_number_parser< I, 16 >());
+        }
+    } // namespace detail
+
+    template< unsigned_integral I, std::size_t radix >
+    constexpr parser< I > auto unsigned_number_parser() {
+        constexpr auto number_parser = detail::unsigned_number_parser< I, radix >();
+        if constexpr (radix == 2) {
+            return (detail::bin_unsigned_number_parser< I >() | number_parser);
+        }
+        else if constexpr (radix == 8) {
+            return (detail::oct_unsigned_number_parser< I >() | number_parser);
+        }
+        else if constexpr (radix == 16) {
+            return (detail::hex_unsigned_number_parser< I >() | number_parser);
+        } else {
+            return number_parser;
+        }
+    }
+
+    template< unsigned_integral I >
+    constexpr parser< I > auto unsigned_number_parser() {
+        return detail::bin_unsigned_number_parser< I >() |
+               detail::oct_unsigned_number_parser< I >() |
+               detail::hex_unsigned_number_parser< I >() |
+               detail::unsigned_number_parser< I, 10 >();
+    }
+
+
+    template< signed_integral I >
+    constexpr parser< I > auto signed_number_parser(radix_t radix = 10) {
+        return number_parser< I >(radix);
     }
 
     constexpr bool isspace(char c) noexcept {
