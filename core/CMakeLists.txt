@@ -2,6 +2,7 @@
 
 add_headers(core GAP_CORE_HEADERS
 	bigint.hpp
+	common.hpp
 	concepts.hpp
 	config.hpp
 	coroutine.hpp

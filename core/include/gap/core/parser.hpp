@@ -268,6 +268,10 @@ namespace gap::parser
         };
     }
 
+    static constexpr auto one_of_pred(std::string_view chars) {
+        return [chars] (auto c) { return chars.find(c) != chars.npos; };
+    };
+
     // parse character ∈ chars
     constexpr parser< char > auto one_of(std::string_view chars) {
         return [=](parse_input_t in) -> parse_result_t< char > {
@@ -332,34 +336,54 @@ namespace gap::parser
         constexpr std::string_view digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         template< integral I >
-        constexpr parser< I > auto digit_parser(std::string_view allowed_digits) {
-            using namespace std::literals; // NOLINT
-            auto to_digit = [](char c) {
-                if (c >= '0' && c <= '9')     return static_cast< I >(c - '0');
-                else if (c >= 'a' && c <='f') return static_cast< I >(c - 'a' + 10);
-                else if (c >= 'A' && c <='F') return static_cast< I >(c - 'A' + 10);
-                __builtin_unreachable();
-            };
-            return fmap(to_digit, one_of(allowed_digits));
+        constexpr inline auto to_digit = [](char c) {
+            if (c >= '0' && c <= '9')     return static_cast< I >(c - '0');
+            else if (c >= 'a' && c <='f') return static_cast< I >(c - 'a' + 10);
+            else if (c >= 'A' && c <='F') return static_cast< I >(c - 'A' + 10);
+            __builtin_unreachable();
+        };
+
+        static inline constexpr parser< char > auto digit_parser(std::string_view digs) {
+            return one_of(digs);
         }
+
+        template< typename I >
+        static inline constexpr parser< I > auto digit_parser(std::string_view digs) {
+            return fmap(detail::to_digit< I >, digit_parser(digs));
+        }
+
     } // namespace detail
+
+    constexpr std::string_view digits(radix_t radix) {
+        return detail::digits.substr(0, radix);
+    }
+
+    constexpr std::string_view nonzero_digits(radix_t radix) {
+        return detail::digits.substr(1, radix - 1);
+    }
+
+    static inline constexpr parser< char > auto digit_parser(radix_t radix = 10) {
+        return detail::digit_parser(digits(radix));
+    }
 
     template< integral I >
     constexpr parser< I > auto digit_parser(radix_t radix = 10) {
-        using namespace std::literals; // NOLINT
-        return detail::digit_parser< I >(detail::digits.substr(0, radix));
+        return detail::digit_parser< I >(digits(radix));
+    }
+
+    static inline constexpr parser< char > auto nonzero_parser(radix_t radix = 10) {
+        return detail::digit_parser(nonzero_digits(radix));
     }
 
     template< integral I >
     constexpr parser< I > auto nonzero_parser(radix_t radix = 10) {
-        using namespace std::literals; // NOLINT
-        return detail::digit_parser< I >(detail::digits.substr(1, radix - 1));
+        return detail::digit_parser< I >(nonzero_digits(radix));
     }
 
     template< integral I >
     constexpr parser< I > auto zero_parser() {
         using namespace std::literals; // NOLINT
-        return detail::digit_parser< I >("0"sv);
+        return detail::digit_parser< I >("0");
     }
 
     template< integral I >
@@ -425,7 +449,6 @@ namespace gap::parser
                detail::hex_unsigned_number_parser< I >() |
                detail::unsigned_number_parser< I, 10 >();
     }
-
 
     template< signed_integral I >
     constexpr parser< I > auto signed_number_parser(radix_t radix = 10) {
@@ -501,6 +524,10 @@ namespace gap::parser
         };
 
         return separated(std::forward< P >(p), skip(isspace), std::vector< parsed_type >(), push);
+    }
+
+    static constexpr parser< std::string_view > auto value_parser(radix_t radix = 10) {
+        return word_parser(one_of_pred(digits(radix)));
     }
 
 } // namespace gap::parser
