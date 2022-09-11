@@ -6,18 +6,18 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <gap/core/common.hpp>
 #include <gap/core/concepts.hpp>
 #include <gap/core/parser.hpp>
 #include <vector>
 #include <limits>
 #include <span>
 #include <string>
+#include <tuple>
 #include <utility>
 
 namespace gap
 {
-    using radix_type = std::uint8_t;
-    using bitwidth_t = std::size_t;
 
     //
     // This class is a compatible tiny llvm::APInt port.
@@ -71,7 +71,7 @@ namespace gap
             clear_unused_bits();
         }
 
-        constexpr bigint(bitwidth_t num_of_bits, std::string_view str, radix_type radix)
+        constexpr bigint(bitwidth_t num_of_bits, std::string_view str, radix_t radix)
             : bits(num_of_bits)
         {
             assert(!str.empty() && "invalid string");
@@ -110,7 +110,10 @@ namespace gap
 
         constexpr bigint(bigint &&other)
             : bits(other.bits), storage(other.storage)
-        {}
+        {
+            other.bits = 0;
+            other.storage.value = 0;
+        }
 
         constexpr bigint &operator=(const bigint &other) {
             if (is_single_word() && other.is_single_word()) {
@@ -616,23 +619,60 @@ namespace gap
     template< typename T >
     concept integral_like = integral< T > || std::is_same_v< T, gap::bigint >;
 
-    // template< integral I >
-    // constexpr parser< I > auto value_parser() {
-    //     return bind(nonzero_parser< I >(), [](I head, parse_input_t rest) -> parse_result_t< I > {
-    //         auto accum = [](I res, I d) { return (res * 10) + d; };
-    //         return many(digit_parser< I >(), std::move(head), accum)(rest);
-    //     });
-    // }
+    namespace parser {
 
-    // // parses bigint from [digits]:[bitwidth] providing the radix
-    // static inline constexpr parser< gap::bigint > auto bigint_parser(radix_type radix = 10) {
-    //     auto bitwidth = value<
-    // }
+        namespace detail {
+            using number_and_bitwidth = std::tuple< std::string_view, bitwidth_t >;
 
-    // // parses bigint from [digits]:[bitwidth] determines redix from prefix:
-    // // none -> 10, 0b -> 2, 0 -> 8, 0x -> 16
-    // static inline constexpr parser< gap::bigint > auto bigint_parser() {
+            static inline constexpr parser< number_and_bitwidth > auto num_with_bitwidth_parser(radix_t radix = 10) {
+                return value_parser(radix) & (string_parser(":") < number_parser< bitwidth_t >());
+            }
 
-    // }
+            static inline constexpr parser< bigint > auto bigint_parser(radix_t radix = 10) {
+                return [=] (parse_input_t in) -> parse_result_t< bigint > {
+                    if (auto r = detail::num_with_bitwidth_parser(radix)(in)) {
+                        auto [digs, bitwidth] = parser::result(r);
+                        return {{ bigint(bitwidth, digs, radix), parser::rest(r) }};
+                    }
+                    return std::nullopt;
+                };
+            }
+
+            static inline constexpr parser< bigint > auto bin_bigint_parser() {
+                return (string_parser("0b") < bigint_parser(2));
+            }
+
+            static inline constexpr parser< bigint > auto oct_bigint_parser() {
+                return (string_parser("0") < bigint_parser(8));
+            }
+
+            static inline constexpr parser< bigint > auto hex_bigint_parser() {
+                return (string_parser("0x") < bigint_parser(16));
+            }
+        } // namespace detail
+
+        template< std::size_t radix >
+        constexpr parser< bigint > auto bigint_parser() {
+            constexpr auto number_parser = detail::bigint_parser(radix);
+            if constexpr (radix == 2) {
+                return (detail::bin_bigint_parser() | number_parser);
+            }
+            else if constexpr (radix == 8) {
+                return (detail::oct_bigint_parser() | number_parser);
+            }
+            else if constexpr (radix == 16) {
+                return (detail::hex_bigint_parser() | number_parser);
+            } else {
+                return number_parser;
+            }
+        }
+
+        static inline constexpr parser< bigint > auto bigint_parser() {
+            return detail::bin_bigint_parser() |
+                detail::oct_bigint_parser() |
+                detail::hex_bigint_parser() |
+                detail::bigint_parser(10);
+        }
+    } // namespace parser
 
 } // namespace gap
