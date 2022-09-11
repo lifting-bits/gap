@@ -9,6 +9,7 @@
 #include <chrono> // for literals
 #include <doctest/doctest.h>
 #include <gap/core/parser.hpp>
+#include <gap/core/bigint.hpp>
 #include <optional>    // for optional
 #include <string_view> // for operator""sv
 
@@ -147,9 +148,40 @@ TEST_SUITE("parser") {
         }
 
         SUBCASE("radix 10") {
+            constexpr auto p1 = parser::unsigned_number_parser< unsigned, 10 >();
+            {
+                auto result = p1("10"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 10);
+            }
 
+            {
+                auto result = p1("110"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 110);
+            }
+
+            {
+                auto result = p1("0"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 0);
+            }
+
+            CHECK(!p1("A"sv));
+
+            constexpr auto p2 = parser::unsigned_number_parser< unsigned >();
+            {
+                auto result = p2("15"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 15);
+            }
+
+            {
+                auto result = p2("0"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result), 0);
+            }
         }
-
         SUBCASE("radix 16") {
             constexpr auto p1 = parser::unsigned_number_parser< unsigned, 16 >();
             {
@@ -195,19 +227,156 @@ TEST_SUITE("parser") {
 
     TEST_CASE("bigint") {
         SUBCASE("radix 2") {
+            constexpr auto p1 = parser::bigint_parser< 2 >();
+            {
+                auto result = p1("100:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "4");
+            }
 
+            {
+                auto result = p1("110:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "6");
+            }
+
+            CHECK(!p1("3:32"sv));
+            CHECK(!p1("2:32"sv));
+
+            constexpr auto p2 = parser::bigint_parser();
+            {
+                auto result = p2("0b100:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "4");
+            }
+
+            {
+                auto result = p2("0b110:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "6");
+            }
+
+            {
+                auto result = p2("0b0:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "0");
+            }
         }
 
         SUBCASE("radix 8") {
+            constexpr auto p1 = parser::bigint_parser< 8 >();
+            {
+                auto result = p1("10:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "8");
+            }
 
+            {
+                auto result = p1("110:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "72");
+            }
+
+
+            CHECK(!p1("8:64"sv));
+            CHECK(!p1("9:64"sv));
+
+            constexpr auto p2 = parser::bigint_parser();
+            {
+                auto result = p2("07:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "7");
+            }
+
+            {
+                auto result = p2("011:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "9");
+            }
+
+            {
+                auto result = p2("00:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "0");
+            }
         }
 
         SUBCASE("radix 10") {
+            constexpr auto p1 = parser::bigint_parser< 10 >();
+            {
+                auto result = p1("10:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "10");
+            }
 
+            {
+                auto result = p1("110:32"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "110");
+            }
+
+            {
+                auto result = p1("0:16"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "0");
+            }
+
+            CHECK(!p1("A"sv));
+
+            constexpr auto p2 = parser::bigint_parser();
+            {
+                auto result = p2("15:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "15");
+            }
+
+            {
+                auto result = p2("0:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "0");
+            }
         }
 
         SUBCASE("radix 16") {
+            constexpr auto p1 = parser::bigint_parser< 16 >();
+            {
+                auto result = p1("10:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "16");
+            }
 
+            {
+                auto result = p1("110:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "272");
+            }
+
+            {
+                auto result = p1("FF:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "255");
+            }
+
+            CHECK(!p1("G:64"sv));
+
+            constexpr auto p2 = parser::bigint_parser();
+            {
+                auto result = p2("0xF:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "15");
+            }
+
+            {
+                auto result = p2("0xF0F:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "3855");
+            }
+
+            {
+                auto result = p2("0x0:64"sv);
+                CHECK(result);
+                CHECK_EQ(parser::result(result).to_string(10), "0");
+            }
         }
     }
 }
