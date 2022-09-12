@@ -64,7 +64,7 @@ namespace gap
             } else {
                 storage.buffer = new word_type[get_num_words()]();
 
-                auto words = std::min(buff.size(), std::size_t(get_num_words()));
+                auto words = std::min(buff.size(), get_num_words());
                 std::copy_n(buff.begin(), words, storage.buffer);
             }
 
