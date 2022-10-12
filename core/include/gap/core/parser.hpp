@@ -47,8 +47,7 @@ namespace gap::parser
     template< typename T >
     using parser_t = auto (*)(parse_input_t) -> parse_result_t< T >;
 
-    constexpr const auto &result(const auto &p) { return p->first; }
-    constexpr auto result(auto &&p) { return std::move(p->first); }
+    constexpr decltype(auto) result(auto &&p) { return p->first; }
 
     constexpr parse_input_t rest(const auto &p) { return p->second; }
 
