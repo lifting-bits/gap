@@ -232,12 +232,14 @@ TEST_SUITE("parser") {
                 auto result = p1("100:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "4");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
 
             {
                 auto result = p1("110:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "6");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
 
             CHECK(!p1("3:32"sv));
@@ -248,18 +250,21 @@ TEST_SUITE("parser") {
                 auto result = p2("0b100:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "4");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
 
             {
                 auto result = p2("0b110:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "6");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
 
             {
                 auto result = p2("0b0:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "0");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
         }
 
@@ -269,12 +274,14 @@ TEST_SUITE("parser") {
                 auto result = p1("10:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "8");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p1("110:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "72");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
 
@@ -286,18 +293,21 @@ TEST_SUITE("parser") {
                 auto result = p2("07:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "7");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p2("011:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "9");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p2("00:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "0");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
         }
 
@@ -307,18 +317,21 @@ TEST_SUITE("parser") {
                 auto result = p1("10:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "10");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
 
             {
                 auto result = p1("110:32"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "110");
+                CHECK_EQ(parser::result(result).bits, 32);
             }
 
             {
                 auto result = p1("0:16"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "0");
+                CHECK_EQ(parser::result(result).bits, 16);
             }
 
             CHECK(!p1("A"sv));
@@ -328,12 +341,14 @@ TEST_SUITE("parser") {
                 auto result = p2("15:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "15");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p2("0:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "0");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
         }
 
@@ -343,18 +358,21 @@ TEST_SUITE("parser") {
                 auto result = p1("10:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "16");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p1("110:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "272");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p1("FF:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "255");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             CHECK(!p1("G:64"sv));
@@ -364,18 +382,21 @@ TEST_SUITE("parser") {
                 auto result = p2("0xF:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "15");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p2("0xF0F:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "3855");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
 
             {
                 auto result = p2("0x0:64"sv);
                 CHECK(result);
                 CHECK_EQ(parser::result(result).to_string(10), "0");
+                CHECK_EQ(parser::result(result).bits, 64);
             }
         }
     }
