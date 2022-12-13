@@ -33,6 +33,21 @@ namespace gap::test
 
     TEST_SUITE("std optional") {
         using maybe_integer = optional_wrapper< std::optional< int > >;
+
+        template< typename T >
+        constexpr bool constructible_from = std::is_constructible_v< maybe_integer, T >;
+        static_assert(constructible_from< int >);
+        static_assert(constructible_from< std::optional< int > >);
+        static_assert(constructible_from< std::optional< short > >);
+        static_assert(constructible_from< optional_wrapper< std::optional< int > > >);
+        static_assert(constructible_from< optional_wrapper< std::optional< long > > >);
+
+        static_assert(!constructible_from< std::string >);
+        static_assert(!constructible_from< std::optional< std::string > >);
+        static_assert(!constructible_from<
+            optional_wrapper< std::optional< std::string > >
+        >);
+
         TEST_CASE("create") {
             maybe_integer val;
             val = 10;
