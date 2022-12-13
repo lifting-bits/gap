@@ -48,6 +48,9 @@ namespace gap
         = std::is_bounded_array_v< std::remove_reference_t< R > >;
 
     template< typename T >
+    concept pointer_type = std::is_pointer_v< std::remove_reference_t< T > >;
+
+    template< typename T >
     concept can_reference = requires {
         typename detail::with_ref< T >;
     };
