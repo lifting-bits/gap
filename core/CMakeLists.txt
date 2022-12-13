@@ -13,6 +13,7 @@ add_headers(core GAP_CORE_HEADERS
 	memoize.hpp
 	overloads.hpp
 	parser.hpp
+	pointer.hpp
 	ranges.hpp
 	recursive_generator.hpp
 	source_location.hpp
