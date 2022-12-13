@@ -108,6 +108,45 @@ namespace gap {
         using base_type::base_type;
         using base_type::value;
 
+        static constexpr bool copy_constructible = std::is_copy_constructible_v< base_type >;
+        static constexpr bool move_constructible = std::is_copy_constructible_v< base_type >;
+
+        static constexpr bool nothrow_move_constructible
+            = std::is_nothrow_move_constructible_v< base_type >;
+
+        constexpr optional_wrapper() noexcept = default;
+
+        constexpr optional_wrapper(const base_type &value)
+            requires(copy_constructible)
+            : base_type(value) {}
+
+        constexpr optional_wrapper(base_type &&value)
+            noexcept(nothrow_move_constructible)
+            requires(move_constructible)
+            : base_type(std::move(value))
+        {}
+
+        template< typename U >
+        requires(std::is_constructible_v< base_type, optional_wrapper< U > && >)
+        explicit(!std::is_convertible_v< const U&, value_type >)
+        constexpr optional_wrapper(optional_wrapper< U > &&other)
+            : base_type(std::move(other))
+        {}
+
+        template< typename U >
+        requires(std::is_constructible_v< base_type, const optional_wrapper< U > & >)
+        explicit(!std::is_convertible_v< U&&, value_type >)
+        constexpr optional_wrapper(const optional_wrapper< U > &other)
+            : base_type(other)
+        {}
+
+        template< typename U = value_type >
+        requires(std::is_constructible_v< base_type, U&& >)
+        explicit(!std::is_convertible_v< U&&, value_type >)
+        constexpr optional_wrapper( U &&value )
+            : base_type(std::forward< U >(value))
+        {}
+
         base& unwrap() & { return *this; }
         const base& unwrap() const& { return *this; }
         base&& unwrap() && { return std::move(*this); }
