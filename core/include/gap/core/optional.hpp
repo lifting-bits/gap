@@ -153,7 +153,6 @@ namespace gap {
         const base&& unwrap() const&& { return std::move(*this); }
 
         template< typename F, optional_like R = std::invoke_result_t< F, value_type& > >
-        requires(!std::is_pointer_v< base >)
         constexpr auto and_then( F&& f ) & {
             if (*this) {
                 return std::invoke(std::forward< F >(f), this->value());
@@ -163,7 +162,6 @@ namespace gap {
         }
 
         template< typename F, optional_like R = std::invoke_result_t< F, const value_type& > >
-        requires(!std::is_pointer_v< base >)
         constexpr auto and_then( F&& f ) const& {
             if (*this) {
                 return std::invoke(std::forward< F >(f), this->value());
@@ -173,7 +171,6 @@ namespace gap {
         }
 
         template< typename F, optional_like R = std::invoke_result_t< F, value_type > >
-        requires(!std::is_pointer_v< base >)
         constexpr auto and_then( F&& f ) && {
             if (*this) {
                 return std::invoke(std::forward< F >(f), std::move(this->value()));
@@ -183,7 +180,6 @@ namespace gap {
         }
 
         template< typename F, optional_like R = std::invoke_result_t< F, value_type > >
-        requires(!std::is_pointer_v< base >)
         constexpr auto and_then( F&& f ) const&& {
             if (*this) {
                 return std::invoke(std::forward< F >(f), std::move(this->value()));
