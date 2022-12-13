@@ -11,6 +11,7 @@ add_headers(core GAP_CORE_HEADERS
 	generator.hpp
 	hash.hpp
 	memoize.hpp
+	optional.hpp
 	overloads.hpp
 	parser.hpp
 	pointer.hpp
