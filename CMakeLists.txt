@@ -145,7 +145,7 @@ set_target_properties(${PROJECT_NAME}
 )
 
 if (GAP_INSTALL)
-  set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+  set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} CACHE PATH "Path where CMake utilities will be installed")
 
   set(GAP_INSTALL_TARGETS gap gap-core gap-settings)
   set(GAP_EXPORT_NAME gapTargets)
