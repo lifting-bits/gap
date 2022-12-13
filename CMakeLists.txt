@@ -59,8 +59,12 @@ endif ()
 add_library(gap-settings INTERFACE)
 add_library(gap::gap-settings ALIAS gap-settings)
 
-include(compiler_warnings)
-set_project_warnings(gap-settings)
+option(GAP_ENABLE_WARNINGS "Enable extended warnings" ON)
+
+if(GAP_ENABLE_WARNINGS)
+  include(compiler_warnings)
+  set_project_warnings(gap-settings)
+endif()
 
 target_include_directories(gap-settings
   INTERFACE
