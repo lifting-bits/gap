@@ -31,8 +31,6 @@ namespace gap::test
     static_assert( optional_like< optional_adaptor< int* > > );
     static_assert( optional_like< optional_adaptor< optional_int > > );
 
-    using optional_integer = optional_wrapper< std::optional< int > >;
-
     TEST_SUITE("std optional") {
         using maybe_integer = optional_wrapper< std::optional< int > >;
 
@@ -114,8 +112,7 @@ namespace gap::test
             CHECK_EQ(d.value(), 3);
 
             maybe_integer none = maybe_integer().and_then(add).and_then(add);
-            auto res = none.has_value();
-            CHECK(!res);
+            CHECK(!none.has_value());
         }
     }
 
@@ -173,6 +170,31 @@ namespace gap::test
             const auto cnone = none;
             CHECK_EQ(cnone.value_or(1), 1);
             CHECK_EQ(std::move(cnone).value_or(1), 1);
+        }
+
+        constexpr auto add = [] (auto &&v) -> maybe_integer_ptr {
+            v += 1;
+            return &v;
+        };
+
+        TEST_CASE("and_then") {
+            int v = 10;
+            maybe_integer_ptr val = &v;
+
+            auto a = val.and_then(add);
+            CHECK_EQ(a.value(), 11);
+
+            auto b = val.and_then(add).and_then(add);
+            CHECK_EQ(b.value(), 13);
+
+            int x = 1;
+            auto c = maybe_integer_ptr(&x);
+            auto d = std::move(c).and_then(add).and_then(add);
+            CHECK_EQ(d.value(), 3);
+
+            auto none = maybe_integer_ptr();
+            auto e = none.and_then(add);
+            CHECK(!e.has_value());
         }
     }
 
@@ -241,8 +263,7 @@ namespace gap::test
             CHECK_EQ(d.value(), 3);
 
             maybe_integer none = maybe_integer().and_then(add).and_then(add);
-            auto res = none.has_value();
-            CHECK(!res);
+            CHECK(!none.has_value());
         }
     }
 
