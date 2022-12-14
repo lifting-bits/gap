@@ -191,14 +191,35 @@ namespace gap {
         template< typename F, typename R = std::remove_cvref_t< std::invoke_result_t< F > > >
         requires(convertible_to< R, optional_wrapper >)
         constexpr optional_wrapper or_else( F&& f ) const& {
-            return *this ? *this : std::forward<F>(f)();
+            return *this ? *this : std::forward< F >(f)();
         }
 
         template< typename F, typename R = std::remove_cvref_t< std::invoke_result_t< F > > >
         requires(convertible_to< R, optional_wrapper >)
         constexpr optional_wrapper or_else( F&& f ) && {
-            return *this ? std::move(*this) : std::forward<F>(f)();
+            return *this ? std::move(*this) : std::forward< F >(f)();
         }
+
+        template< predicate< value_type > P >
+        constexpr optional_wrapper keep_if(P &&p) & {
+            return (*this && std::invoke(std::forward< P >(p), **this)) ? *this : optional_wrapper();
+        }
+
+        template< predicate< value_type > P >
+        constexpr optional_wrapper keep_if(P &&p) const& {
+            return (*this && std::invoke(std::forward< P >(p), **this)) ? *this : optional_wrapper();
+        }
+
+        template< predicate< value_type > P >
+        constexpr optional_wrapper keep_if(P &&p) && {
+            return (*this && std::invoke(std::forward< P >(p), **this)) ? *this : optional_wrapper();
+        }
+
+        template< predicate< value_type > P >
+        constexpr optional_wrapper keep_if(P &&p) const&& {
+            return (*this && std::invoke(std::forward< P >(p), **this)) ? *this : optional_wrapper();
+        }
+
     };
 
 } // namespace gap
