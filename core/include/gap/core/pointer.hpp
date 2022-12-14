@@ -12,7 +12,7 @@ namespace gap {
         using pointer_type = T;
         using value_type = std::remove_pointer_t< pointer_type >;
 
-        pointer_type _ptr;
+        pointer_type _ptr = nullptr;
 
         constexpr pointer_wrapper() noexcept = default;
         constexpr pointer_wrapper( pointer_type v ) noexcept : _ptr( v ) {}
