@@ -69,6 +69,20 @@ namespace gap
         std::invoke(std::forward< F >(f), std::forward< Args >(args)...);
     };
 
+    namespace detail {
+        template< typename B >
+        concept boolean_testable = std::convertible_to< B, bool >;
+    }
+
+    template< typename B >
+    concept boolean_testable = detail::boolean_testable< B > &&
+    requires (B&& b) {
+        { !std::forward<B>(b) } -> detail::boolean_testable;
+    };
+
+    template < class F, class... Args >
+    concept predicate = std::regular_invocable<F, Args...> && boolean_testable<std::invoke_result_t<F, Args...>>;
+
     /* operator concepts */
     template< typename T >
     concept incrementable = requires(T value) {
