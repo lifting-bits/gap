@@ -187,6 +187,18 @@ namespace gap {
                 return std::remove_cvref_t< R >();
             }
         }
+
+        template< typename F, typename R = std::remove_cvref_t< std::invoke_result_t< F > > >
+        requires(convertible_to< R, optional_wrapper >)
+        constexpr optional_wrapper or_else( F&& f ) const& {
+            return *this ? *this : std::forward<F>(f)();
+        }
+
+        template< typename F, typename R = std::remove_cvref_t< std::invoke_result_t< F > > >
+        requires(convertible_to< R, optional_wrapper >)
+        constexpr optional_wrapper or_else( F&& f ) && {
+            return *this ? std::move(*this) : std::forward<F>(f)();
+        }
     };
 
 } // namespace gap

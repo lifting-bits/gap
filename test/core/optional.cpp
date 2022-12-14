@@ -20,8 +20,8 @@ namespace gap::test
         constexpr value_type operator*() && noexcept { return value; }
         constexpr value_type operator*() const&& noexcept { return value; }
 
-        int value;
-        bool has_value;
+        int value = 0;
+        bool has_value = false;
     };
 
     static_assert( !std::is_pointer_v< optional_int > );
@@ -113,6 +113,29 @@ namespace gap::test
 
             maybe_integer none = maybe_integer().and_then(add).and_then(add);
             CHECK(!none.has_value());
+        }
+
+        // struct A {};
+        // struct B {};
+        // struct C {};
+
+        // TEST_CASE("transform") {
+        //     using optional_a = optional_wrapper< std::optional< A > >;
+        //     using optional_b = optional_wrapper< std::optional< B > >;
+
+        //     auto a_to_b = [] (optional_a) -> B { return B{}; };
+        //     auto b_to_c = [] (optional_b) -> C { return C{}; };
+
+        //     optional_a a( A{} );
+        //     auto res = a.transform(a_to_b).transform(b_to_c);
+        // }
+
+        TEST_CASE("or else") {
+            maybe_integer a = 42;
+            CHECK_EQ(a.or_else([] { return maybe_integer(13); }).value(), 42);
+
+            maybe_integer none;
+            CHECK_EQ(none.or_else([] { return maybe_integer(13); }).value(), 13);
         }
     }
 
@@ -264,6 +287,14 @@ namespace gap::test
 
             maybe_integer none = maybe_integer().and_then(add).and_then(add);
             CHECK(!none.has_value());
+        }
+
+        TEST_CASE("or else") {
+            maybe_integer a = 42;
+            CHECK_EQ(a.or_else([] { return maybe_integer(13); }).value(), 42);
+
+            maybe_integer none;
+            CHECK_EQ(none.or_else([] { return maybe_integer(13); }).value(), 13);
         }
     }
 
