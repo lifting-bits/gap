@@ -137,6 +137,24 @@ namespace gap::test
             maybe_integer none;
             CHECK_EQ(none.or_else([] { return maybe_integer(13); }).value(), 13);
         }
+
+        TEST_CASE("keep_if") {
+            maybe_integer a = maybe_integer(9).keep_if([] (auto v) { return v < 10; });
+            CHECK_EQ(a.value(), 9);
+
+            maybe_integer b = maybe_integer(9).keep_if([] (auto v) { return v > 10; });
+            CHECK(!b.has_value());
+
+            maybe_integer c = std::move(maybe_integer(9)).keep_if([] (auto v) { return v < 10; });
+            CHECK_EQ(c.value(), 9);
+
+            const auto d = maybe_integer(9);
+            maybe_integer e = d.keep_if([] (auto v) { return v < 10; });
+            CHECK_EQ(e.value(), 9);
+
+            maybe_integer none = maybe_integer().keep_if([] (auto v) { return v < 10; });
+            CHECK(!none.has_value());
+        }
     }
 
     TEST_SUITE("pointer-like optional") {
@@ -219,6 +237,15 @@ namespace gap::test
             auto e = none.and_then(add);
             CHECK(!e.has_value());
         }
+
+        TEST_CASE("or else") {
+            int v = 10, u = 11;
+            maybe_integer_ptr a = &v;
+            CHECK_EQ(a.or_else([&u] { return maybe_integer_ptr(&u); }).value(), 10);
+
+            maybe_integer_ptr none;
+            CHECK_EQ(none.or_else([&u] { return maybe_integer_ptr(&u); }).value(), 11);
+        }
     }
 
     TEST_SUITE("value-like optional") {
@@ -295,6 +322,24 @@ namespace gap::test
 
             maybe_integer none;
             CHECK_EQ(none.or_else([] { return maybe_integer(13); }).value(), 13);
+        }
+
+        TEST_CASE("keep_if") {
+            maybe_integer a = maybe_integer(9).keep_if([] (auto v) { return v < 10; });
+            CHECK_EQ(a.value(), 9);
+
+            maybe_integer b = maybe_integer(9).keep_if([] (auto v) { return v > 10; });
+            CHECK(!b.has_value());
+
+            maybe_integer c = std::move(maybe_integer(9)).keep_if([] (auto v) { return v < 10; });
+            CHECK_EQ(c.value(), 9);
+
+            const auto d = maybe_integer(9);
+            maybe_integer e = d.keep_if([] (auto v) { return v < 10; });
+            CHECK_EQ(e.value(), 9);
+
+            maybe_integer none = maybe_integer().keep_if([] (auto v) { return v < 10; });
+            CHECK(!none.has_value());
         }
     }
 
