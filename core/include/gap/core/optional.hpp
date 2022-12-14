@@ -116,14 +116,14 @@ namespace gap {
 
         constexpr optional_wrapper() noexcept = default;
 
-        constexpr optional_wrapper(const base_type &value)
+        constexpr optional_wrapper(const base_type &other)
             requires(copy_constructible)
-            : base_type(value) {}
+            : base_type(other) {}
 
-        constexpr optional_wrapper(base_type &&value)
+        constexpr optional_wrapper(base_type &&other)
             noexcept(nothrow_move_constructible)
             requires(move_constructible)
-            : base_type(std::move(value))
+            : base_type(std::move(other))
         {}
 
         template< typename U >
@@ -143,8 +143,8 @@ namespace gap {
         template< typename U = value_type >
         requires(std::is_constructible_v< base_type, U&& >)
         explicit(!std::is_convertible_v< U&&, value_type >)
-        constexpr optional_wrapper( U &&value )
-            : base_type(std::forward< U >(value))
+        constexpr optional_wrapper( U &&other )
+            : base_type(std::forward< U >(other))
         {}
 
         base& unwrap() & { return *this; }
