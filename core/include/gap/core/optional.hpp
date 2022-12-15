@@ -15,7 +15,9 @@ namespace gap {
     // optional concepts
     //
     template< typename T >
-    concept optional_like = requires (T a) {
+    concept optional_like =
+    std::is_default_constructible_v< T >
+    && requires (T a) {
         { a.value() }     -> convertible_to< typename T::value_type >;
         { a.has_value() } -> convertible_to< bool >;
         { *a } -> convertible_to< typename T::value_type >;
