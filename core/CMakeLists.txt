@@ -7,6 +7,7 @@ add_headers(core GAP_CORE_HEADERS
 	config.hpp
 	coroutine.hpp
 	dense_map.hpp
+	functional.hpp
 	graph.hpp
 	generator.hpp
 	hash.hpp

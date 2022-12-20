@@ -9,6 +9,7 @@ add_executable(test-gap
   core/bigint.cpp
   core/benchmark.cpp
   core/dense_map.cpp
+  core/functional.cpp
   core/generator.cpp
   core/graph.cpp
   core/hash.cpp
