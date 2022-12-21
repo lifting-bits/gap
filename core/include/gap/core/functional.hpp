@@ -13,19 +13,19 @@ namespace gap
     namespace functional
     {
         template< typename TContainer >
-        auto enumerate(const TContainer& cont) -> gap::generator< decltype(*cont.begin()) > {
+        auto stream(const TContainer& cont) -> gap::generator< decltype(*cont.begin()) > {
             for (auto& elem : cont) {
                 co_yield elem;
             }
         }
 
         template< typename T >
-        gap::generator< T > enumerate(gap::generator< T > gen) {
+        gap::generator< T > stream(gap::generator< T > gen) {
             return gen;
         }
 
         template< typename T >
-        auto enumerate(const std::optional< T >& cont) -> gap::generator< T > {
+        auto stream(const std::optional< T >& cont) -> gap::generator< T > {
             if (cont.has_value()) {
                 auto value = cont.value();
                 co_yield value;
@@ -34,15 +34,15 @@ namespace gap
 
         template< typename TFunc, typename TSource >
         auto map(TFunc f, const TSource& source)
-            -> gap::generator< decltype(f(*enumerate(source).begin())) > {
-            for (auto& elem : enumerate(source)) {
+            -> gap::generator< decltype(f(*stream(source).begin())) > {
+            for (auto& elem : stream(source)) {
                 co_yield f(elem);
             }
         }
 
         template< typename TPred, typename TSource >
-        auto filter(TPred pred, const TSource& source) -> decltype(enumerate(source)) {
-            for (auto& elem : enumerate(source)) {
+        auto filter(TPred pred, const TSource& source) -> decltype(stream(source)) {
+            for (auto& elem : stream(source)) {
                 if (pred(elem)) {
                     co_yield elem;
                 }
@@ -51,9 +51,9 @@ namespace gap
 
         template< typename TFunc, typename TSource >
         auto flat_map(TFunc f, const TSource& source)
-            -> decltype(enumerate(f(*enumerate(source).begin()))) {
-            for (auto& elem : enumerate(source)) {
-                for (auto& sub_elem : enumerate(f(elem))) {
+            -> decltype(stream(f(*stream(source).begin()))) {
+            for (auto& elem : stream(source)) {
+                for (auto& sub_elem : stream(f(elem))) {
                     co_yield sub_elem;
                 }
             }
