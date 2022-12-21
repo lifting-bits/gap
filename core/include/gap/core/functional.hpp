@@ -12,10 +12,9 @@ namespace gap
 {
     namespace functional
     {
-        template< typename TContainer >
-        auto stream(const TContainer& cont) -> gap::generator< decltype(*cont.begin()) > {
-            for (auto& elem : cont) {
-                co_yield elem;
+        auto stream(auto&& cont) -> gap::generator< decltype(*cont.begin()) > {
+            for (auto&& elem : cont) {
+                co_yield std::forward< decltype(elem) >(elem);
             }
         }
 
@@ -33,28 +32,27 @@ namespace gap
         }
 
         template< typename TFunc, typename TSource >
-        auto map(TFunc f, const TSource& source)
+        auto map(TFunc&& f, TSource&& source)
             -> gap::generator< decltype(f(*stream(source).begin())) > {
-            for (auto& elem : stream(source)) {
-                co_yield f(elem);
+            for (auto&& elem : stream(std::forward< decltype(source) >(source))) {
+                co_yield f(std::forward< decltype(elem) >(elem));
             }
         }
 
         template< typename TPred, typename TSource >
-        auto filter(TPred pred, const TSource& source) -> decltype(stream(source)) {
-            for (auto& elem : stream(source)) {
-                if (pred(elem)) {
-                    co_yield elem;
+        auto filter(TPred&& pred, TSource&& source) -> decltype(stream(source)) {
+            for (auto&& elem : stream(std::forward< decltype(source) >(source))) {
+                if (pred(std::forward< decltype(elem) >(elem))) {
+                    co_yield std::forward< decltype(elem) >(elem);
                 }
             }
         }
 
         template< typename TFunc, typename TSource >
-        auto flat_map(TFunc f, const TSource& source)
-            -> decltype(stream(f(*stream(source).begin()))) {
-            for (auto& elem : stream(source)) {
-                for (auto& sub_elem : stream(f(elem))) {
-                    co_yield sub_elem;
+        auto flat_map(TFunc&& f, TSource&& source) -> decltype(stream(f(*stream(source).begin()))) {
+            for (auto&& elem : stream(std::forward< decltype(source) >(source))) {
+                for (auto&& sub_elem : stream(f(std::forward< decltype(elem) >(elem)))) {
+                    co_yield std::forward< decltype(sub_elem) >(sub_elem);
                 }
             }
         }
