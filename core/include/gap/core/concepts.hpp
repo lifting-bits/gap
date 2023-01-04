@@ -92,4 +92,14 @@ namespace gap
         { std::hash< std::decay_t< T > >{}(a) } -> convertible_to< std::size_t >;
     };
 
+    template< typename T >
+    concept dereferenceable = requires(T&& a) {
+        *a;
+    };
+
+    template< typename T >
+    concept iterable = requires(T&& a) {
+        a.begin() == a.end();
+    };
+
 } // namespace gap
