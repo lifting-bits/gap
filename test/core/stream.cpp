@@ -7,22 +7,22 @@
 #ifdef GAP_ENABLE_COROUTINES
 
     #include <doctest/doctest.h>
-    #include <gap/core/functional.hpp>
+    #include <gap/core/stream.hpp>
     #include <vector>
 
 namespace gap::test
 {
     TEST_CASE("map vector") {
         const std::vector< int > vec{ 1, 2, 3, 4, 5, 6 };
-        auto gen = gap::functional::map(
-            [](int x) { return std::make_pair(x, x * 2); }, gap::functional::stream(vec));
+        auto gen = gap::stream::map(
+            [](int x) { return std::make_pair(x, x * 2); }, gap::stream::stream(vec));
         for (auto [a, b] : gen) {
             CHECK_EQ(2 * a, b);
         }
 
-        gen = gap::functional::map(
+        gen = gap::stream::map(
             [](int x) { return std::make_pair(x, x * 2); },
-            gap::functional::stream(std::vector< int >{ 1, 2, 3, 4, 5, 6 }));
+            gap::stream::stream(std::vector< int >{ 1, 2, 3, 4, 5, 6 }));
         for (auto [a, b] : gen) {
             CHECK_EQ(2 * a, b);
         }
@@ -30,15 +30,14 @@ namespace gap::test
 
     TEST_CASE("filter vector") {
         const std::vector< int > vec{ 1, 2, 3, 4, 5, 6 };
-        auto gen
-            = gap::functional::filter([](int x) { return x % 2; }, gap::functional::stream(vec));
+        auto gen = gap::stream::filter([](int x) { return x % 2; }, gap::stream::stream(vec));
         for (auto x : gen) {
             CHECK(x % 2);
         }
 
-        auto new_gen = gap::functional::filter(
+        auto new_gen = gap::stream::filter(
             [](int x) { return x % 2; },
-            gap::functional::stream(std::vector< int >{ 1, 2, 3, 4, 5, 6 }));
+            gap::stream::stream(std::vector< int >{ 1, 2, 3, 4, 5, 6 }));
         for (auto x : new_gen) {
             CHECK(x % 2);
         }
@@ -46,13 +45,13 @@ namespace gap::test
 
     TEST_CASE("flatmap generator") {
         const std::vector< int > vec{ 1, 2, 3 };
-        auto gen = gap::functional::flat_map(
+        auto gen = gap::stream::flat_map(
             [](int x) -> gap::generator< int > {
                 for (int i = 0; i < x; ++i) {
                     co_yield x;
                 }
             },
-            gap::functional::stream(vec));
+            gap::stream::stream(vec));
         int count = 0;
         for (auto elem : gen) {
             (void) elem;

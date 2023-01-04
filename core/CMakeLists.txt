@@ -7,7 +7,6 @@ add_headers(core GAP_CORE_HEADERS
 	config.hpp
 	coroutine.hpp
 	dense_map.hpp
-	functional.hpp
 	graph.hpp
 	generator.hpp
 	hash.hpp
@@ -17,6 +16,7 @@ add_headers(core GAP_CORE_HEADERS
 	ranges.hpp
 	recursive_generator.hpp
 	source_location.hpp
+	stream.hpp
 	strong_type.hpp
 	fixed_string.hpp
 	type_traits.hpp

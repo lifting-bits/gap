@@ -11,7 +11,7 @@
 
 namespace gap
 {
-    namespace functional
+    namespace stream
     {
         template< typename T >
         requires iterable< T >
@@ -55,7 +55,7 @@ namespace gap
                 }
             }
         }
-    } // namespace functional
+    } // namespace stream
 } // namespace gap
 
 #endif

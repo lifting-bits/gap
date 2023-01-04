@@ -9,13 +9,13 @@ add_executable(test-gap
   core/bigint.cpp
   core/benchmark.cpp
   core/dense_map.cpp
-  core/functional.cpp
   core/generator.cpp
   core/graph.cpp
   core/hash.cpp
   core/memoize.cpp
   core/parser.cpp
   core/ranges.cpp
+  core/stream.cpp
   core/strong_type.cpp
   core/recursive_generator.cpp
   core/union_find.cpp
