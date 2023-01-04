@@ -56,29 +56,6 @@ namespace gap
                 }
             }
         }
-
-        template< typename T, typename Inserter >
-        Inserter insert_into(Inserter ins, gap::generator< T >& gen) {
-            for (auto& value : gen) {
-                *ins = value;
-                ++ins;
-            }
-            return ins;
-        }
-
-        template< typename T, typename ItBegin, typename ItEnd >
-        ItBegin insert_into(ItBegin begin, ItEnd end, gap::generator< T >& gen) {
-            for (auto& value : gen) {
-                if (begin == end) {
-                    break;
-                }
-
-                *begin = value;
-                ++begin;
-            }
-            return begin;
-        }
-
     } // namespace functional
 } // namespace gap
 
