@@ -5,6 +5,7 @@
 #ifdef GAP_ENABLE_COROUTINES
 
     #include "gap/core/coroutine.hpp"
+    #include "gap/core/ranges.hpp"
 
     #include <concepts>
     #include <cstddef>
@@ -18,6 +19,9 @@ namespace gap
     template< typename T >
     struct generator;
 
+    template< gap::ranges::range range_t >
+    using range_generator = generator< typename std::decay_t< range_t >::value_type >;
+
     namespace detail
     {
         template< typename T >
@@ -26,7 +30,8 @@ namespace gap
             using reference_type = std::conditional_t< std::is_reference_v< T >, T, T& >;
             using pointer_type   = value_type*;
 
-            generator_promise_type() = default;
+            generator_promise_type()
+                : _value(nullptr){};
 
             generator< T > get_return_object() noexcept;
 
@@ -128,7 +133,7 @@ namespace gap
         using promise_type     = detail::promise_type< T >;
         using coroutine_handle = detail::coroutine_handle< T >;
 
-        using value_type       = typename promise_type::reference_type;
+        using value_type = typename promise_type::reference_type;
 
         generator(generator&& other) noexcept
             : _coroutine(other._coroutine) {
