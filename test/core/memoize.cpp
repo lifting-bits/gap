@@ -53,7 +53,7 @@ namespace gap::test
         }
 
         struct function_object {
-            int operator() (int a, int b) { return a + b; }
+            int operator() (int a, int b) const { return a + b; }
         };
 
         TEST_CASE("function object") {
@@ -62,8 +62,8 @@ namespace gap::test
         }
 
         struct poly_function_object {
-            int operator() (int a, int b) { return a + b; }
-            double operator() (double a, double b) { return a + b; }
+            int operator() (int a, int b) const { return a + b; }
+            double operator() (double a, double b) const { return a + b; }
         };
 
         TEST_CASE("function object") {
