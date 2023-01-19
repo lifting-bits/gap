@@ -38,7 +38,7 @@ namespace gap
         explicit memoizer(function_type &&f) : fn(std::forward< function_type >(f)) {}
 
         template< typename... call_args_t >
-        return_reference operator()(call_args_t &&...args) {
+        return_reference operator()(call_args_t &&...args) const {
             return call< std::conditional_t<
                 detail::is_same_base< call_args_t, args_t >, call_args_t &&,
                 std::remove_cvref_t< args_t > && >... >(std::forward< call_args_t >(args)...);
@@ -54,7 +54,7 @@ namespace gap
 
       private:
         template< typename... call_args_t >
-        return_reference call(call_args_t &&...args) {
+        return_reference call(call_args_t &&...args) const {
             auto tuple = std::forward_as_tuple(std::forward< call_args_t >(args)...);
             if (auto res = cache.find(tuple); res != cache.end()) {
                 return res->second;
@@ -70,13 +70,13 @@ namespace gap
         }
 
         template< typename function_t >
-        auto cache_call(function_t &&f, tuple_type &&args) {
+        auto cache_call(function_t &&f, tuple_type &&args) const {
             auto result = std::apply(std::forward< function_t >(f), args);
             return cache.emplace(std::move(args), std::move(result)).first;
         }
 
         function_type fn;
-        cache_type cache;
+        mutable cache_type cache;
     };
 
     template< typename signature, typename function_t >
