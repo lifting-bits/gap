@@ -9,6 +9,7 @@
 #include <numeric>
 #include <utility>
 #include <vector>
+#include <mutex>
 
 namespace gap
 {
