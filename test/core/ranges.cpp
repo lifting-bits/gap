@@ -20,4 +20,15 @@ namespace gap::test
     static_assert(gr::arithmetic_range< std::vector< float > >);
     static_assert(gr::arithmetic_range< std::vector< dummy > > == false);
 
+
+    static_assert(std::is_same_v< gr::range_value_t< std::vector< int > >, int >);
+    static_assert(std::is_same_v< gr::range_value_t< std::vector< int* > >, int* >);
+    static_assert(std::is_same_v<
+        gr::range_value_t< std::vector< int > >, std::vector< int >::value_type
+    >);
+
+    static_assert(std::is_same_v<
+        gr::range_value_t< std::vector< dummy > >, std::vector< dummy >::value_type
+    >);
+
 } // namespace gap::test
