@@ -37,4 +37,10 @@ namespace gap::ranges
         return std::accumulate(r.begin(), r.end(), init, bop);
     }
 
+    template< range R >
+    using iterator_t = decltype(std::begin(std::declval< R& >()));
+
+    template< range R >
+    using range_value_t = std::iter_value_t< iterator_t< R > >;
+
 } // namespace gap::ranges
