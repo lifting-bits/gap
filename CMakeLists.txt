@@ -8,7 +8,12 @@ if (POLICY CMP0025)
 endif ()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(vcpkg_setup)
+
+option(GAP_ENABLE_VCPKG ON)
+
+if (GAP_ENABLE_VCPKG)
+  include(vcpkg_setup)
+endif()
 
 project(
   gap
@@ -104,12 +109,6 @@ target_link_libraries(gap
   INTERFACE
     gap-core
     gap-settings
-)
-
-target_include_directories(gap
-  INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 set_target_properties(gap PROPERTIES PUBLIC_HEADER "${GAP_HEADERS}")
