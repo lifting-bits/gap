@@ -135,6 +135,8 @@ namespace gap
 
         using value_type = typename promise_type::reference_type;
 
+        generator() noexcept = default;
+
         generator(generator&& other) noexcept
             : _coroutine(other._coroutine) {
             other._coroutine = nullptr;
