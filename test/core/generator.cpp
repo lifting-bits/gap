@@ -39,6 +39,14 @@ namespace gap::test
         auto b = from_range(g);
     }
 
+    generator< int > empty_generator() {
+        return {};
+    }
+
+    TEST_CASE("empty generator") {
+        auto v = empty_generator();
+    }
+
 } // namespace gap::test
 
 #endif // GAP_ENABLE_COROUTINES
