@@ -23,6 +23,7 @@ WORKDIR /opt/vcpkg
 
 RUN ./bootstrap-vcpkg.sh && ./vcpkg integrate install && \
     ./vcpkg integrate bash && \
-    echo 'export PATH=$PATH:/opt/vcpkg' >>~/.bashrc
+    echo 'export PATH=$PATH:/opt/vcpkg' >>~/.bashrc \
+    echo 'export VCPKG_ROOT=/opt/vcpkg' >>~/.bashrc
 
 WORKDIR /root
