@@ -9,12 +9,6 @@ endif ()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-option(GAP_ENABLE_VCPKG ON)
-
-if (GAP_ENABLE_VCPKG)
-  include(vcpkg_setup)
-endif()
-
 project(
   gap
   LANGUAGES C CXX
@@ -219,7 +213,6 @@ if (GAP_INSTALL)
 
   install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/compiler_warnings.cmake"
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg_setup.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sanitizers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/static_analyzers.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/project_settings.cmake"
