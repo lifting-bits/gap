@@ -16,6 +16,7 @@ cmake  --build --preset ninja-multi-vcpkg
 ## Install & Integrate
 
 Simply use cmake install infrastructure:
+NOTE: if using the vcpkg preset, `VCPKG_ROOT` must be set to the root directory of the vcpkg instance
 
 ```
 cmake -DCMAKE_INSTALL_PREFIX:PATH=<path> --build --preset ninja-multi-vcpkg --target install
