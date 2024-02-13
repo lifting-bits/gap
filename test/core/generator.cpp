@@ -13,7 +13,8 @@ namespace gap::test
     generator< int > iota() {
         int value = 0;
         while (true) {
-            co_yield value++;
+            co_yield value;
+            ++value;
         }
     }
 
