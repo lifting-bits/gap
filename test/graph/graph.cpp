@@ -3,8 +3,8 @@
 #ifdef GAP_ENABLE_COROUTINES
 
     #include <doctest/doctest.h>
-    #include <gap/core/generator.hpp>
-    #include <gap/core/graph.hpp>
+    #include <gap/coro/generator.hpp>
+    #include <gap/graph/graph.hpp>
     #include <memory>
     #include <vector>
 

@@ -3,38 +3,28 @@
 find_package(doctest CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
-add_executable(test-gap
-  main.cpp
+set(GAP_TEST_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE INTERNAL "GAP test source directory")
 
-  core/bigint.cpp
-  core/benchmark.cpp
-  core/dense_map.cpp
-  core/generator.cpp
-  core/graph.cpp
-  core/hash.cpp
-  core/memoize.cpp
-  core/optional.cpp
-  core/parser.cpp
-  core/ranges.cpp
-  core/strong_type.cpp
-  core/recursive_generator.cpp
-  core/union_find.cpp
-)
+function(add_gap_test name)
+  add_executable(${name} ${GAP_TEST_SOURCE_DIR}/main.cpp ${ARGN})
+  target_compile_features(${name} PRIVATE cxx_std_20)
+  target_link_libraries(${name}
+    PRIVATE
+      gap-settings
+      gap-core
 
-target_compile_features(test-gap PRIVATE cxx_std_20)
+      doctest::doctest
+      spdlog::spdlog
+  )
+  target_include_directories(${name} PUBLIC ${DOCTEST_INCLUDE_DIR})
 
-target_link_libraries(test-gap
-  PRIVATE
-    gap-settings
-    gap-core
-    doctest::doctest
-    spdlog::spdlog
-)
+  add_test(
+    NAME ${name}
+    COMMAND "$<TARGET_FILE:${name}>"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+  )
+endfunction()
 
-target_include_directories(test-gap PUBLIC ${DOCTEST_INCLUDE_DIR})
-
-add_test(
-  NAME test-gap
-  COMMAND "$<TARGET_FILE:test-gap>"
-  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-)
+add_subdirectory(core)
+add_subdirectory(coro)
+add_subdirectory(graph)

@@ -3,7 +3,7 @@
 #ifdef GAP_ENABLE_COROUTINES
 
     #include <doctest/doctest.h>
-    #include <gap/core/generator.hpp>
+    #include <gap/coro/generator.hpp>
 
     #include <vector>
     #include <gap/core/ranges.hpp>
