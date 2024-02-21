@@ -93,6 +93,7 @@ endif()
 
 add_subdirectory(core)
 add_subdirectory(coro)
+add_subdirectory(graph)
 
 set(GAP_HEADERS
   ${GAP_CORE_HEADERS}
@@ -123,15 +124,6 @@ if (GAP_ENABLE_TESTING)
 endif ()
 
 #
-# examples
-#
-option(GAP_ENABLE_EXAMPLES "Enable GAP Examples Builds" ON)
-
-if (GAP_ENABLE_EXAMPLES)
-  add_subdirectory(examples)
-endif ()
-
-#
 # instalation support
 #
 
@@ -155,6 +147,7 @@ if (GAP_INSTALL)
   install_gap_target(gap-core core)
   install_gap_target(gap-settings core)
   install_gap_target(gap-coro coro)
+  install_gap_target(gap-graph graph)
 
   #
   # packaging support
