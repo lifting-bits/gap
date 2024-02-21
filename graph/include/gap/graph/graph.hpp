@@ -4,7 +4,7 @@
 
 #ifdef GAP_ENABLE_COROUTINES
 
-    #include <gap/core/recursive_generator.hpp>
+    #include <gap/coro/recursive_generator.hpp>
     #include <gap/core/ranges.hpp>
 
     #include <unordered_set>
