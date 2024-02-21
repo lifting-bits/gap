@@ -3,7 +3,7 @@
 #ifdef GAP_ENABLE_COROUTINES
 
     #include <doctest/doctest.h>
-    #include <gap/core/recursive_generator.hpp>
+    #include <gap/coro/recursive_generator.hpp>
 
 namespace gap::test
 {
