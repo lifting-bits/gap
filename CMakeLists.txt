@@ -92,9 +92,11 @@ endif()
 #
 
 add_subdirectory(core)
+add_subdirectory(coro)
 
 set(GAP_HEADERS
   ${GAP_CORE_HEADERS}
+  ${GAP_CORO_HEADERS}
 )
 
 add_library(gap INTERFACE)
@@ -103,6 +105,7 @@ add_library(gap::gap ALIAS gap)
 target_link_libraries(gap
   INTERFACE
     gap-core
+    gap-coro
     gap-settings
 )
 
@@ -145,12 +148,13 @@ set_target_properties(${PROJECT_NAME}
 if (GAP_INSTALL)
   set(GAP_CMAKE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME} CACHE PATH "Path where CMake utilities will be installed")
 
-  set(GAP_INSTALL_TARGETS gap gap-core gap-settings)
+  set(GAP_INSTALL_TARGETS gap gap-core gap-coro gap-settings)
   set(GAP_EXPORT_NAME gapTargets)
 
   install_gap_target(gap core)
   install_gap_target(gap-core core)
   install_gap_target(gap-settings core)
+  install_gap_target(gap-coro coro)
 
   #
   # packaging support
