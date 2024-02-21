@@ -34,6 +34,7 @@ if(NOT DEFINED GAP_MASTER_PROJECT)
 endif()
 
 include(project_settings)
+include(utils)
 
 # adds header paths of library to list named var
 function(add_headers lib var)
