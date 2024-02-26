@@ -4,6 +4,8 @@
 
 #ifdef GAP_ENABLE_COROUTINES
 
+    #include "gap/coro/coroutine.hpp"
+
 namespace gap::coro
 {
     template< typename T >
