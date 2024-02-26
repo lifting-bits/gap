@@ -5,6 +5,7 @@ add_headers(coro GAP_CORO_HEADERS
 	broken_promise.hpp
 	coroutine.hpp
 	generator.hpp
+	manual_reset_event.hpp
 	recursive_generator.hpp
 	task.hpp
 )
