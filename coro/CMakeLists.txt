@@ -5,6 +5,7 @@ add_headers(coro GAP_CORO_HEADERS
 	coroutine.hpp
 	generator.hpp
 	recursive_generator.hpp
+	task.hpp
 )
 
 add_gap_library(gap-coro "${GAP_CORO_HEADERS}")
