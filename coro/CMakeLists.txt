@@ -1,6 +1,7 @@
 # Copyright (c) 2024, Trail of Bits, Inc. All rights reserved.
 
 add_headers(coro GAP_CORO_HEADERS
+	broken_promise.hpp
 	coroutine.hpp
 	generator.hpp
 	recursive_generator.hpp
