@@ -91,6 +91,19 @@ namespace gap::trait
     template< typename... T >
     using recursive_function_signature_t = typename detail::recursive_function_signature< T... >::type;
 
+    template< typename T >
+    struct unwrap_reference {
+        using type = T;
+    };
+
+    template< typename T >
+    struct unwrap_reference< std::reference_wrapper< T > > {
+        using type = T;
+    };
+
+    template< typename T >
+    using unwrap_reference_t = typename unwrap_reference< T >::type;
+
     namespace
     {
         static_assert(type< int > == type< int >);
