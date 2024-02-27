@@ -26,7 +26,7 @@ namespace gap::coro
           private:
             friend struct final_awaitable;
 
-            struct final_awaitable {
+            struct final_awaiter {
                 constexpr bool await_ready() const noexcept { return false; }
 
                 template< typename promise_t >
@@ -35,14 +35,14 @@ namespace gap::coro
                     return coroutine.promise().m_continuation;
                 }
 
-                void await_resume() const noexcept {}
+                [[noreturn]] void await_resume() const noexcept { std::terminate(); }
             };
 
           public:
             task_promise_base() noexcept = default;
 
             gap::suspend_always initial_suspend() const noexcept { return {}; }
-            final_awaitable final_suspend() const noexcept { return {}; }
+            final_awaiter final_suspend() const noexcept { return {}; }
 
             void set_continuation(gap::coroutine_handle<> continuation) noexcept {
                 m_continuation = continuation;
@@ -54,7 +54,7 @@ namespace gap::coro
 
         template< typename T >
         struct task_promise final : task_promise_base {
-            using result_type = std::variant< T, std::exception_ptr, std::monostate >;
+            using result_type = std::variant< std::monostate, T, std::exception_ptr >;
 
             task_promise() noexcept = default;
 
@@ -63,10 +63,11 @@ namespace gap::coro
             void unhandled_exception() { m_result = std::current_exception(); }
 
             template< typename U >
-            void return_value(U&& value)
                 requires std::is_convertible_v< U&&, T >
+            void return_value(U&& value)
+                noexcept(std::is_nothrow_constructible_v<T, U&&>)
             {
-                m_result = std::forward< U >(value);
+                m_result.template emplace< T >(std::forward< U >(value));
             }
 
             T& result() & {
