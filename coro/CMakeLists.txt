@@ -4,6 +4,7 @@ add_headers(coro GAP_CORO_HEADERS
 	awaitable_traits.hpp
 	broken_promise.hpp
 	coroutine.hpp
+	fmap.hpp
 	generator.hpp
 	manual_reset_event.hpp
 	recursive_generator.hpp
