@@ -7,6 +7,7 @@
     #include <gap/coro/coroutine.hpp>
     #include <gap/coro/awaitable_traits.hpp>
 
+    #include <atomic>
     #include <concepts>
     #include <type_traits>
     #include <utility>
@@ -18,6 +19,8 @@ namespace gap::coro
 
     struct single_consumer_event
     {
+        enum state_kind { notset, set, waiting };
+
         single_consumer_event(bool initially_set = false) noexcept
             : m_state(initially_set ? state_kind::set : state_kind::notset)
         {}
@@ -61,10 +64,6 @@ namespace gap::coro
             return awaiter{ *this };
         }
       private:
-        enum class state_kind : std::uint8_t {
-            notset, set, waiting
-        };
-
         std::atomic< state_kind > m_state = state_kind::notset;
         gap::coroutine_handle<> m_awaiter = nullptr;
     };
