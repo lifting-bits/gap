@@ -10,7 +10,6 @@ add_headers(coro GAP_CORO_HEADERS
 	recursive_generator.hpp
 	single_consumer_event.hpp
 	sync_wait.hpp
-	sync_wait_task.hpp
 	task.hpp
 )
 
