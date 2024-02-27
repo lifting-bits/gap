@@ -32,20 +32,22 @@ namespace gap::coro
             decltype(auto) await_ready()
                 noexcept(noexcept(static_cast< awaiter_t&& >(m_awaiter).await_ready()))
             {
-                return static_cast<awaiter_t&&>(m_awaiter).await_ready();
+                return static_cast< awaiter_t&& >(m_awaiter).await_ready();
             }
 
             template< typename promise_t >
             decltype(auto) await_suspend(gap::coroutine_handle< promise_t > coroutine)
-                noexcept(noexcept(static_cast< awaiter_t&& >(m_awaiter).await_suspend(std::move(coroutine))))
+                noexcept(noexcept(
+                    static_cast< awaiter_t&& >(std::declval< awaiter_t >()).await_suspend(std::move(coroutine))
+                ))
             {
-                return static_cast<awaiter_t&&>(m_awaiter).await_suspend(std::move(coroutine));
+                return static_cast< awaiter_t&& >(m_awaiter).await_suspend(std::move(coroutine));
             }
 
             template< typename await_result = decltype(std::declval< awaiter_t >().await_resume()) >
             requires std::is_void_v< await_result >
             decltype(auto) await_resume()
-                noexcept(noexcept(std::invoke(static_cast< func_t&& >(m_func))))
+                noexcept(noexcept(std::invoke(static_cast< func_t&& >(std::declval< func_t >()))))
             {
                 static_cast<awaiter_t&&>(m_awaiter).await_resume();
                 return std::invoke(static_cast< func_t&& >(m_func));
@@ -54,11 +56,15 @@ namespace gap::coro
             template< typename await_result = decltype(std::declval< awaiter_t >().await_resume()) >
             requires (not std::is_void_v< await_result >)
             decltype(auto) await_resume()
-                noexcept(noexcept(std::invoke(static_cast< func_t&& >(m_func), static_cast<awaiter_t&&>(m_awaiter).await_resume())))
+                noexcept(noexcept(
+                    std::invoke(
+                        static_cast< func_t&& >(std::declval< func_t >()),
+                        static_cast< awaiter_t&& >(std::declval< awaiter_t >()).await_resume())
+                ))
             {
                 return std::invoke(
                     static_cast< func_t&& >(m_func),
-                    static_cast<awaiter_t&&>(m_awaiter).await_resume()
+                    static_cast< awaiter_t&& >(m_awaiter).await_resume()
                 );
             }
           private:
