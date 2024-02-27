@@ -11,6 +11,7 @@ add_headers(coro GAP_CORO_HEADERS
 	single_consumer_event.hpp
 	sync_wait.hpp
 	task.hpp
+	when_all_ready.hpp
 )
 
 add_gap_library(gap-coro "${GAP_CORO_HEADERS}")
