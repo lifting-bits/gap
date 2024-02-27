@@ -252,6 +252,13 @@ namespace gap::coro
         coroutine_handle m_coroutine = nullptr;
     };
 
+    template< awaitable awaitable_t >
+    auto make_task(awaitable_t awaitable)
+        -> task< std::remove_reference_t< await_result_t< awaitable_t > > >
+    {
+        co_return co_await static_cast< awaitable_t&& >(awaitable);
+    }
+
     namespace detail
     {
         template< typename T >
