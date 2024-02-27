@@ -8,6 +8,7 @@
     #include <gap/coro/awaitable_traits.hpp>
 
     #include <concepts>
+    #include <functional>
     #include <type_traits>
     #include <utility>
 
