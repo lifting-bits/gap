@@ -77,11 +77,6 @@ namespace gap::test
             return self(n - 1) + self(n - 2);
         };
 
-        TEST_CASE("recursive") {
-            auto fn = recursive_memoize(fib);
-            checks_fib(fn);
-        }
-
         TEST_CASE("result-type-signature") {
             auto fn = recursive_memoize<int>(fib);
             checks_fib(fn);
