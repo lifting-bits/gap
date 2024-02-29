@@ -19,7 +19,7 @@ namespace gap::coro
 
     struct single_consumer_event
     {
-        enum state_kind { notset, set, waiting };
+        enum class state_kind { notset, set, waiting };
 
         single_consumer_event(bool initially_set = false) noexcept
             : m_state(initially_set ? state_kind::set : state_kind::notset)
