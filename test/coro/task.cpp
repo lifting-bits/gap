@@ -170,7 +170,7 @@ namespace gap::test
     TEST_CASE("passing parameter by value to task coroutine calls move-constructor exactly once") {
         counted::reset_counts();
 
-        auto f = [](counted arg) -> gap::coro::task<> { co_return; };
+        auto f = [](counted) -> gap::coro::task<> { co_return; };
 
         counted c;
 
