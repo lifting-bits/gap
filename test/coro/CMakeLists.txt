@@ -5,6 +5,7 @@ add_gap_test(test-gap-coro
     generator.cpp
     recursive_generator.cpp
     shared_task.cpp
+    sync_wait.cpp
     task.cpp
     when_all_ready.cpp
 )
