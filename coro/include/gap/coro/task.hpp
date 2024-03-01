@@ -15,8 +15,6 @@
 
 namespace gap::coro
 {
-    static_assert(GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER, "Symmetric transfer is not supported");
-
     template< typename T = void >
     struct task;
 
