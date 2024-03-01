@@ -49,7 +49,7 @@
 # define GAP_NOINLINE __declspec(noinline)
 #elif GAP_COMPILER_CLANG || GAP_COMPILER_GCC
 # define GAP_NOINLINE __attribute__((noinline))
-#else
+#endif
 
 #if GAP_COMPILER_MSVC
 # define GAP_FORCE_INLINE __forceinline

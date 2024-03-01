@@ -1,5 +1,14 @@
 // Copyright (c) 2024, Trail of Bits, Inc.
 
+///////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Lewis Baker
+// Licenced under MIT license. See LICENSE.txt for details.
+///////////////////////////////////////////////////////////////////////////////
+// This file is a modified version of GAP/task.hpp from the GAP
+// project. The original file is licenced under the MIT license and the original
+// license is included above.
+///////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #ifdef GAP_ENABLE_COROUTINES
@@ -7,6 +16,7 @@
     #include "gap/coro/coroutine.hpp"
     #include "gap/coro/broken_promise.hpp"
 
+    #include <atomic>
     #include <cassert>
     #include <exception>
     #include <type_traits>
@@ -27,13 +37,31 @@ namespace gap::coro
             struct final_awaiter {
                 constexpr bool await_ready() const noexcept { return false; }
 
+            #if GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER
                 template< typename promise_t >
                 gap::coroutine_handle<> await_suspend(
-                    gap::coroutine_handle< promise_t > coroutine) noexcept {
+                    gap::coroutine_handle< promise_t > coroutine) noexcept
+                {
                     return coroutine.promise().m_continuation;
                 }
+            #else
+                template< typename promise_t >
+                GAP_NOINLINE
+                void await_suspend(gap::coroutine_handle< promise_t > coroutine) noexcept {
+                    task_promise_base& promise = coroutine.promise();
+                    // Use 'release' memory semantics in case we finish before the
+					// awaiter can suspend so that the awaiting thread sees our
+					// writes to the resulting value.
+					// Use 'acquire' memory semantics in case the caller registered
+					// the continuation before we finished. Ensure we see their write
+					// to m_continuation.
+                    if (promise.m_state.exchange(true, std::memory_order_acq_rel)) {
+                        promise.m_continuation.resume();
+                    }
+                }
+            #endif
 
-                [[noreturn]] void await_resume() const noexcept { std::terminate(); }
+                void await_resume() const noexcept {}
             };
 
           public:
@@ -42,11 +70,24 @@ namespace gap::coro
             gap::suspend_always initial_suspend() const noexcept { return {}; }
             final_awaiter final_suspend() const noexcept { return {}; }
 
+        #if GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER
             void set_continuation(gap::coroutine_handle<> continuation) noexcept {
                 m_continuation = continuation;
             }
+        #else
+            bool try_set_continuation(gap::coroutine_handle<> continuation) noexcept {
+                m_continuation = continuation;
+                return !m_state.exchange(true, std::memory_order_acq_rel);
+            }
+        #endif
 
           protected:
+            #if !GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER
+                // Initially false. Set to true when either a continuation is registered
+                // or when the coroutine has run to completion. Whichever operation
+                // successfully transitions from false->true got there first.
+                std::atomic< bool > m_state = false;
+            #endif
             gap::coroutine_handle<> m_continuation = nullptr;
         };
 
@@ -82,7 +123,7 @@ namespace gap::coro
             // rvalue reference of a fundamental type from await_resume() will
             // cause the value to be copied to a temporary. This breaks the
             // sync_wait() implementation.
-            // See https://github.com/lewissbaker/cppcoro/issues/40#issuecomment-326864107
+            // See https://github.com/lewissbaker/GAP/issues/40#issuecomment-326864107
             using rvalue_type
                 = std::conditional_t< std::is_arithmetic_v< T > || std::is_pointer_v< T >, T, T&& >;
 
@@ -164,10 +205,18 @@ namespace gap::coro
 
             bool await_ready() const noexcept { return !m_coroutine || m_coroutine.done(); }
 
+        #if GAP_COMPILER_SUPPORTS_SYMMETRIC_TRANSFER
             gap::coroutine_handle<> await_suspend(gap::coroutine_handle<> coroutine) noexcept {
                 m_coroutine.promise().set_continuation(coroutine);
                 return m_coroutine;
             }
+        #else
+            bool await_suspend(gap::coroutine_handle<> coroutine) noexcept {
+                m_coroutine.resume();
+                return m_coroutine.promise().try_set_continuation(coroutine);
+            }
+        #endif
+
         };
 
       public:
