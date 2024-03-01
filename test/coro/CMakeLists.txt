@@ -4,6 +4,7 @@ add_gap_test(test-gap-coro
     counted.cpp
     generator.cpp
     recursive_generator.cpp
+    shared_task.cpp
     task.cpp
     when_all_ready.cpp
 )
