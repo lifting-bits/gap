@@ -48,8 +48,8 @@ namespace gap::coro
                     return m_event.is_set();
                 }
 
-                bool await_suspend(gap::coroutine_handle<> awaiter) noexcept {
-                    m_event.m_awaiter = awaiter;
+                bool await_suspend(gap::coroutine_handle<> handle) noexcept {
+                    m_event.m_awaiter = handle;
                     state_kind old = state_kind::notset;
                     return m_event.m_state.compare_exchange_strong(
                         old, state_kind::waiting,
