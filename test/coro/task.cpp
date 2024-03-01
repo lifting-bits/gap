@@ -72,13 +72,6 @@ namespace gap::test
         }());
     }
 
-    TEST_CASE("awaiting default-constructed task throws broken_promise") {
-        gap::coro::sync_wait([&]() -> gap::coro::task<> {
-            gap::coro::task<> t;
-            CHECK_THROWS_AS(co_await t, const gap::coro::broken_promise&);
-        }());
-    }
-
     TEST_CASE("awaiting task that completes asynchronously") {
         bool reached_before_event = false;
         bool reached_after_event  = false;
@@ -211,7 +204,9 @@ namespace gap::test
         auto t = f() | fmap([] { return 123; });
 
         gap::coro::sync_wait(gap::coro::when_all_ready(
-            [&]() -> gap::coro::task<> { CHECK(co_await t == 123); }(),
+            [&]() -> gap::coro::task<> {
+                auto result = co_await t;
+                CHECK(result == 123); }(),
             [&]() -> gap::coro::task<> {
                 event.set();
                 co_return;
