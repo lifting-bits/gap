@@ -1,6 +1,12 @@
+// Copyright (c) 2024, Trail of Bits, Inc.
+
 ///////////////////////////////////////////////////////////////////////////////
 // Copyright (c) Lewis Baker
 // Licenced under MIT license. See LICENSE.txt for details.
+///////////////////////////////////////////////////////////////////////////////
+// This file is a modified version of cppcoro/async_manual_reset_event.hpp from
+// the cppcoro project. The original file is licenced under the MIT license and
+// the original license is included above.
 ///////////////////////////////////////////////////////////////////////////////
 
 #pragma once

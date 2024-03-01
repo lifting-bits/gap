@@ -1,5 +1,14 @@
 // Copyright (c) 2024, Trail of Bits, Inc.
 
+///////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Lewis Baker
+// Licenced under MIT license. See LICENSE.txt for details.
+///////////////////////////////////////////////////////////////////////////////
+// This file is a modified version of cppcoro/when_all_ready.hpp from the cppcoro
+// project. The original file is licenced under the MIT license and the original
+// license is included above.
+///////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #ifdef GAP_ENABLE_COROUTINES
