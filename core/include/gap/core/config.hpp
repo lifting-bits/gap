@@ -44,3 +44,17 @@
         #define GAP_COROHEADER_FOUND_AND_USABLE
     #endif
 #endif
+
+#if GAP_COMPILER_MSVC
+# define GAP_NOINLINE __declspec(noinline)
+#elif GAP_COMPILER_CLANG || GAP_COMPILER_GCC
+# define GAP_NOINLINE __attribute__((noinline))
+#else
+
+#if GAP_COMPILER_MSVC
+# define GAP_FORCE_INLINE __forceinline
+#elif GAP_COMPILER_CLANG
+# define GAP_FORCE_INLINE __attribute__((always_inline))
+#else
+# define GAP_FORCE_INLINE inline
+#endif
