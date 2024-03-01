@@ -1,5 +1,14 @@
 // Copyright (c) 2021-present, Trail of Bits, Inc.
 
+///////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Lewis Baker
+// Licenced under MIT license. See LICENSE.txt for details.
+///////////////////////////////////////////////////////////////////////////////
+// This file is a modified version of cppcoro/test/when_all_ready.cpp from
+// the cppcoro project. The original file is licenced under the MIT license and
+// the original license is included above.
+///////////////////////////////////////////////////////////////////////////////
+
 #ifdef GAP_ENABLE_COROUTINES
 
     #include <doctest/doctest.h>
