@@ -19,6 +19,7 @@
 
     #include <semaphore>
     #include <cassert>
+    #include <vector>
 
 namespace gap::coro
 {
@@ -203,8 +204,8 @@ namespace gap::coro
             {
                 struct awaiter
                 {
-                    awaiter(when_all_ready_awaitable &&awaitable) noexcept
-                        : m_awaitable(std::move(awaitable))
+                    awaiter(when_all_ready_awaitable &awaitable) noexcept
+                        : m_awaitable(awaitable)
                     {}
 
                     bool await_ready() const noexcept {
@@ -220,7 +221,7 @@ namespace gap::coro
                     }
 
                   private:
-                    when_all_ready_awaitable m_awaitable;
+                    when_all_ready_awaitable& m_awaitable;
                 };
 
                 return awaiter{ *this };
@@ -471,7 +472,7 @@ namespace gap::coro
     } // namespace detail
 
     template< awaitable... awaitable_t >
-    [[nodiscard]] GAP_FORCE_INLINE auto when_all_ready(awaitable_t &&...awaitables)
+    GAP_FORCE_INLINE auto when_all_ready(awaitable_t &&...awaitables)
     {
         return detail::when_all_ready_awaitable< std::tuple<
             detail::when_all_task<
@@ -490,9 +491,9 @@ namespace gap::coro
 
     template<
         awaitable awaitable_t,
-        typename result_t = await_result_t< trait::unwrap_reference< awaitable_t > >
+        typename result_t = await_result_t< std::remove_reference_t< awaitable_t > >
     >
-    [[nodiscard]] auto when_all_ready(std::vector< awaitable_t > awaitables)
+    auto when_all_ready_vec(std::vector< awaitable_t > awaitables)
     {
         std::vector< detail::when_all_task< result_t > > tasks;
         tasks.reserve(awaitables.size());
