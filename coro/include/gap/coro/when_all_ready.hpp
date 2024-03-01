@@ -462,7 +462,7 @@ namespace gap::coro
     } // namespace detail
 
     template< awaitable... awaitable_t >
-    [[nodiscard]] __attribute__((always_inline)) auto when_all_ready(awaitable_t &&...awaitables)
+    [[nodiscard]] GAP_FORCE_INLINE auto when_all_ready(awaitable_t &&...awaitables)
     {
         return detail::when_all_ready_awaitable< std::tuple<
             detail::when_all_task<
