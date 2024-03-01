@@ -17,8 +17,9 @@
     #include <gap/coro/coroutine.hpp>
     #include <gap/coro/manual_reset_event.hpp>
 
-    #include <semaphore>
     #include <cassert>
+    #include <semaphore>
+    #include <utility>
 
 namespace gap::coro
 {

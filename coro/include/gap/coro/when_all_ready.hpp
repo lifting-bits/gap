@@ -262,7 +262,7 @@ namespace gap::coro
             }
 
             auto final_suspend() const noexcept {
-                struct final_awaiter {
+                struct final_awaiter_t {
                     bool await_ready() const noexcept { return false; }
 
                     void await_suspend(coroutine_handle coroutine) noexcept {
@@ -272,7 +272,7 @@ namespace gap::coro
                     void await_resume() const noexcept {}
                 };
 
-                return final_awaiter{};
+                return final_awaiter_t{};
             }
 
             void unhandled_exception() noexcept {
@@ -335,7 +335,7 @@ namespace gap::coro
             }
 
             auto final_suspend() const noexcept {
-                struct final_awaiter {
+                struct final_awaiter_t {
                     bool await_ready() const noexcept { return false; }
 
                     void await_suspend(coroutine_handle coroutine) noexcept {
@@ -345,7 +345,7 @@ namespace gap::coro
                     void await_resume() const noexcept {}
                 };
 
-                return final_awaiter{};
+                return final_awaiter_t{};
             }
 
             void unhandled_exception() noexcept {
