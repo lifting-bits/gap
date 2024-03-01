@@ -1,6 +1,7 @@
 # Copyright 2024, Trail of Bits, Inc. All rights reserved.
 
 add_gap_test(test-gap-coro
+    counted.cpp
     generator.cpp
     recursive_generator.cpp
     task.cpp
