@@ -45,6 +45,15 @@ function(add_headers lib var)
   set(${var} ${headers} PARENT_SCOPE)
 endfunction()
 
+# adds source paths of library to list named var
+function(add_sources lib var)
+  set(sources ${${var}})
+  foreach (source ${ARGN})
+    set(sources ${sources} ${CMAKE_CURRENT_SOURCE_DIR}/src/${source})
+  endforeach()
+  set(${var} ${sources} PARENT_SCOPE)
+endfunction()
+
 #
 # CCACHE
 #

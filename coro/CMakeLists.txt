@@ -1,6 +1,7 @@
 # Copyright (c) 2024, Trail of Bits, Inc. All rights reserved.
 
 add_headers(coro GAP_CORO_HEADERS
+	async_manual_reset_event.hpp
 	awaitable_traits.hpp
 	broken_promise.hpp
 	coroutine.hpp
@@ -14,6 +15,10 @@ add_headers(coro GAP_CORO_HEADERS
 	when_all_ready.hpp
 )
 
-add_gap_library(gap-coro "${GAP_CORO_HEADERS}")
+add_sources(coro GAP_CORO_SOURCES
+	async_manual_reset_event.cpp
+)
 
-target_link_libraries(gap-coro INTERFACE gap-core)
+add_gap_static_library(gap-coro "${GAP_CORO_HEADERS}" "${GAP_CORO_SOURCES}")
+
+target_link_libraries(gap-coro PUBLIC gap-core)
