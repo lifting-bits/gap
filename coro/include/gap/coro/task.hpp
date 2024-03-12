@@ -15,6 +15,7 @@
 
     #include "gap/coro/coroutine.hpp"
     #include "gap/coro/broken_promise.hpp"
+    #include "gap/coro/awaitable_traits.hpp"
 
     #include <atomic>
     #include <cassert>
