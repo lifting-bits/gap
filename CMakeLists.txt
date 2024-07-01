@@ -104,6 +104,16 @@ add_subdirectory(core)
 add_subdirectory(coro)
 add_subdirectory(graph)
 
+option(GAP_ENABLE_MLIR "Enable MLIR support" OFF)
+
+if (${GAP_ENABLE_MLIR})
+  find_package(MLIR REQUIRED CONFIG)
+  list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
+  include(AddMLIR)
+
+  add_subdirectory(mlir)
+endif()
+
 set(GAP_HEADERS
   ${GAP_CORE_HEADERS}
   ${GAP_CORO_HEADERS}
@@ -157,6 +167,10 @@ if (GAP_INSTALL)
   install_gap_target(gap-settings core)
   install_gap_target(gap-coro coro)
   install_gap_target(gap-graph graph)
+
+  if (${GAP_ENABLE_MLIR})
+    install_gap_target(gap-mlir mlir)
+  endif()
 
   #
   # packaging support

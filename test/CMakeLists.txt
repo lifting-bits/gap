@@ -28,3 +28,7 @@ endfunction()
 add_subdirectory(core)
 add_subdirectory(coro)
 add_subdirectory(graph)
+
+if (${GAP_ENABLE_MLIR})
+  add_subdirectory(mlir)
+endif()
