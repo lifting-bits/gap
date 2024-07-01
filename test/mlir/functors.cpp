@@ -5,6 +5,7 @@
 #include <mlir/IR/MLIRContext.h>
 #include <mlir/IR/BuiltinTypes.h>
 
+#include <gap/mlir/common.hpp>
 #include <gap/mlir/functors.hpp>
 
 namespace gap::test
@@ -13,7 +14,7 @@ namespace gap::test
 
     TEST_SUITE("functors") {
 
-        auto mctx = std::make_unique< ::mlir::MLIRContext >();
+        auto mctx = std::make_unique< context >();
 
         auto i32  = ::mlir::IntegerType::get(mctx.get(), 32);
 
