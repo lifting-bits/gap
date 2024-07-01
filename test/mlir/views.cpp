@@ -45,6 +45,7 @@ namespace gap::test
     };
 
     using namespace gap::mlir::views;
+
     TEST_SUITE("views") {
 
         TEST_CASE_FIXTURE(MLIRTestFixture, "operation views") {
@@ -55,6 +56,17 @@ namespace gap::test
             CHECK(std::ranges::distance(regions(mod->getOperation())) == 1);
             CHECK(std::ranges::distance(blocks(mod->getOperation())) == 1);
             CHECK(std::ranges::distance(operations(mod->getOperation())) == 1);
+        }
+
+        TEST_CASE_FIXTURE(MLIRTestFixture, "cast views") {
+            auto rets = operations(fn) | isa< ::mlir::func::ReturnOp >;
+            CHECK(std::ranges::distance(rets) == 3);
+
+            auto rets_casted = operations(fn) | filter_cast< ::mlir::func::ReturnOp >;
+            CHECK(std::ranges::distance(rets_casted) == 3);
+
+            auto fns = operations(mod->getOperation()) | isa< ::mlir::func::FuncOp >;
+            CHECK(std::ranges::distance(fns) == 1);
         }
 
     } // TEST_SUITE("views")
