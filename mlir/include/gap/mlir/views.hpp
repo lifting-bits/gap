@@ -19,10 +19,10 @@
     #endif
 #endif
 
-namespace gap::mlir
+namespace gap::mlir::views
 {
     auto regions(operation op) -> decltype(std::views::all(op->getRegions()));
     auto blocks(operation op) -> decltype(std::views::join(regions(op)));
     auto operations(operation op) -> decltype(std::views::join(blocks(op)));
 
-} // namespace gap::mlir
+} // namespace gap::mlir::views
