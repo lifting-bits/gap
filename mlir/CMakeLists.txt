@@ -1,6 +1,7 @@
 # Copyright (c) 2024, Trail of Bits, Inc. All rights reserved.
 
 add_headers(mlir GAP_MLIR_HEADERS
+	common.hpp
 	functors.hpp
 )
 
