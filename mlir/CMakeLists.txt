@@ -3,17 +3,19 @@
 add_headers(mlir GAP_MLIR_HEADERS
 	common.hpp
 	functors.hpp
+	views.hpp
 )
 
-add_gap_library(gap-mlir "${GAP_MLIR_HEADERS}")
+add_sources(coro GAP_MLIR_SOURCES
+	views.cpp
+)
 
-target_include_directories(gap-mlir SYSTEM
-	INTERFACE
+add_gap_static_library(gap-mlir
+	"${GAP_MLIR_HEADERS}"
+	"${GAP_MLIR_SOURCES}"
+	SYSTEM_INCLUDE_DIRECTORIES
 		"${MLIR_INCLUDE_DIRS}"
-)
-
-target_link_libraries(gap-mlir
-	INTERFACE
+	LINK_LIBRARIES
 		MLIRIR
 		MLIRSupport
 )
