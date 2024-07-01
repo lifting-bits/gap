@@ -44,7 +44,7 @@ namespace gap::test
         ::mlir::func::FuncOp fn;
     };
 
-    using namespace gap::mlir;
+    using namespace gap::mlir::views;
     TEST_SUITE("views") {
 
         TEST_CASE_FIXTURE(MLIRTestFixture, "operation views") {
@@ -59,4 +59,4 @@ namespace gap::test
 
     } // TEST_SUITE("views")
 
-} // namespace gap::mlir::test
+} // namespace gap::test
