@@ -16,7 +16,13 @@ function(add_gap_test name)
       doctest::doctest
       spdlog::spdlog
   )
-  target_include_directories(${name} PUBLIC ${DOCTEST_INCLUDE_DIR})
+
+  target_include_directories(${name}
+    PUBLIC
+      ${DOCTEST_INCLUDE_DIR}
+    PRIVATE
+      $<BUILD_INTERFACE:${GAP_TEST_SOURCE_DIR}>
+  )
 
   add_test(
     NAME ${name}
