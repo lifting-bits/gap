@@ -6,6 +6,7 @@ add_headers(core GAP_CORE_HEADERS
 	concepts.hpp
 	config.hpp
 	coroutine.hpp
+	crtp.hpp
 	dense_map.hpp
 	generator.hpp
 	hash.hpp

@@ -3,6 +3,7 @@
 add_gap_test(test-gap-core
     bigint.cpp
     benchmark.cpp
+    crtp.cpp
     dense_map.cpp
     hash.cpp
     memoize.cpp
