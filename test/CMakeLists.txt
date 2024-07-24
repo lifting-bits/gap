@@ -34,6 +34,7 @@ endfunction()
 add_subdirectory(core)
 add_subdirectory(coro)
 add_subdirectory(graph)
+add_subdirectory(sarif)
 
 if (${GAP_ENABLE_MLIR})
   add_subdirectory(mlir)
