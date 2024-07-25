@@ -3,9 +3,10 @@
 #pragma once
 
 #include <cstdint>
+#include <forward_list>
+#include <optional>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 #include <nlohmann/json.hpp>
 
@@ -16,10 +17,25 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(version_enum, {
-        {version_enum::k2_1_0, "2.1.0"},
+        { version_enum::k2_1_0, "2.1.0" },
     })
     struct run_struct;
     struct external_properties_struct;
+
+    //
+    // Key/value pairs that provide additional information about the object.
+    //
+    struct property_bag_struct {
+        //
+        // A set of distinct strings that provide additional information.
+        //
+        std::optional<std::forward_list<std::string>> tags = std::nullopt;
+
+        std::unordered_map<std::string, nlohmann::json> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const property_bag_struct &);
+    void from_json(const nlohmann::json &, property_bag_struct &);
 
     //
     // Static Analysis Results Format (SARIF) Version 2.1.0 JSON Schema: a standard format for the output of static analysis tools.
@@ -33,17 +49,17 @@ namespace gap::sarif::definitions
         //
         // The set of runs contained in this log file.
         //
-        std::vector<run_struct> runs;
+        std::forward_list<run_struct> runs;
 
         //
         // References to external property files that share data between runs.
         //
-        std::vector<external_properties_struct> inlineExternalProperties;
+        std::optional<std::forward_list<external_properties_struct>> inlineExternalProperties = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the log file.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const root_struct &);
@@ -56,52 +72,52 @@ namespace gap::sarif::definitions
         //
         // The address expressed as a byte offset from the start of the addressable region.
         //
-        int64_t absoluteAddress;
+        std::optional<int64_t> absoluteAddress = std::nullopt;
 
         //
         // The address expressed as a byte offset from the absolute address of the top-most parent object.
         //
-        int64_t relativeAddress;
+        std::optional<int64_t> relativeAddress = std::nullopt;
 
         //
         // The number of bytes in this range of addresses.
         //
-        int64_t length;
+        std::optional<int64_t> length = std::nullopt;
 
         //
         // An open-ended string that identifies the address kind. 'data', 'function', 'header','instruction', 'module', 'page', 'section', 'segment', 'stack', 'stackFrame', 'table' are well-known values.
         //
-        std::string kind;
+        std::optional<std::string> kind = std::nullopt;
 
         //
         // A name that is associated with the address, e.g., '.text'.
         //
-        std::string name;
+        std::optional<std::string> name = std::nullopt;
 
         //
         // A human-readable fully qualified name that is associated with the address.
         //
-        std::string fullyQualifiedName;
+        std::optional<std::string> fullyQualifiedName = std::nullopt;
 
         //
         // The byte offset of this address from the absolute or relative address of the parent object.
         //
-        int64_t offsetFromParent;
+        std::optional<int64_t> offsetFromParent = std::nullopt;
 
         //
         // The index within run.addresses of the cached object for this address.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // The index within run.addresses of the parent object.
         //
-        int64_t parentIndex;
+        std::optional<int64_t> parentIndex = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the address.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const address_struct &);
@@ -114,27 +130,27 @@ namespace gap::sarif::definitions
         //
         // A plain text message string.
         //
-        std::string text;
+        std::optional<std::string> text = std::nullopt;
 
         //
         // A Markdown message string.
         //
-        std::string markdown;
+        std::optional<std::string> markdown = std::nullopt;
 
         //
         // The identifier for this message.
         //
-        std::string id;
+        std::optional<std::string> id = std::nullopt;
 
         //
         // An array of strings to substitute into the message string.
         //
-        std::vector<std::string> arguments;
+        std::optional<std::forward_list<std::string>> arguments = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the message.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const message_struct &);
@@ -147,27 +163,27 @@ namespace gap::sarif::definitions
         //
         // A string containing a valid relative or absolute URI.
         //
-        std::string uri;
+        std::optional<std::string> uri = std::nullopt;
 
         //
         // A string which indirectly specifies the absolute URI with respect to which a relative URI in the "uri" property is interpreted.
         //
-        std::string uriBaseId;
+        std::optional<std::string> uriBaseId = std::nullopt;
 
         //
         // The index within the run artifacts array of the artifact object associated with the artifact location.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // A short description of the artifact location.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the artifact location.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const artifact_location_struct &);
@@ -200,29 +216,29 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(roles_enum, {
-        {roles_enum::kAnalysisTarget, "analysisTarget"},
-        {roles_enum::kAttachment, "attachment"},
-        {roles_enum::kResponseFile, "responseFile"},
-        {roles_enum::kResultFile, "resultFile"},
-        {roles_enum::kStandardStream, "standardStream"},
-        {roles_enum::kTracedFile, "tracedFile"},
-        {roles_enum::kUnmodified, "unmodified"},
-        {roles_enum::kModified, "modified"},
-        {roles_enum::kAdded, "added"},
-        {roles_enum::kDeleted, "deleted"},
-        {roles_enum::kRenamed, "renamed"},
-        {roles_enum::kUncontrolled, "uncontrolled"},
-        {roles_enum::kDriver, "driver"},
-        {roles_enum::kExtension, "extension"},
-        {roles_enum::kTranslation, "translation"},
-        {roles_enum::kTaxonomy, "taxonomy"},
-        {roles_enum::kPolicy, "policy"},
-        {roles_enum::kReferencedOnCommandLine, "referencedOnCommandLine"},
-        {roles_enum::kMemoryContents, "memoryContents"},
-        {roles_enum::kDirectory, "directory"},
-        {roles_enum::kUserSpecifiedConfiguration, "userSpecifiedConfiguration"},
-        {roles_enum::kToolSpecifiedConfiguration, "toolSpecifiedConfiguration"},
-        {roles_enum::kDebugOutputFile, "debugOutputFile"},
+        { roles_enum::kAnalysisTarget, "analysisTarget" },
+        { roles_enum::kAttachment, "attachment" },
+        { roles_enum::kResponseFile, "responseFile" },
+        { roles_enum::kResultFile, "resultFile" },
+        { roles_enum::kStandardStream, "standardStream" },
+        { roles_enum::kTracedFile, "tracedFile" },
+        { roles_enum::kUnmodified, "unmodified" },
+        { roles_enum::kModified, "modified" },
+        { roles_enum::kAdded, "added" },
+        { roles_enum::kDeleted, "deleted" },
+        { roles_enum::kRenamed, "renamed" },
+        { roles_enum::kUncontrolled, "uncontrolled" },
+        { roles_enum::kDriver, "driver" },
+        { roles_enum::kExtension, "extension" },
+        { roles_enum::kTranslation, "translation" },
+        { roles_enum::kTaxonomy, "taxonomy" },
+        { roles_enum::kPolicy, "policy" },
+        { roles_enum::kReferencedOnCommandLine, "referencedOnCommandLine" },
+        { roles_enum::kMemoryContents, "memoryContents" },
+        { roles_enum::kDirectory, "directory" },
+        { roles_enum::kUserSpecifiedConfiguration, "userSpecifiedConfiguration" },
+        { roles_enum::kToolSpecifiedConfiguration, "toolSpecifiedConfiguration" },
+        { roles_enum::kDebugOutputFile, "debugOutputFile" },
     })
 
     //
@@ -237,12 +253,12 @@ namespace gap::sarif::definitions
         //
         // A Markdown message string or format string.
         //
-        std::string markdown;
+        std::optional<std::string> markdown = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the message.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const multiformat_message_string_struct &);
@@ -255,26 +271,36 @@ namespace gap::sarif::definitions
         //
         // UTF-8-encoded content from a text artifact.
         //
-        std::string text;
+        std::optional<std::string> text = std::nullopt;
 
         //
         // MIME Base64-encoded content from a binary artifact, or from a text artifact in its original encoding.
         //
-        std::string binary;
+        std::optional<std::string> binary = std::nullopt;
 
         //
         // An alternate rendered representation of the artifact (e.g., a decompiled representation of a binary region).
         //
-        multiformat_message_string_struct rendered;
+        std::optional<multiformat_message_string_struct> rendered = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the artifact content.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const artifact_content_struct &);
     void from_json(const nlohmann::json &, artifact_content_struct &);
+
+    //
+    // A dictionary, each of whose keys is the name of a hash function and each of whose values is the hashed value of the artifact produced by the specified hash function.
+    //
+    struct artifact_hashes_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const artifact_hashes_struct &);
+    void from_json(const nlohmann::json &, artifact_hashes_struct &);
 
     //
     // A single artifact. In some cases, this artifact might be nested within another artifact.
@@ -283,67 +309,67 @@ namespace gap::sarif::definitions
         //
         // A short description of the artifact.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // The location of the artifact.
         //
-        artifact_location_struct location;
+        std::optional<artifact_location_struct> location = std::nullopt;
 
         //
         // Identifies the index of the immediate parent of the artifact, if this artifact is nested.
         //
-        int64_t parentIndex;
+        std::optional<int64_t> parentIndex = std::nullopt;
 
         //
         // The offset in bytes of the artifact within its containing artifact.
         //
-        int64_t offset;
+        std::optional<int64_t> offset = std::nullopt;
 
         //
         // The length of the artifact in bytes.
         //
-        int64_t length;
+        std::optional<int64_t> length = std::nullopt;
 
         //
         // The role or roles played by the artifact in the analysis.
         //
-        std::vector<roles_enum> roles;
+        std::optional<std::forward_list<roles_enum>> roles = std::nullopt;
 
         //
         // The MIME type (RFC 2045) of the artifact.
         //
-        std::string mimeType;
+        std::optional<std::string> mimeType = std::nullopt;
 
         //
         // The contents of the artifact.
         //
-        artifact_content_struct contents;
+        std::optional<artifact_content_struct> contents = std::nullopt;
 
         //
         // Specifies the encoding for an artifact object that refers to a text file.
         //
-        std::string encoding;
+        std::optional<std::string> encoding = std::nullopt;
 
         //
         // Specifies the source language for any artifact object that refers to a text file that contains source code.
         //
-        std::string sourceLanguage;
+        std::optional<std::string> sourceLanguage = std::nullopt;
 
         //
         // A dictionary, each of whose keys is the name of a hash function and each of whose values is the hashed value of the artifact produced by the specified hash function.
         //
-        std::unordered_map<std::string, std::string> hashes;
+        std::optional<artifact_hashes_struct> hashes = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the artifact was most recently modified. See "Date/time properties" in the SARIF spec for the required format.
         //
-        std::string lastModifiedTimeUtc;
+        std::optional<std::string> lastModifiedTimeUtc = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the artifact.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const artifact_struct &);
@@ -362,12 +388,12 @@ namespace gap::sarif::definitions
         //
         // An array of replacement objects, each of which represents the replacement of a single region in a single artifact specified by 'artifactLocation'.
         //
-        std::vector<replacement_struct> replacements;
+        std::forward_list<replacement_struct> replacements;
 
         //
         // Key/value pairs that provide additional information about the change.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const artifact_change_struct &);
@@ -382,7 +408,7 @@ namespace gap::sarif::definitions
         //
         // A message describing the role played by the attachment.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // The location of the attachment.
@@ -392,17 +418,17 @@ namespace gap::sarif::definitions
         //
         // An array of regions of interest within the attachment.
         //
-        std::vector<region_struct> regions;
+        std::optional<std::forward_list<region_struct>> regions = std::nullopt;
 
         //
         // An array of rectangles specifying areas of interest within the image.
         //
-        std::vector<rectangle_struct> rectangles;
+        std::optional<std::forward_list<rectangle_struct>> rectangles = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the attachment.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const attachment_struct &);
@@ -416,17 +442,17 @@ namespace gap::sarif::definitions
         //
         // A message relevant to the code flow.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // An array of one or more unique threadFlow objects, each of which describes the progress of a program through a thread of execution.
         //
-        std::vector<thread_flow_struct> threadFlows;
+        std::forward_list<thread_flow_struct> threadFlows;
 
         //
         // Key/value pairs that provide additional information about the code flow.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const code_flow_struct &);
@@ -440,10 +466,10 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(level_enum, {
-        {level_enum::kNone, "none"},
-        {level_enum::kNote, "note"},
-        {level_enum::kWarning, "warning"},
-        {level_enum::kError, "error"},
+        { level_enum::kNone, "none" },
+        { level_enum::kNote, "note" },
+        { level_enum::kWarning, "warning" },
+        { level_enum::kError, "error" },
     })
 
     //
@@ -453,27 +479,27 @@ namespace gap::sarif::definitions
         //
         // Specifies whether the report may be produced during the scan.
         //
-        bool enabled;
+        std::optional<bool> enabled = std::nullopt;
 
         //
         // Specifies the failure level for the report.
         //
-        level_enum level;
+        std::optional<level_enum> level = std::nullopt;
 
         //
         // Specifies the relative priority of the report. Used for analysis output only.
         //
-        double rank;
+        std::optional<double> rank = std::nullopt;
 
         //
         // Contains configuration information specific to a report.
         //
-        std::unordered_map<std::string, nlohmann::json> parameters;
+        std::optional<property_bag_struct> parameters = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the reporting configuration.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const reporting_configuration_struct &);
@@ -486,22 +512,22 @@ namespace gap::sarif::definitions
         //
         // The 'name' property of the referenced toolComponent.
         //
-        std::string name;
+        std::optional<std::string> name = std::nullopt;
 
         //
         // An index into the referenced toolComponent in tool.extensions.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // The 'guid' property of the referenced toolComponent.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the toolComponentReference.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const tool_component_reference_struct &);
@@ -514,27 +540,27 @@ namespace gap::sarif::definitions
         //
         // The id of the descriptor.
         //
-        std::string id;
+        std::optional<std::string> id = std::nullopt;
 
         //
         // The index into an array of descriptors in toolComponent.ruleDescriptors, toolComponent.notificationDescriptors, or toolComponent.taxonomyDescriptors, depending on context.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // A guid that uniquely identifies the descriptor.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // A reference used to locate the toolComponent associated with the descriptor.
         //
-        tool_component_reference_struct toolComponent;
+        std::optional<tool_component_reference_struct> toolComponent = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the reporting descriptor reference.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const reporting_descriptor_reference_struct &);
@@ -557,11 +583,21 @@ namespace gap::sarif::definitions
         //
         // Key/value pairs that provide additional information about the configuration override.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const configuration_override_struct &);
     void from_json(const nlohmann::json &, configuration_override_struct &);
+
+    //
+    // A dictionary, each of whose keys is a resource identifier and each of whose values is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
+    //
+    struct tool_component_global_message_strings_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const tool_component_global_message_strings_struct &);
+    void from_json(const nlohmann::json &, tool_component_global_message_strings_struct &);
     struct reporting_descriptor_struct;
 
     enum class contents_enum {
@@ -570,8 +606,8 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(contents_enum, {
-        {contents_enum::kLocalizedData, "localizedData"},
-        {contents_enum::kNonLocalizedData, "nonLocalizedData"},
+        { contents_enum::kLocalizedData, "localizedData" },
+        { contents_enum::kNonLocalizedData, "nonLocalizedData" },
     })
 
     //
@@ -586,32 +622,32 @@ namespace gap::sarif::definitions
         //
         // The full name associated with the translation metadata.
         //
-        std::string fullName;
+        std::optional<std::string> fullName = std::nullopt;
 
         //
         // A brief description of the translation metadata.
         //
-        multiformat_message_string_struct shortDescription;
+        std::optional<multiformat_message_string_struct> shortDescription = std::nullopt;
 
         //
         // A comprehensive description of the translation metadata.
         //
-        multiformat_message_string_struct fullDescription;
+        std::optional<multiformat_message_string_struct> fullDescription = std::nullopt;
 
         //
         // The absolute URI from which the translation metadata can be downloaded.
         //
-        std::string downloadUri;
+        std::optional<std::string> downloadUri = std::nullopt;
 
         //
         // The absolute URI from which information related to the translation metadata can be downloaded.
         //
-        std::string informationUri;
+        std::optional<std::string> informationUri = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the translation metadata.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const translation_metadata_struct &);
@@ -624,7 +660,7 @@ namespace gap::sarif::definitions
         //
         // A unique identifer for the tool component in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // The name of the tool component.
@@ -634,132 +670,132 @@ namespace gap::sarif::definitions
         //
         // The organization or company that produced the tool component.
         //
-        std::string organization;
+        std::optional<std::string> organization = std::nullopt;
 
         //
         // A product suite to which the tool component belongs.
         //
-        std::string product;
+        std::optional<std::string> product = std::nullopt;
 
         //
         // A localizable string containing the name of the suite of products to which the tool component belongs.
         //
-        std::string productSuite;
+        std::optional<std::string> productSuite = std::nullopt;
 
         //
         // A brief description of the tool component.
         //
-        multiformat_message_string_struct shortDescription;
+        std::optional<multiformat_message_string_struct> shortDescription = std::nullopt;
 
         //
         // A comprehensive description of the tool component.
         //
-        multiformat_message_string_struct fullDescription;
+        std::optional<multiformat_message_string_struct> fullDescription = std::nullopt;
 
         //
         // The name of the tool component along with its version and any other useful identifying information, such as its locale.
         //
-        std::string fullName;
+        std::optional<std::string> fullName = std::nullopt;
 
         //
         // The tool component version, in whatever format the component natively provides.
         //
-        std::string version;
+        std::optional<std::string> version = std::nullopt;
 
         //
         // The tool component version in the format specified by Semantic Versioning 2.0.
         //
-        std::string semanticVersion;
+        std::optional<std::string> semanticVersion = std::nullopt;
 
         //
         // The binary version of the tool component's primary executable file expressed as four non-negative integers separated by a period (for operating systems that express file versions in this way).
         //
-        std::string dottedQuadFileVersion;
+        std::optional<std::string> dottedQuadFileVersion = std::nullopt;
 
         //
         // A string specifying the UTC date (and optionally, the time) of the component's release.
         //
-        std::string releaseDateUtc;
+        std::optional<std::string> releaseDateUtc = std::nullopt;
 
         //
         // The absolute URI from which the tool component can be downloaded.
         //
-        std::string downloadUri;
+        std::optional<std::string> downloadUri = std::nullopt;
 
         //
         // The absolute URI at which information about this version of the tool component can be found.
         //
-        std::string informationUri;
+        std::optional<std::string> informationUri = std::nullopt;
 
         //
         // A dictionary, each of whose keys is a resource identifier and each of whose values is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> globalMessageStrings;
+        std::optional<tool_component_global_message_strings_struct> globalMessageStrings = std::nullopt;
 
         //
         // An array of reportingDescriptor objects relevant to the notifications related to the configuration and runtime execution of the tool component.
         //
-        std::vector<reporting_descriptor_struct> notifications;
+        std::optional<std::forward_list<reporting_descriptor_struct>> notifications = std::nullopt;
 
         //
         // An array of reportingDescriptor objects relevant to the analysis performed by the tool component.
         //
-        std::vector<reporting_descriptor_struct> rules;
+        std::optional<std::forward_list<reporting_descriptor_struct>> rules = std::nullopt;
 
         //
         // An array of reportingDescriptor objects relevant to the definitions of both standalone and tool-defined taxonomies.
         //
-        std::vector<reporting_descriptor_struct> taxa;
+        std::optional<std::forward_list<reporting_descriptor_struct>> taxa = std::nullopt;
 
         //
         // An array of the artifactLocation objects associated with the tool component.
         //
-        std::vector<artifact_location_struct> locations;
+        std::optional<std::forward_list<artifact_location_struct>> locations = std::nullopt;
 
         //
         // The language of the messages emitted into the log file during this run (expressed as an ISO 639-1 two-letter lowercase language code) and an optional region (expressed as an ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The casing is recommended but not required (in order for this data to conform to RFC5646).
         //
-        std::string language;
+        std::optional<std::string> language = std::nullopt;
 
         //
         // The kinds of data contained in this object.
         //
-        std::vector<contents_enum> contents;
+        std::optional<std::forward_list<contents_enum>> contents = std::nullopt;
 
         //
         // Specifies whether this object contains a complete definition of the localizable and/or non-localizable data for this component, as opposed to including only data that is relevant to the results persisted to this log file.
         //
-        bool isComprehensive;
+        std::optional<bool> isComprehensive = std::nullopt;
 
         //
         // The semantic version of the localized strings defined in this component; maintained by components that provide translations.
         //
-        std::string localizedDataSemanticVersion;
+        std::optional<std::string> localizedDataSemanticVersion = std::nullopt;
 
         //
         // The minimum value of localizedDataSemanticVersion required in translations consumed by this component; used by components that consume translations.
         //
-        std::string minimumRequiredLocalizedDataSemanticVersion;
+        std::optional<std::string> minimumRequiredLocalizedDataSemanticVersion = std::nullopt;
 
         //
         // The component which is strongly associated with this component. For a translation, this refers to the component which has been translated. For an extension, this is the driver that provides the extension's plugin model.
         //
-        tool_component_reference_struct associatedComponent;
+        std::optional<tool_component_reference_struct> associatedComponent = std::nullopt;
 
         //
         // Translation metadata, required for a translation, not populated by other component types.
         //
-        translation_metadata_struct translationMetadata;
+        std::optional<translation_metadata_struct> translationMetadata = std::nullopt;
 
         //
         // An array of toolComponentReference objects to declare the taxonomies supported by the tool component.
         //
-        std::vector<tool_component_reference_struct> supportedTaxonomies;
+        std::optional<std::forward_list<tool_component_reference_struct>> supportedTaxonomies = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the tool component.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const tool_component_struct &);
@@ -777,17 +813,27 @@ namespace gap::sarif::definitions
         //
         // Tool extensions that contributed to or reconfigured the analysis tool that was run.
         //
-        std::vector<tool_component_struct> extensions;
+        std::optional<std::forward_list<tool_component_struct>> extensions = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the tool.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const tool_struct &);
     void from_json(const nlohmann::json &, tool_struct &);
     struct notification_struct;
+
+    //
+    // The environment variables associated with the analysis tool process, expressed as key/value pairs.
+    //
+    struct invocation_environment_variables_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const invocation_environment_variables_struct &);
+    void from_json(const nlohmann::json &, invocation_environment_variables_struct &);
 
     //
     // The runtime environment of the analysis tool run.
@@ -796,72 +842,72 @@ namespace gap::sarif::definitions
         //
         // The command line used to invoke the tool.
         //
-        std::string commandLine;
+        std::optional<std::string> commandLine = std::nullopt;
 
         //
         // An array of strings, containing in order the command line arguments passed to the tool from the operating system.
         //
-        std::vector<std::string> arguments;
+        std::optional<std::forward_list<std::string>> arguments = std::nullopt;
 
         //
         // The locations of any response files specified on the tool's command line.
         //
-        std::vector<artifact_location_struct> responseFiles;
+        std::optional<std::forward_list<artifact_location_struct>> responseFiles = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the run started. See "Date/time properties" in the SARIF spec for the required format.
         //
-        std::string startTimeUtc;
+        std::optional<std::string> startTimeUtc = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the run ended. See "Date/time properties" in the SARIF spec for the required format.
         //
-        std::string endTimeUtc;
+        std::optional<std::string> endTimeUtc = std::nullopt;
 
         //
         // The process exit code.
         //
-        int64_t exitCode;
+        std::optional<int64_t> exitCode = std::nullopt;
 
         //
         // An array of configurationOverride objects that describe rules related runtime overrides.
         //
-        std::vector<configuration_override_struct> ruleConfigurationOverrides;
+        std::optional<std::forward_list<configuration_override_struct>> ruleConfigurationOverrides = std::nullopt;
 
         //
         // An array of configurationOverride objects that describe notifications related runtime overrides.
         //
-        std::vector<configuration_override_struct> notificationConfigurationOverrides;
+        std::optional<std::forward_list<configuration_override_struct>> notificationConfigurationOverrides = std::nullopt;
 
         //
         // A list of runtime conditions detected by the tool during the analysis.
         //
-        std::vector<notification_struct> toolExecutionNotifications;
+        std::optional<std::forward_list<notification_struct>> toolExecutionNotifications = std::nullopt;
 
         //
         // A list of conditions detected by the tool that are relevant to the tool's configuration.
         //
-        std::vector<notification_struct> toolConfigurationNotifications;
+        std::optional<std::forward_list<notification_struct>> toolConfigurationNotifications = std::nullopt;
 
         //
         // The reason for the process exit.
         //
-        std::string exitCodeDescription;
+        std::optional<std::string> exitCodeDescription = std::nullopt;
 
         //
         // The name of the signal that caused the process to exit.
         //
-        std::string exitSignalName;
+        std::optional<std::string> exitSignalName = std::nullopt;
 
         //
         // The numeric value of the signal that caused the process to exit.
         //
-        int64_t exitSignalNumber;
+        std::optional<int64_t> exitSignalNumber = std::nullopt;
 
         //
         // The reason given by the operating system that the process failed to start.
         //
-        std::string processStartFailureMessage;
+        std::optional<std::string> processStartFailureMessage = std::nullopt;
 
         //
         // Specifies whether the tool's execution completed successfully.
@@ -871,57 +917,57 @@ namespace gap::sarif::definitions
         //
         // The machine that hosted the analysis tool run.
         //
-        std::string machine;
+        std::optional<std::string> machine = std::nullopt;
 
         //
         // The account that ran the analysis tool.
         //
-        std::string account;
+        std::optional<std::string> account = std::nullopt;
 
         //
         // The process id for the analysis tool run.
         //
-        int64_t processId;
+        std::optional<int64_t> processId = std::nullopt;
 
         //
         // An absolute URI specifying the location of the analysis tool's executable.
         //
-        artifact_location_struct executableLocation;
+        std::optional<artifact_location_struct> executableLocation = std::nullopt;
 
         //
         // The working directory for the analysis tool run.
         //
-        artifact_location_struct workingDirectory;
+        std::optional<artifact_location_struct> workingDirectory = std::nullopt;
 
         //
         // The environment variables associated with the analysis tool process, expressed as key/value pairs.
         //
-        std::unordered_map<std::string, std::string> environmentVariables;
+        std::optional<invocation_environment_variables_struct> environmentVariables = std::nullopt;
 
         //
         // A file containing the standard input stream to the process that was invoked.
         //
-        artifact_location_struct stdin;
+        std::optional<artifact_location_struct> stdin = std::nullopt;
 
         //
         // A file containing the standard output stream from the process that was invoked.
         //
-        artifact_location_struct stdout;
+        std::optional<artifact_location_struct> stdout = std::nullopt;
 
         //
         // A file containing the standard error stream from the process that was invoked.
         //
-        artifact_location_struct stderr;
+        std::optional<artifact_location_struct> stderr = std::nullopt;
 
         //
         // A file containing the interleaved standard output and standard error stream from the process that was invoked.
         //
-        artifact_location_struct stdoutStderr;
+        std::optional<artifact_location_struct> stdoutStderr = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the invocation.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const invocation_struct &);
@@ -939,17 +985,17 @@ namespace gap::sarif::definitions
         //
         // An invocation object that describes the invocation of the converter.
         //
-        invocation_struct invocation;
+        std::optional<invocation_struct> invocation = std::nullopt;
 
         //
         // The locations of the analysis tool's per-run log files.
         //
-        std::vector<artifact_location_struct> analysisToolLogFiles;
+        std::optional<std::forward_list<artifact_location_struct>> analysisToolLogFiles = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the conversion.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const conversion_struct &);
@@ -967,7 +1013,7 @@ namespace gap::sarif::definitions
         //
         // A short description of the edge.
         //
-        message_struct label;
+        std::optional<message_struct> label = std::nullopt;
 
         //
         // Identifies the source node (the node at which the edge starts).
@@ -982,11 +1028,21 @@ namespace gap::sarif::definitions
         //
         // Key/value pairs that provide additional information about the edge.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const edge_struct &);
     void from_json(const nlohmann::json &, edge_struct &);
+
+    //
+    // The values of relevant expressions after the edge has been traversed.
+    //
+    struct edge_traversal_final_state_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const edge_traversal_final_state_struct &);
+    void from_json(const nlohmann::json &, edge_traversal_final_state_struct &);
 
     //
     // Represents the traversal of a single edge during a graph traversal.
@@ -1000,22 +1056,22 @@ namespace gap::sarif::definitions
         //
         // A message to display to the user as the edge is traversed.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // The values of relevant expressions after the edge has been traversed.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> finalState;
+        std::optional<edge_traversal_final_state_struct> finalState = std::nullopt;
 
         //
         // The number of edge traversals necessary to return from a nested graph.
         //
-        int64_t stepOverEdgeCount;
+        std::optional<int64_t> stepOverEdgeCount = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the edge traversal.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const edge_traversal_struct &);
@@ -1029,17 +1085,17 @@ namespace gap::sarif::definitions
         //
         // A message relevant to this call stack.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // An array of stack frames that represents a sequence of calls, rendered in reverse chronological order, that comprise the call stack.
         //
-        std::vector<stack_frame_struct> frames;
+        std::forward_list<stack_frame_struct> frames;
 
         //
         // Key/value pairs that provide additional information about the stack.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const stack_struct &);
@@ -1053,27 +1109,27 @@ namespace gap::sarif::definitions
         //
         // A string that identifies the kind of exception, for example, the fully qualified type name of an object that was thrown, or the symbolic name of a signal.
         //
-        std::string kind;
+        std::optional<std::string> kind = std::nullopt;
 
         //
         // A message that describes the exception.
         //
-        std::string message;
+        std::optional<std::string> message = std::nullopt;
 
         //
         // The sequence of function calls leading to the exception.
         //
-        stack_struct stack;
+        std::optional<stack_struct> stack = std::nullopt;
 
         //
         // An array of exception objects each of which is considered a cause of this exception.
         //
-        std::vector<exception_struct> innerExceptions;
+        std::optional<std::forward_list<exception_struct>> innerExceptions = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the exception.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const exception_struct &);
@@ -1092,107 +1148,107 @@ namespace gap::sarif::definitions
         //
         // The URI of the JSON schema corresponding to the version of the external property file format.
         //
-        std::string schema;
+        std::optional<std::string> schema = std::nullopt;
 
         //
         // The SARIF format version of this external properties object.
         //
-        version_enum version;
+        std::optional<version_enum> version = std::nullopt;
 
         //
         // A stable, unique identifer for this external properties object, in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // A stable, unique identifer for the run associated with this external properties object, in the form of a GUID.
         //
-        std::string runGuid;
+        std::optional<std::string> runGuid = std::nullopt;
 
         //
         // A conversion object that will be merged with a separate run.
         //
-        conversion_struct conversion;
+        std::optional<conversion_struct> conversion = std::nullopt;
 
         //
         // An array of graph objects that will be merged with a separate run.
         //
-        std::vector<graph_struct> graphs;
+        std::optional<std::forward_list<graph_struct>> graphs = std::nullopt;
 
         //
         // Key/value pairs that provide additional information that will be merged with a separate run.
         //
-        std::unordered_map<std::string, nlohmann::json> externalizedProperties;
+        std::optional<property_bag_struct> externalizedProperties = std::nullopt;
 
         //
         // An array of artifact objects that will be merged with a separate run.
         //
-        std::vector<artifact_struct> artifacts;
+        std::optional<std::forward_list<artifact_struct>> artifacts = std::nullopt;
 
         //
         // Describes the invocation of the analysis tool that will be merged with a separate run.
         //
-        std::vector<invocation_struct> invocations;
+        std::optional<std::forward_list<invocation_struct>> invocations = std::nullopt;
 
         //
         // An array of logical locations such as namespaces, types or functions that will be merged with a separate run.
         //
-        std::vector<logical_location_struct> logicalLocations;
+        std::optional<std::forward_list<logical_location_struct>> logicalLocations = std::nullopt;
 
         //
         // An array of threadFlowLocation objects that will be merged with a separate run.
         //
-        std::vector<thread_flow_location_struct> threadFlowLocations;
+        std::optional<std::forward_list<thread_flow_location_struct>> threadFlowLocations = std::nullopt;
 
         //
         // An array of result objects that will be merged with a separate run.
         //
-        std::vector<result_struct> results;
+        std::optional<std::forward_list<result_struct>> results = std::nullopt;
 
         //
         // Tool taxonomies that will be merged with a separate run.
         //
-        std::vector<tool_component_struct> taxonomies;
+        std::optional<std::forward_list<tool_component_struct>> taxonomies = std::nullopt;
 
         //
         // The analysis tool object that will be merged with a separate run.
         //
-        tool_component_struct driver;
+        std::optional<tool_component_struct> driver = std::nullopt;
 
         //
         // Tool extensions that will be merged with a separate run.
         //
-        std::vector<tool_component_struct> extensions;
+        std::optional<std::forward_list<tool_component_struct>> extensions = std::nullopt;
 
         //
         // Tool policies that will be merged with a separate run.
         //
-        std::vector<tool_component_struct> policies;
+        std::optional<std::forward_list<tool_component_struct>> policies = std::nullopt;
 
         //
         // Tool translations that will be merged with a separate run.
         //
-        std::vector<tool_component_struct> translations;
+        std::optional<std::forward_list<tool_component_struct>> translations = std::nullopt;
 
         //
         // Addresses that will be merged with a separate run.
         //
-        std::vector<address_struct> addresses;
+        std::optional<std::forward_list<address_struct>> addresses = std::nullopt;
 
         //
         // Requests that will be merged with a separate run.
         //
-        std::vector<web_request_struct> webRequests;
+        std::optional<std::forward_list<web_request_struct>> webRequests = std::nullopt;
 
         //
         // Responses that will be merged with a separate run.
         //
-        std::vector<web_response_struct> webResponses;
+        std::optional<std::forward_list<web_response_struct>> webResponses = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the external properties.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const external_properties_struct &);
@@ -1205,22 +1261,22 @@ namespace gap::sarif::definitions
         //
         // The location of the external property file.
         //
-        artifact_location_struct location;
+        std::optional<artifact_location_struct> location = std::nullopt;
 
         //
         // A stable, unique identifer for the external property file in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // A non-negative integer specifying the number of items contained in the external property file.
         //
-        int64_t itemCount;
+        std::optional<int64_t> itemCount = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the external property file.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const external_property_file_reference_struct &);
@@ -1233,87 +1289,87 @@ namespace gap::sarif::definitions
         //
         // An external property file containing a run.conversion object to be merged with the root log file.
         //
-        external_property_file_reference_struct conversion;
+        std::optional<external_property_file_reference_struct> conversion = std::nullopt;
 
         //
         // An array of external property files containing a run.graphs object to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> graphs;
+        std::optional<std::forward_list<external_property_file_reference_struct>> graphs = std::nullopt;
 
         //
         // An external property file containing a run.properties object to be merged with the root log file.
         //
-        external_property_file_reference_struct externalizedProperties;
+        std::optional<external_property_file_reference_struct> externalizedProperties = std::nullopt;
 
         //
         // An array of external property files containing run.artifacts arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> artifacts;
+        std::optional<std::forward_list<external_property_file_reference_struct>> artifacts = std::nullopt;
 
         //
         // An array of external property files containing run.invocations arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> invocations;
+        std::optional<std::forward_list<external_property_file_reference_struct>> invocations = std::nullopt;
 
         //
         // An array of external property files containing run.logicalLocations arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> logicalLocations;
+        std::optional<std::forward_list<external_property_file_reference_struct>> logicalLocations = std::nullopt;
 
         //
         // An array of external property files containing run.threadFlowLocations arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> threadFlowLocations;
+        std::optional<std::forward_list<external_property_file_reference_struct>> threadFlowLocations = std::nullopt;
 
         //
         // An array of external property files containing run.results arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> results;
+        std::optional<std::forward_list<external_property_file_reference_struct>> results = std::nullopt;
 
         //
         // An array of external property files containing run.taxonomies arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> taxonomies;
+        std::optional<std::forward_list<external_property_file_reference_struct>> taxonomies = std::nullopt;
 
         //
         // An array of external property files containing run.addresses arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> addresses;
+        std::optional<std::forward_list<external_property_file_reference_struct>> addresses = std::nullopt;
 
         //
         // An external property file containing a run.driver object to be merged with the root log file.
         //
-        external_property_file_reference_struct driver;
+        std::optional<external_property_file_reference_struct> driver = std::nullopt;
 
         //
         // An array of external property files containing run.extensions arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> extensions;
+        std::optional<std::forward_list<external_property_file_reference_struct>> extensions = std::nullopt;
 
         //
         // An array of external property files containing run.policies arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> policies;
+        std::optional<std::forward_list<external_property_file_reference_struct>> policies = std::nullopt;
 
         //
         // An array of external property files containing run.translations arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> translations;
+        std::optional<std::forward_list<external_property_file_reference_struct>> translations = std::nullopt;
 
         //
         // An array of external property files containing run.requests arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> webRequests;
+        std::optional<std::forward_list<external_property_file_reference_struct>> webRequests = std::nullopt;
 
         //
         // An array of external property files containing run.responses arrays to be merged with the root log file.
         //
-        std::vector<external_property_file_reference_struct> webResponses;
+        std::optional<std::forward_list<external_property_file_reference_struct>> webResponses = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the external property files.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const external_property_file_references_struct &);
@@ -1326,17 +1382,17 @@ namespace gap::sarif::definitions
         //
         // A message that describes the proposed fix, enabling viewers to present the proposed change to an end user.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // One or more artifact changes that comprise a fix for a result.
         //
-        std::vector<artifact_change_struct> artifactChanges;
+        std::forward_list<artifact_change_struct> artifactChanges;
 
         //
         // Key/value pairs that provide additional information about the fix.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const fix_struct &);
@@ -1350,26 +1406,46 @@ namespace gap::sarif::definitions
         //
         // A description of the graph.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // An array of node objects representing the nodes of the graph.
         //
-        std::vector<node_struct> nodes;
+        std::optional<std::forward_list<node_struct>> nodes = std::nullopt;
 
         //
         // An array of edge objects representing the edges of the graph.
         //
-        std::vector<edge_struct> edges;
+        std::optional<std::forward_list<edge_struct>> edges = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the graph.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const graph_struct &);
     void from_json(const nlohmann::json &, graph_struct &);
+
+    //
+    // Values of relevant expressions at the start of the graph traversal that may change during graph traversal.
+    //
+    struct graph_traversal_initial_state_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const graph_traversal_initial_state_struct &);
+    void from_json(const nlohmann::json &, graph_traversal_initial_state_struct &);
+
+    //
+    // Values of relevant expressions at the start of the graph traversal that remain constant for the graph traversal.
+    //
+    struct graph_traversal_immutable_state_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const graph_traversal_immutable_state_struct &);
+    void from_json(const nlohmann::json &, graph_traversal_immutable_state_struct &);
 
     //
     // Represents a path through a graph.
@@ -1378,37 +1454,37 @@ namespace gap::sarif::definitions
         //
         // The index within the run.graphs to be associated with the result.
         //
-        int64_t runGraphIndex;
+        std::optional<int64_t> runGraphIndex = std::nullopt;
 
         //
         // The index within the result.graphs to be associated with the result.
         //
-        int64_t resultGraphIndex;
+        std::optional<int64_t> resultGraphIndex = std::nullopt;
 
         //
         // A description of this graph traversal.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the graph traversal that may change during graph traversal.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> initialState;
+        std::optional<graph_traversal_initial_state_struct> initialState = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the graph traversal that remain constant for the graph traversal.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> immutableState;
+        std::optional<graph_traversal_immutable_state_struct> immutableState = std::nullopt;
 
         //
         // The sequences of edges traversed by this graph traversal.
         //
-        std::vector<edge_traversal_struct> edgeTraversals;
+        std::optional<std::forward_list<edge_traversal_struct>> edgeTraversals = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the graph traversal.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const graph_traversal_struct &);
@@ -1421,62 +1497,62 @@ namespace gap::sarif::definitions
         //
         // The line number of the first character in the region.
         //
-        int64_t startLine;
+        std::optional<int64_t> startLine = std::nullopt;
 
         //
         // The column number of the first character in the region.
         //
-        int64_t startColumn;
+        std::optional<int64_t> startColumn = std::nullopt;
 
         //
         // The line number of the last character in the region.
         //
-        int64_t endLine;
+        std::optional<int64_t> endLine = std::nullopt;
 
         //
         // The column number of the character following the end of the region.
         //
-        int64_t endColumn;
+        std::optional<int64_t> endColumn = std::nullopt;
 
         //
         // The zero-based offset from the beginning of the artifact of the first character in the region.
         //
-        int64_t charOffset;
+        std::optional<int64_t> charOffset = std::nullopt;
 
         //
         // The length of the region in characters.
         //
-        int64_t charLength;
+        std::optional<int64_t> charLength = std::nullopt;
 
         //
         // The zero-based offset from the beginning of the artifact of the first byte in the region.
         //
-        int64_t byteOffset;
+        std::optional<int64_t> byteOffset = std::nullopt;
 
         //
         // The length of the region in bytes.
         //
-        int64_t byteLength;
+        std::optional<int64_t> byteLength = std::nullopt;
 
         //
         // The portion of the artifact contents within the specified region.
         //
-        artifact_content_struct snippet;
+        std::optional<artifact_content_struct> snippet = std::nullopt;
 
         //
         // A message relevant to the region.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // Specifies the source language, if any, of the portion of the artifact specified by the region object.
         //
-        std::string sourceLanguage;
+        std::optional<std::string> sourceLanguage = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the region.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const region_struct &);
@@ -1489,27 +1565,27 @@ namespace gap::sarif::definitions
         //
         // The address of the location.
         //
-        address_struct address;
+        std::optional<address_struct> address = std::nullopt;
 
         //
         // The location of the artifact.
         //
-        artifact_location_struct artifactLocation;
+        std::optional<artifact_location_struct> artifactLocation = std::nullopt;
 
         //
         // Specifies a portion of the artifact.
         //
-        region_struct region;
+        std::optional<region_struct> region = std::nullopt;
 
         //
         // Specifies a portion of the artifact that encloses the region. Allows a viewer to display additional context around the region.
         //
-        region_struct contextRegion;
+        std::optional<region_struct> contextRegion = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the physical location.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const physical_location_struct &);
@@ -1523,37 +1599,37 @@ namespace gap::sarif::definitions
         //
         // Value that distinguishes this location from all other locations within a single result object.
         //
-        int64_t id;
+        std::optional<int64_t> id = std::nullopt;
 
         //
         // Identifies the artifact and region.
         //
-        physical_location_struct physicalLocation;
+        std::optional<physical_location_struct> physicalLocation = std::nullopt;
 
         //
         // The logical locations associated with the result.
         //
-        std::vector<logical_location_struct> logicalLocations;
+        std::optional<std::forward_list<logical_location_struct>> logicalLocations = std::nullopt;
 
         //
         // A message relevant to the location.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // A set of regions relevant to the location.
         //
-        std::vector<region_struct> annotations;
+        std::optional<std::forward_list<region_struct>> annotations = std::nullopt;
 
         //
         // An array of objects that describe relationships between this location and others.
         //
-        std::vector<location_relationship_struct> relationships;
+        std::optional<std::forward_list<location_relationship_struct>> relationships = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the location.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const location_struct &);
@@ -1571,17 +1647,17 @@ namespace gap::sarif::definitions
         //
         // A set of distinct strings that categorize the relationship. Well-known kinds include 'includes', 'isIncludedBy' and 'relevant'.
         //
-        std::vector<std::string> kinds;
+        std::optional<std::forward_list<std::string>> kinds = std::nullopt;
 
         //
         // A description of the location relationship.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the location relationship.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const location_relationship_struct &);
@@ -1594,37 +1670,37 @@ namespace gap::sarif::definitions
         //
         // Identifies the construct in which the result occurred. For example, this property might contain the name of a class or a method.
         //
-        std::string name;
+        std::optional<std::string> name = std::nullopt;
 
         //
         // The index within the logical locations array.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // The human-readable fully qualified name of the logical location.
         //
-        std::string fullyQualifiedName;
+        std::optional<std::string> fullyQualifiedName = std::nullopt;
 
         //
         // The machine-readable name for the logical location, such as a mangled function name provided by a C++ compiler that encodes calling convention, return type and other details along with the function name.
         //
-        std::string decoratedName;
+        std::optional<std::string> decoratedName = std::nullopt;
 
         //
         // Identifies the index of the immediate parent of the construct in which the result was detected. For example, this property might point to a logical location that represents the namespace that holds a type.
         //
-        int64_t parentIndex;
+        std::optional<int64_t> parentIndex = std::nullopt;
 
         //
         // The type of construct this logical location component refers to. Should be one of 'function', 'member', 'module', 'namespace', 'parameter', 'resource', 'returnType', 'type', 'variable', 'object', 'array', 'property', 'value', 'element', 'text', 'attribute', 'comment', 'declaration', 'dtd' or 'processingInstruction', if any of those accurately describe the construct.
         //
-        std::string kind;
+        std::optional<std::string> kind = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the logical location.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const logical_location_struct &);
@@ -1642,22 +1718,22 @@ namespace gap::sarif::definitions
         //
         // A short description of the node.
         //
-        message_struct label;
+        std::optional<message_struct> label = std::nullopt;
 
         //
         // A code location associated with the node.
         //
-        location_struct location;
+        std::optional<location_struct> location = std::nullopt;
 
         //
         // Array of child nodes.
         //
-        std::vector<node_struct> children;
+        std::optional<std::forward_list<node_struct>> children = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the node.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const node_struct &);
@@ -1670,7 +1746,7 @@ namespace gap::sarif::definitions
         //
         // The locations relevant to this notification.
         //
-        std::vector<location_struct> locations;
+        std::optional<std::forward_list<location_struct>> locations = std::nullopt;
 
         //
         // A message that describes the condition that was encountered.
@@ -1680,37 +1756,37 @@ namespace gap::sarif::definitions
         //
         // A value specifying the severity level of the notification.
         //
-        level_enum level;
+        std::optional<level_enum> level = std::nullopt;
 
         //
         // The thread identifier of the code that generated the notification.
         //
-        int64_t threadId;
+        std::optional<int64_t> threadId = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the analysis tool generated the notification.
         //
-        std::string timeUtc;
+        std::optional<std::string> timeUtc = std::nullopt;
 
         //
         // The runtime exception, if any, relevant to this notification.
         //
-        exception_struct exception;
+        std::optional<exception_struct> exception = std::nullopt;
 
         //
         // A reference used to locate the descriptor relevant to this notification.
         //
-        reporting_descriptor_reference_struct descriptor;
+        std::optional<reporting_descriptor_reference_struct> descriptor = std::nullopt;
 
         //
         // A reference used to locate the rule descriptor associated with this notification.
         //
-        reporting_descriptor_reference_struct associatedRule;
+        std::optional<reporting_descriptor_reference_struct> associatedRule = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the notification.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const notification_struct &);
@@ -1723,32 +1799,32 @@ namespace gap::sarif::definitions
         //
         // The Y coordinate of the top edge of the rectangle, measured in the image's natural units.
         //
-        double top;
+        std::optional<double> top = std::nullopt;
 
         //
         // The X coordinate of the left edge of the rectangle, measured in the image's natural units.
         //
-        double left;
+        std::optional<double> left = std::nullopt;
 
         //
         // The Y coordinate of the bottom edge of the rectangle, measured in the image's natural units.
         //
-        double bottom;
+        std::optional<double> bottom = std::nullopt;
 
         //
         // The X coordinate of the right edge of the rectangle, measured in the image's natural units.
         //
-        double right;
+        std::optional<double> right = std::nullopt;
 
         //
         // A message relevant to the rectangle.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the rectangle.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const rectangle_struct &);
@@ -1766,16 +1842,26 @@ namespace gap::sarif::definitions
         //
         // The content to insert at the location specified by the 'deletedRegion' property.
         //
-        artifact_content_struct insertedContent;
+        std::optional<artifact_content_struct> insertedContent = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the replacement.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const replacement_struct &);
     void from_json(const nlohmann::json &, replacement_struct &);
+
+    //
+    // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
+    //
+    struct reporting_descriptor_message_strings_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const reporting_descriptor_message_strings_struct &);
+    void from_json(const nlohmann::json &, reporting_descriptor_message_strings_struct &);
     struct reporting_descriptor_relationship_struct;
 
     //
@@ -1790,67 +1876,67 @@ namespace gap::sarif::definitions
         //
         // An array of stable, opaque identifiers by which this report was known in some previous version of the analysis tool.
         //
-        std::vector<std::string> deprecatedIds;
+        std::optional<std::forward_list<std::string>> deprecatedIds = std::nullopt;
 
         //
         // A unique identifer for the reporting descriptor in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // An array of unique identifies in the form of a GUID by which this report was known in some previous version of the analysis tool.
         //
-        std::vector<std::string> deprecatedGuids;
+        std::optional<std::forward_list<std::string>> deprecatedGuids = std::nullopt;
 
         //
         // A report identifier that is understandable to an end user.
         //
-        std::string name;
+        std::optional<std::string> name = std::nullopt;
 
         //
         // An array of readable identifiers by which this report was known in some previous version of the analysis tool.
         //
-        std::vector<std::string> deprecatedNames;
+        std::optional<std::forward_list<std::string>> deprecatedNames = std::nullopt;
 
         //
         // A concise description of the report. Should be a single sentence that is understandable when visible space is limited to a single line of text.
         //
-        multiformat_message_string_struct shortDescription;
+        std::optional<multiformat_message_string_struct> shortDescription = std::nullopt;
 
         //
         // A description of the report. Should, as far as possible, provide details sufficient to enable resolution of any problem indicated by the result.
         //
-        multiformat_message_string_struct fullDescription;
+        std::optional<multiformat_message_string_struct> fullDescription = std::nullopt;
 
         //
         // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> messageStrings;
+        std::optional<reporting_descriptor_message_strings_struct> messageStrings = std::nullopt;
 
         //
         // Default reporting configuration information.
         //
-        reporting_configuration_struct defaultConfiguration;
+        std::optional<reporting_configuration_struct> defaultConfiguration = std::nullopt;
 
         //
         // A URI where the primary documentation for the report can be found.
         //
-        std::string helpUri;
+        std::optional<std::string> helpUri = std::nullopt;
 
         //
         // Provides the primary documentation for the report, useful when there is no online documentation.
         //
-        multiformat_message_string_struct help;
+        std::optional<multiformat_message_string_struct> help = std::nullopt;
 
         //
         // An array of objects that describe relationships between this reporting descriptor and others.
         //
-        std::vector<reporting_descriptor_relationship_struct> relationships;
+        std::optional<std::forward_list<reporting_descriptor_relationship_struct>> relationships = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the report.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const reporting_descriptor_struct &);
@@ -1868,17 +1954,17 @@ namespace gap::sarif::definitions
         //
         // A set of distinct strings that categorize the relationship. Well-known kinds include 'canPrecede', 'canFollow', 'willPrecede', 'willFollow', 'superset', 'subset', 'equal', 'disjoint', 'relevant', and 'incomparable'.
         //
-        std::vector<std::string> kinds;
+        std::optional<std::forward_list<std::string>> kinds = std::nullopt;
 
         //
         // A description of the reporting descriptor relationship.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the reporting descriptor reference.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const reporting_descriptor_relationship_struct &);
@@ -1894,13 +1980,33 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(kind_enum, {
-        {kind_enum::kNotApplicable, "notApplicable"},
-        {kind_enum::kPass, "pass"},
-        {kind_enum::kFail, "fail"},
-        {kind_enum::kReview, "review"},
-        {kind_enum::kOpen, "open"},
-        {kind_enum::kInformational, "informational"},
+        { kind_enum::kNotApplicable, "notApplicable" },
+        { kind_enum::kPass, "pass" },
+        { kind_enum::kFail, "fail" },
+        { kind_enum::kReview, "review" },
+        { kind_enum::kOpen, "open" },
+        { kind_enum::kInformational, "informational" },
     })
+
+    //
+    // A set of strings that contribute to the stable, unique identity of the result.
+    //
+    struct result_partial_fingerprints_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const result_partial_fingerprints_struct &);
+    void from_json(const nlohmann::json &, result_partial_fingerprints_struct &);
+
+    //
+    // A set of strings each of which individually defines a stable, unique identity for the result.
+    //
+    struct result_fingerprints_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const result_fingerprints_struct &);
+    void from_json(const nlohmann::json &, result_fingerprints_struct &);
     struct suppression_struct;
 
     enum class baseline_state_enum {
@@ -1911,10 +2017,10 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(baseline_state_enum, {
-        {baseline_state_enum::kNew, "new"},
-        {baseline_state_enum::kUnchanged, "unchanged"},
-        {baseline_state_enum::kUpdated, "updated"},
-        {baseline_state_enum::kAbsent, "absent"},
+        { baseline_state_enum::kNew, "new" },
+        { baseline_state_enum::kUnchanged, "unchanged" },
+        { baseline_state_enum::kUpdated, "updated" },
+        { baseline_state_enum::kAbsent, "absent" },
     })
 
     //
@@ -1924,41 +2030,61 @@ namespace gap::sarif::definitions
         //
         // The Coordinated Universal Time (UTC) date and time at which the result was first detected. See "Date/time properties" in the SARIF spec for the required format.
         //
-        std::string firstDetectionTimeUtc;
+        std::optional<std::string> firstDetectionTimeUtc = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the result was most recently detected. See "Date/time properties" in the SARIF spec for the required format.
         //
-        std::string lastDetectionTimeUtc;
+        std::optional<std::string> lastDetectionTimeUtc = std::nullopt;
 
         //
         // A GUID-valued string equal to the automationDetails.guid property of the run in which the result was first detected.
         //
-        std::string firstDetectionRunGuid;
+        std::optional<std::string> firstDetectionRunGuid = std::nullopt;
 
         //
         // A GUID-valued string equal to the automationDetails.guid property of the run in which the result was most recently detected.
         //
-        std::string lastDetectionRunGuid;
+        std::optional<std::string> lastDetectionRunGuid = std::nullopt;
 
         //
         // The index within the run.invocations array of the invocation object which describes the tool invocation that detected the result.
         //
-        int64_t invocationIndex;
+        std::optional<int64_t> invocationIndex = std::nullopt;
 
         //
         // An array of physicalLocation objects which specify the portions of an analysis tool's output that a converter transformed into the result.
         //
-        std::vector<physical_location_struct> conversionSources;
+        std::optional<std::forward_list<physical_location_struct>> conversionSources = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the result.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const result_provenance_struct &);
     void from_json(const nlohmann::json &, result_provenance_struct &);
+
+    //
+    // The request headers.
+    //
+    struct web_request_headers_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const web_request_headers_struct &);
+    void from_json(const nlohmann::json &, web_request_headers_struct &);
+
+    //
+    // The request parameters.
+    //
+    struct web_request_parameters_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const web_request_parameters_struct &);
+    void from_json(const nlohmann::json &, web_request_parameters_struct &);
 
     //
     // Describes an HTTP request.
@@ -1967,51 +2093,61 @@ namespace gap::sarif::definitions
         //
         // The index within the run.webRequests array of the request object associated with this result.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // The request protocol. Example: 'http'.
         //
-        std::string protocol;
+        std::optional<std::string> protocol = std::nullopt;
 
         //
         // The request version. Example: '1.1'.
         //
-        std::string version;
+        std::optional<std::string> version = std::nullopt;
 
         //
         // The target of the request.
         //
-        std::string target;
+        std::optional<std::string> target = std::nullopt;
 
         //
         // The HTTP method. Well-known values are 'GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE', 'CONNECT'.
         //
-        std::string method;
+        std::optional<std::string> method = std::nullopt;
 
         //
         // The request headers.
         //
-        std::unordered_map<std::string, std::string> headers;
+        std::optional<web_request_headers_struct> headers = std::nullopt;
 
         //
         // The request parameters.
         //
-        std::unordered_map<std::string, std::string> parameters;
+        std::optional<web_request_parameters_struct> parameters = std::nullopt;
 
         //
         // The body of the request.
         //
-        artifact_content_struct body;
+        std::optional<artifact_content_struct> body = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the request.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const web_request_struct &);
     void from_json(const nlohmann::json &, web_request_struct &);
+
+    //
+    // The response headers.
+    //
+    struct web_response_headers_struct {
+        std::unordered_map<std::string, std::string> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const web_response_headers_struct &);
+    void from_json(const nlohmann::json &, web_response_headers_struct &);
 
     //
     // Describes the response to an HTTP request.
@@ -2020,47 +2156,47 @@ namespace gap::sarif::definitions
         //
         // The index within the run.webResponses array of the response object associated with this result.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // The response protocol. Example: 'http'.
         //
-        std::string protocol;
+        std::optional<std::string> protocol = std::nullopt;
 
         //
         // The response version. Example: '1.1'.
         //
-        std::string version;
+        std::optional<std::string> version = std::nullopt;
 
         //
         // The response status code. Example: 451.
         //
-        int64_t statusCode;
+        std::optional<int64_t> statusCode = std::nullopt;
 
         //
         // The response reason. Example: 'Not found'.
         //
-        std::string reasonPhrase;
+        std::optional<std::string> reasonPhrase = std::nullopt;
 
         //
         // The response headers.
         //
-        std::unordered_map<std::string, std::string> headers;
+        std::optional<web_response_headers_struct> headers = std::nullopt;
 
         //
         // The body of the response.
         //
-        artifact_content_struct body;
+        std::optional<artifact_content_struct> body = std::nullopt;
 
         //
         // Specifies whether a response was received from the server.
         //
-        bool noResponseReceived;
+        std::optional<bool> noResponseReceived = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the response.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const web_response_struct &);
@@ -2073,27 +2209,27 @@ namespace gap::sarif::definitions
         //
         // The stable, unique identifier of the rule, if any, to which this notification is relevant. This member can be used to retrieve rule metadata from the rules dictionary, if it exists.
         //
-        std::string ruleId;
+        std::optional<std::string> ruleId = std::nullopt;
 
         //
         // The index within the tool component rules array of the rule object associated with this result.
         //
-        int64_t ruleIndex;
+        std::optional<int64_t> ruleIndex = std::nullopt;
 
         //
         // A reference used to locate the rule descriptor relevant to this result.
         //
-        reporting_descriptor_reference_struct rule;
+        std::optional<reporting_descriptor_reference_struct> rule = std::nullopt;
 
         //
         // A value that categorizes results by evaluation state.
         //
-        kind_enum kind;
+        std::optional<kind_enum> kind = std::nullopt;
 
         //
         // A value specifying the severity level of the result.
         //
-        level_enum level;
+        std::optional<level_enum> level = std::nullopt;
 
         //
         // A message that describes the result. The first sentence of the message only will be displayed when visible space is limited.
@@ -2103,127 +2239,137 @@ namespace gap::sarif::definitions
         //
         // Identifies the artifact that the analysis tool was instructed to scan. This need not be the same as the artifact where the result actually occurred.
         //
-        artifact_location_struct analysisTarget;
+        std::optional<artifact_location_struct> analysisTarget = std::nullopt;
 
         //
         // The set of locations where the result was detected. Specify only one location unless the problem indicated by the result can only be corrected by making a change at every specified location.
         //
-        std::vector<location_struct> locations;
+        std::optional<std::forward_list<location_struct>> locations = std::nullopt;
 
         //
         // A stable, unique identifer for the result in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // A stable, unique identifier for the equivalence class of logically identical results to which this result belongs, in the form of a GUID.
         //
-        std::string correlationGuid;
+        std::optional<std::string> correlationGuid = std::nullopt;
 
         //
         // A positive integer specifying the number of times this logically unique result was observed in this run.
         //
-        int64_t occurrenceCount;
+        std::optional<int64_t> occurrenceCount = std::nullopt;
 
         //
         // A set of strings that contribute to the stable, unique identity of the result.
         //
-        std::unordered_map<std::string, std::string> partialFingerprints;
+        std::optional<result_partial_fingerprints_struct> partialFingerprints = std::nullopt;
 
         //
         // A set of strings each of which individually defines a stable, unique identity for the result.
         //
-        std::unordered_map<std::string, std::string> fingerprints;
+        std::optional<result_fingerprints_struct> fingerprints = std::nullopt;
 
         //
         // An array of 'stack' objects relevant to the result.
         //
-        std::vector<stack_struct> stacks;
+        std::optional<std::forward_list<stack_struct>> stacks = std::nullopt;
 
         //
         // An array of 'codeFlow' objects relevant to the result.
         //
-        std::vector<code_flow_struct> codeFlows;
+        std::optional<std::forward_list<code_flow_struct>> codeFlows = std::nullopt;
 
         //
         // An array of zero or more unique graph objects associated with the result.
         //
-        std::vector<graph_struct> graphs;
+        std::optional<std::forward_list<graph_struct>> graphs = std::nullopt;
 
         //
         // An array of one or more unique 'graphTraversal' objects.
         //
-        std::vector<graph_traversal_struct> graphTraversals;
+        std::optional<std::forward_list<graph_traversal_struct>> graphTraversals = std::nullopt;
 
         //
         // A set of locations relevant to this result.
         //
-        std::vector<location_struct> relatedLocations;
+        std::optional<std::forward_list<location_struct>> relatedLocations = std::nullopt;
 
         //
         // A set of suppressions relevant to this result.
         //
-        std::vector<suppression_struct> suppressions;
+        std::optional<std::forward_list<suppression_struct>> suppressions = std::nullopt;
 
         //
         // The state of a result relative to a baseline of a previous run.
         //
-        baseline_state_enum baselineState;
+        std::optional<baseline_state_enum> baselineState = std::nullopt;
 
         //
         // A number representing the priority or importance of the result.
         //
-        double rank;
+        std::optional<double> rank = std::nullopt;
 
         //
         // A set of artifacts relevant to the result.
         //
-        std::vector<attachment_struct> attachments;
+        std::optional<std::forward_list<attachment_struct>> attachments = std::nullopt;
 
         //
         // An absolute URI at which the result can be viewed.
         //
-        std::string hostedViewerUri;
+        std::optional<std::string> hostedViewerUri = std::nullopt;
 
         //
         // The URIs of the work items associated with this result.
         //
-        std::vector<std::string> workItemUris;
+        std::optional<std::forward_list<std::string>> workItemUris = std::nullopt;
 
         //
         // Information about how and when the result was detected.
         //
-        result_provenance_struct provenance;
+        std::optional<result_provenance_struct> provenance = std::nullopt;
 
         //
         // An array of 'fix' objects, each of which represents a proposed fix to the problem indicated by the result.
         //
-        std::vector<fix_struct> fixes;
+        std::optional<std::forward_list<fix_struct>> fixes = std::nullopt;
 
         //
         // An array of references to taxonomy reporting descriptors that are applicable to the result.
         //
-        std::vector<reporting_descriptor_reference_struct> taxa;
+        std::optional<std::forward_list<reporting_descriptor_reference_struct>> taxa = std::nullopt;
 
         //
         // A web request associated with this result.
         //
-        web_request_struct webRequest;
+        std::optional<web_request_struct> webRequest = std::nullopt;
 
         //
         // A web response associated with this result.
         //
-        web_response_struct webResponse;
+        std::optional<web_response_struct> webResponse = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the result.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const result_struct &);
     void from_json(const nlohmann::json &, result_struct &);
     struct version_control_details_struct;
+
+    //
+    // The artifact location specified by each uriBaseId symbol on the machine where the tool originally ran.
+    //
+    struct run_original_uri_base_ids_struct {
+        std::unordered_map<std::string, artifact_location_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const run_original_uri_base_ids_struct &);
+    void from_json(const nlohmann::json &, run_original_uri_base_ids_struct &);
 
     //
     // Information that describes a run's identity and role within an engineering system process.
@@ -2232,27 +2378,27 @@ namespace gap::sarif::definitions
         //
         // A description of the identity and role played within the engineering system by this object's containing run object.
         //
-        message_struct description;
+        std::optional<message_struct> description = std::nullopt;
 
         //
         // A hierarchical string that uniquely identifies this object's containing run object.
         //
-        std::string id;
+        std::optional<std::string> id = std::nullopt;
 
         //
         // A stable, unique identifer for this object's containing run object in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // A stable, unique identifier for the equivalence class of runs to which this object's containing run object belongs in the form of a GUID.
         //
-        std::string correlationGuid;
+        std::optional<std::string> correlationGuid = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the run automation details.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const run_automation_details_struct &);
@@ -2264,8 +2410,8 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(column_kind_enum, {
-        {column_kind_enum::kUtf16CodeUnits, "utf16CodeUnits"},
-        {column_kind_enum::kUnicodeCodePoints, "unicodeCodePoints"},
+        { column_kind_enum::kUtf16CodeUnits, "utf16CodeUnits" },
+        { column_kind_enum::kUnicodeCodePoints, "unicodeCodePoints" },
     })
 
     //
@@ -2275,12 +2421,12 @@ namespace gap::sarif::definitions
         //
         // Provides a suggestion to SARIF consumers to display file paths relative to the specified location.
         //
-        artifact_location_struct displayBase;
+        std::optional<artifact_location_struct> displayBase = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the special locations.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const special_locations_struct &);
@@ -2298,137 +2444,137 @@ namespace gap::sarif::definitions
         //
         // Describes the invocation of the analysis tool.
         //
-        std::vector<invocation_struct> invocations;
+        std::optional<std::forward_list<invocation_struct>> invocations = std::nullopt;
 
         //
         // A conversion object that describes how a converter transformed an analysis tool's native reporting format into the SARIF format.
         //
-        conversion_struct conversion;
+        std::optional<conversion_struct> conversion = std::nullopt;
 
         //
         // The language of the messages emitted into the log file during this run (expressed as an ISO 639-1 two-letter lowercase culture code) and an optional region (expressed as an ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The casing is recommended but not required (in order for this data to conform to RFC5646).
         //
-        std::string language;
+        std::optional<std::string> language = std::nullopt;
 
         //
         // Specifies the revision in version control of the artifacts that were scanned.
         //
-        std::vector<version_control_details_struct> versionControlProvenance;
+        std::optional<std::forward_list<version_control_details_struct>> versionControlProvenance = std::nullopt;
 
         //
         // The artifact location specified by each uriBaseId symbol on the machine where the tool originally ran.
         //
-        std::unordered_map<std::string, artifact_location_struct> originalUriBaseIds;
+        std::optional<run_original_uri_base_ids_struct> originalUriBaseIds = std::nullopt;
 
         //
         // An array of artifact objects relevant to the run.
         //
-        std::vector<artifact_struct> artifacts;
+        std::optional<std::forward_list<artifact_struct>> artifacts = std::nullopt;
 
         //
         // An array of logical locations such as namespaces, types or functions.
         //
-        std::vector<logical_location_struct> logicalLocations;
+        std::optional<std::forward_list<logical_location_struct>> logicalLocations = std::nullopt;
 
         //
         // An array of zero or more unique graph objects associated with the run.
         //
-        std::vector<graph_struct> graphs;
+        std::optional<std::forward_list<graph_struct>> graphs = std::nullopt;
 
         //
         // The set of results contained in an SARIF log. The results array can be omitted when a run is solely exporting rules metadata. It must be present (but may be empty) if a log file represents an actual scan.
         //
-        std::vector<result_struct> results;
+        std::optional<std::forward_list<result_struct>> results = std::nullopt;
 
         //
         // Automation details that describe this run.
         //
-        run_automation_details_struct automationDetails;
+        std::optional<run_automation_details_struct> automationDetails = std::nullopt;
 
         //
         // Automation details that describe the aggregate of runs to which this run belongs.
         //
-        std::vector<run_automation_details_struct> runAggregates;
+        std::optional<std::forward_list<run_automation_details_struct>> runAggregates = std::nullopt;
 
         //
         // The 'guid' property of a previous SARIF 'run' that comprises the baseline that was used to compute result 'baselineState' properties for the run.
         //
-        std::string baselineGuid;
+        std::optional<std::string> baselineGuid = std::nullopt;
 
         //
         // An array of strings used to replace sensitive information in a redaction-aware property.
         //
-        std::vector<std::string> redactionTokens;
+        std::optional<std::forward_list<std::string>> redactionTokens = std::nullopt;
 
         //
         // Specifies the default encoding for any artifact object that refers to a text file.
         //
-        std::string defaultEncoding;
+        std::optional<std::string> defaultEncoding = std::nullopt;
 
         //
         // Specifies the default source language for any artifact object that refers to a text file that contains source code.
         //
-        std::string defaultSourceLanguage;
+        std::optional<std::string> defaultSourceLanguage = std::nullopt;
 
         //
         // An ordered list of character sequences that were treated as line breaks when computing region information for the run.
         //
-        std::vector<std::string> newlineSequences;
+        std::optional<std::forward_list<std::string>> newlineSequences = std::nullopt;
 
         //
         // Specifies the unit in which the tool measures columns.
         //
-        column_kind_enum columnKind;
+        std::optional<column_kind_enum> columnKind = std::nullopt;
 
         //
         // References to external property files that should be inlined with the content of a root log file.
         //
-        external_property_file_references_struct externalPropertyFileReferences;
+        std::optional<external_property_file_references_struct> externalPropertyFileReferences = std::nullopt;
 
         //
         // An array of threadFlowLocation objects cached at run level.
         //
-        std::vector<thread_flow_location_struct> threadFlowLocations;
+        std::optional<std::forward_list<thread_flow_location_struct>> threadFlowLocations = std::nullopt;
 
         //
         // An array of toolComponent objects relevant to a taxonomy in which results are categorized.
         //
-        std::vector<tool_component_struct> taxonomies;
+        std::optional<std::forward_list<tool_component_struct>> taxonomies = std::nullopt;
 
         //
         // Addresses associated with this run instance, if any.
         //
-        std::vector<address_struct> addresses;
+        std::optional<std::forward_list<address_struct>> addresses = std::nullopt;
 
         //
         // The set of available translations of the localized data provided by the tool.
         //
-        std::vector<tool_component_struct> translations;
+        std::optional<std::forward_list<tool_component_struct>> translations = std::nullopt;
 
         //
         // Contains configurations that may potentially override both reportingDescriptor.defaultConfiguration (the tool's default severities) and invocation.configurationOverrides (severities established at run-time from the command line).
         //
-        std::vector<tool_component_struct> policies;
+        std::optional<std::forward_list<tool_component_struct>> policies = std::nullopt;
 
         //
         // An array of request objects cached at run level.
         //
-        std::vector<web_request_struct> webRequests;
+        std::optional<std::forward_list<web_request_struct>> webRequests = std::nullopt;
 
         //
         // An array of response objects cached at run level.
         //
-        std::vector<web_response_struct> webResponses;
+        std::optional<std::forward_list<web_response_struct>> webResponses = std::nullopt;
 
         //
         // A specialLocations object that defines locations of special significance to SARIF consumers.
         //
-        special_locations_struct specialLocations;
+        std::optional<special_locations_struct> specialLocations = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the run.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const run_struct &);
@@ -2441,27 +2587,27 @@ namespace gap::sarif::definitions
         //
         // The location to which this stack frame refers.
         //
-        location_struct location;
+        std::optional<location_struct> location = std::nullopt;
 
         //
         // The name of the module that contains the code of this stack frame.
         //
-        std::string module;
+        std::optional<std::string> module = std::nullopt;
 
         //
         // The thread identifier of the stack frame.
         //
-        int64_t threadId;
+        std::optional<int64_t> threadId = std::nullopt;
 
         //
         // The parameters of the call that is executing.
         //
-        std::vector<std::string> parameters;
+        std::optional<std::forward_list<std::string>> parameters = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the stack frame.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const stack_frame_struct &);
@@ -2474,9 +2620,9 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(state_enum, {
-        {state_enum::kAccepted, "accepted"},
-        {state_enum::kUnderReview, "underReview"},
-        {state_enum::kRejected, "rejected"},
+        { state_enum::kAccepted, "accepted" },
+        { state_enum::kUnderReview, "underReview" },
+        { state_enum::kRejected, "rejected" },
     })
 
     //
@@ -2486,7 +2632,7 @@ namespace gap::sarif::definitions
         //
         // A stable, unique identifer for the suprression in the form of a GUID.
         //
-        std::string guid;
+        std::optional<std::string> guid = std::nullopt;
 
         //
         // A string that indicates where the suppression is persisted.
@@ -2496,26 +2642,46 @@ namespace gap::sarif::definitions
         //
         // A string that indicates the state of the suppression.
         //
-        state_enum state;
+        std::optional<state_enum> state = std::nullopt;
 
         //
         // A string representing the justification for the suppression.
         //
-        std::string justification;
+        std::optional<std::string> justification = std::nullopt;
 
         //
         // Identifies the location associated with the suppression.
         //
-        location_struct location;
+        std::optional<location_struct> location = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the suppression.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const suppression_struct &);
     void from_json(const nlohmann::json &, suppression_struct &);
+
+    //
+    // Values of relevant expressions at the start of the thread flow that may change during thread flow execution.
+    //
+    struct thread_flow_initial_state_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const thread_flow_initial_state_struct &);
+    void from_json(const nlohmann::json &, thread_flow_initial_state_struct &);
+
+    //
+    // Values of relevant expressions at the start of the thread flow that remain constant.
+    //
+    struct thread_flow_immutable_state_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const thread_flow_immutable_state_struct &);
+    void from_json(const nlohmann::json &, thread_flow_immutable_state_struct &);
 
     //
     // Describes a sequence of code locations that specify a path through a single thread of execution such as an operating system or fiber.
@@ -2524,36 +2690,46 @@ namespace gap::sarif::definitions
         //
         // An string that uniquely identifies the threadFlow within the codeFlow in which it occurs.
         //
-        std::string id;
+        std::optional<std::string> id = std::nullopt;
 
         //
         // A message relevant to the thread flow.
         //
-        message_struct message;
+        std::optional<message_struct> message = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the thread flow that may change during thread flow execution.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> initialState;
+        std::optional<thread_flow_initial_state_struct> initialState = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the thread flow that remain constant.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> immutableState;
+        std::optional<thread_flow_immutable_state_struct> immutableState = std::nullopt;
 
         //
         // A temporally ordered array of 'threadFlowLocation' objects, each of which describes a location visited by the tool while producing the result.
         //
-        std::vector<thread_flow_location_struct> locations;
+        std::forward_list<thread_flow_location_struct> locations;
 
         //
         // Key/value pairs that provide additional information about the thread flow.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const thread_flow_struct &);
     void from_json(const nlohmann::json &, thread_flow_struct &);
+
+    //
+    // A dictionary, each of whose keys specifies a variable or expression, the associated value of which represents the variable or expression value. For an annotation of kind 'continuation', for example, this dictionary might hold the current assumed values of a set of global variables.
+    //
+    struct thread_flow_location_state_struct {
+        std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
+    };
+
+    void to_json(nlohmann::json &, const thread_flow_location_state_struct &);
+    void from_json(const nlohmann::json &, thread_flow_location_state_struct &);
 
     enum class importance_enum {
         kImportant,
@@ -2562,9 +2738,9 @@ namespace gap::sarif::definitions
     };
 
     NLOHMANN_JSON_SERIALIZE_ENUM(importance_enum, {
-        {importance_enum::kImportant, "important"},
-        {importance_enum::kEssential, "essential"},
-        {importance_enum::kUnimportant, "unimportant"},
+        { importance_enum::kImportant, "important" },
+        { importance_enum::kEssential, "essential" },
+        { importance_enum::kUnimportant, "unimportant" },
     })
 
     //
@@ -2574,72 +2750,72 @@ namespace gap::sarif::definitions
         //
         // The index within the run threadFlowLocations array.
         //
-        int64_t index;
+        std::optional<int64_t> index = std::nullopt;
 
         //
         // The code location.
         //
-        location_struct location;
+        std::optional<location_struct> location = std::nullopt;
 
         //
         // The call stack leading to this location.
         //
-        stack_struct stack;
+        std::optional<stack_struct> stack = std::nullopt;
 
         //
         // A set of distinct strings that categorize the thread flow location. Well-known kinds include 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false', 'true', 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock', 'memory', 'resource', 'scope' and 'value'.
         //
-        std::vector<std::string> kinds;
+        std::optional<std::forward_list<std::string>> kinds = std::nullopt;
 
         //
         // An array of references to rule or taxonomy reporting descriptors that are applicable to the thread flow location.
         //
-        std::vector<reporting_descriptor_reference_struct> taxa;
+        std::optional<std::forward_list<reporting_descriptor_reference_struct>> taxa = std::nullopt;
 
         //
         // The name of the module that contains the code that is executing.
         //
-        std::string module;
+        std::optional<std::string> module = std::nullopt;
 
         //
         // A dictionary, each of whose keys specifies a variable or expression, the associated value of which represents the variable or expression value. For an annotation of kind 'continuation', for example, this dictionary might hold the current assumed values of a set of global variables.
         //
-        std::unordered_map<std::string, multiformat_message_string_struct> state;
+        std::optional<thread_flow_location_state_struct> state = std::nullopt;
 
         //
         // An integer representing a containment hierarchy within the thread flow.
         //
-        int64_t nestingLevel;
+        std::optional<int64_t> nestingLevel = std::nullopt;
 
         //
         // An integer representing the temporal order in which execution reached this location.
         //
-        int64_t executionOrder;
+        std::optional<int64_t> executionOrder = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which this location was executed.
         //
-        std::string executionTimeUtc;
+        std::optional<std::string> executionTimeUtc = std::nullopt;
 
         //
         // Specifies the importance of this location in understanding the code flow in which it occurs. The order from most to least important is "essential", "important", "unimportant". Default: "important".
         //
-        importance_enum importance;
+        std::optional<importance_enum> importance = std::nullopt;
 
         //
         // A web request associated with this thread flow location.
         //
-        web_request_struct webRequest;
+        std::optional<web_request_struct> webRequest = std::nullopt;
 
         //
         // A web response associated with this thread flow location.
         //
-        web_response_struct webResponse;
+        std::optional<web_response_struct> webResponse = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the threadflow location.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const thread_flow_location_struct &);
@@ -2657,87 +2833,34 @@ namespace gap::sarif::definitions
         //
         // A string that uniquely and permanently identifies the revision within the repository.
         //
-        std::string revisionId;
+        std::optional<std::string> revisionId = std::nullopt;
 
         //
         // The name of a branch containing the revision.
         //
-        std::string branch;
+        std::optional<std::string> branch = std::nullopt;
 
         //
         // A tag that has been applied to the revision.
         //
-        std::string revisionTag;
+        std::optional<std::string> revisionTag = std::nullopt;
 
         //
         // A Coordinated Universal Time (UTC) date and time that can be used to synchronize an enlistment to the state of the repository at that time.
         //
-        std::string asOfTimeUtc;
+        std::optional<std::string> asOfTimeUtc = std::nullopt;
 
         //
         // The location in the local file system to which the root of the repository was mapped at the time of the analysis.
         //
-        artifact_location_struct mappedTo;
+        std::optional<artifact_location_struct> mappedTo = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the version control details.
         //
-        std::unordered_map<std::string, nlohmann::json> properties;
+        std::optional<property_bag_struct> properties = std::nullopt;
     };
 
     void to_json(nlohmann::json &, const version_control_details_struct &);
     void from_json(const nlohmann::json &, version_control_details_struct &);
-
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(root_struct, version, runs, inlineExternalProperties, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(address_struct, absoluteAddress, relativeAddress, length, kind, name, fullyQualifiedName, offsetFromParent, index, parentIndex, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(message_struct, text, markdown, id, arguments, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(artifact_location_struct, uri, uriBaseId, index, description, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(multiformat_message_string_struct, text, markdown, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(artifact_content_struct, text, binary, rendered, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(artifact_struct, description, location, parentIndex, offset, length, roles, mimeType, contents, encoding, sourceLanguage, hashes, lastModifiedTimeUtc, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(artifact_change_struct, artifactLocation, replacements, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(attachment_struct, description, artifactLocation, regions, rectangles, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(code_flow_struct, message, threadFlows, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(reporting_configuration_struct, enabled, level, rank, parameters, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(tool_component_reference_struct, name, index, guid, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(reporting_descriptor_reference_struct, id, index, guid, toolComponent, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(configuration_override_struct, configuration, descriptor, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(translation_metadata_struct, name, fullName, shortDescription, fullDescription, downloadUri, informationUri, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(tool_component_struct, guid, name, organization, product, productSuite, shortDescription, fullDescription, fullName, version, semanticVersion, dottedQuadFileVersion, releaseDateUtc, downloadUri, informationUri, globalMessageStrings, notifications, rules, taxa, locations, language, contents, isComprehensive, localizedDataSemanticVersion, minimumRequiredLocalizedDataSemanticVersion, associatedComponent, translationMetadata, supportedTaxonomies, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(tool_struct, driver, extensions, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(invocation_struct, commandLine, arguments, responseFiles, startTimeUtc, endTimeUtc, exitCode, ruleConfigurationOverrides, notificationConfigurationOverrides, toolExecutionNotifications, toolConfigurationNotifications, exitCodeDescription, exitSignalName, exitSignalNumber, processStartFailureMessage, executionSuccessful, machine, account, processId, executableLocation, workingDirectory, environmentVariables, stdin, stdout, stderr, stdoutStderr, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(conversion_struct, tool, invocation, analysisToolLogFiles, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(edge_struct, id, label, sourceNodeId, targetNodeId, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(edge_traversal_struct, edgeId, message, finalState, stepOverEdgeCount, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(stack_struct, message, frames, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(exception_struct, kind, message, stack, innerExceptions, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(external_properties_struct, schema, version, guid, runGuid, conversion, graphs, externalizedProperties, artifacts, invocations, logicalLocations, threadFlowLocations, results, taxonomies, driver, extensions, policies, translations, addresses, webRequests, webResponses, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(external_property_file_reference_struct, location, guid, itemCount, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(external_property_file_references_struct, conversion, graphs, externalizedProperties, artifacts, invocations, logicalLocations, threadFlowLocations, results, taxonomies, addresses, driver, extensions, policies, translations, webRequests, webResponses, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(fix_struct, description, artifactChanges, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(graph_struct, description, nodes, edges, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(graph_traversal_struct, runGraphIndex, resultGraphIndex, description, initialState, immutableState, edgeTraversals, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(region_struct, startLine, startColumn, endLine, endColumn, charOffset, charLength, byteOffset, byteLength, snippet, message, sourceLanguage, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(physical_location_struct, address, artifactLocation, region, contextRegion, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location_struct, id, physicalLocation, logicalLocations, message, annotations, relationships, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(location_relationship_struct, target, kinds, description, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(logical_location_struct, name, index, fullyQualifiedName, decoratedName, parentIndex, kind, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(node_struct, id, label, location, children, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(notification_struct, locations, message, level, threadId, timeUtc, exception, descriptor, associatedRule, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(rectangle_struct, top, left, bottom, right, message, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(replacement_struct, deletedRegion, insertedContent, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(reporting_descriptor_struct, id, deprecatedIds, guid, deprecatedGuids, name, deprecatedNames, shortDescription, fullDescription, messageStrings, defaultConfiguration, helpUri, help, relationships, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(reporting_descriptor_relationship_struct, target, kinds, description, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(result_provenance_struct, firstDetectionTimeUtc, lastDetectionTimeUtc, firstDetectionRunGuid, lastDetectionRunGuid, invocationIndex, conversionSources, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(web_request_struct, index, protocol, version, target, method, headers, parameters, body, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(web_response_struct, index, protocol, version, statusCode, reasonPhrase, headers, body, noResponseReceived, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(result_struct, ruleId, ruleIndex, rule, kind, level, message, analysisTarget, locations, guid, correlationGuid, occurrenceCount, partialFingerprints, fingerprints, stacks, codeFlows, graphs, graphTraversals, relatedLocations, suppressions, baselineState, rank, attachments, hostedViewerUri, workItemUris, provenance, fixes, taxa, webRequest, webResponse, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(run_automation_details_struct, description, id, guid, correlationGuid, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(special_locations_struct, displayBase, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(run_struct, tool, invocations, conversion, language, versionControlProvenance, originalUriBaseIds, artifacts, logicalLocations, graphs, results, automationDetails, runAggregates, baselineGuid, redactionTokens, defaultEncoding, defaultSourceLanguage, newlineSequences, columnKind, externalPropertyFileReferences, threadFlowLocations, taxonomies, addresses, translations, policies, webRequests, webResponses, specialLocations, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(stack_frame_struct, location, module, threadId, parameters, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(suppression_struct, guid, kind, state, justification, location, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(thread_flow_struct, id, message, initialState, immutableState, locations, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(thread_flow_location_struct, index, location, stack, kinds, taxa, module, state, nestingLevel, executionOrder, executionTimeUtc, importance, webRequest, webResponse, properties)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(version_control_details_struct, repositoryUri, revisionId, branch, revisionTag, asOfTimeUtc, mappedTo, properties)
 } // namespace gap::sarif::definitions

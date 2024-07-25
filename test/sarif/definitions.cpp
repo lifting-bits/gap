@@ -2,8 +2,6 @@
 
 #include <doctest/doctest.h>
 #include <gap/sarif/definitions.hpp>
-#include <memory>
-#include <vector>
 
 namespace gap::sarif::definitions {
     TEST_CASE("Roundtrip") {
@@ -14,65 +12,66 @@ namespace gap::sarif::definitions {
                 {
                     .tool = {
                         .driver = {
-                            .name="ESLint",
-                            .informationUri="https://eslint.org",
-                            .rules = {
+                            .name = "ESLint",
+                            .informationUri = "https://eslint.org",
+                            .rules = {{
                                 {
                                     .id = "no-unused-vars",
-                                    .shortDescription = {
+                                    .shortDescription = {{
                                         .text = "disallow unused variables",
-                                    },
+                                    }},
                                     .helpUri = "https://eslint.org/docs/rules/no-unused-vars",
-                                    .properties = {
-                                        {"category", "Variables"},
-                                    },
-                                },
-                            },
+                                    .properties = {{
+                                        .additional_properties = {
+                                            {"category", "Variable"},
+                                        },
+                                    }},
+                                }
+                            }},
                         },
                     },
-                    .artifacts = {
+                    .artifacts = {{
                         {
-                            .location = {
+                            .location = {{
                                 .uri = "file:///C:/dev/sarif/sarif-tutorials/samples/Introduction/simple-example.js",
-                            },
+                            }},
                         },
-                    },
-                    .results = {
+                    }},
+                    .results = {{
                         {
+                            .ruleId = "no-unused-vars",
+                            .ruleIndex = 0,
                             .level = level_enum::kError,
                             .message = {
                                 .text = "'x' is assigned a value but never used.",
                             },
-                            .locations = {
+                            .locations = {{
                                 {
-                                    .physicalLocation = {
-                                        .artifactLocation = {
+                                    .physicalLocation = {{
+                                        .artifactLocation = {{
                                             .uri = "file:///C:/dev/sarif/sarif-tutorials/samples/Introduction/simple-example.js",
                                             .index = 0,
+                                        }},
+                                    }},
+                                    .properties = {{
+                                        .additional_properties = {
+                                            {"region", {
+                                                {"startLine", 1},
+                                                {"startColumn", 5},
+                                            }},
                                         },
-                                        .region = {
-                                            .startLine = 1,
-                                            .startColumn = 5,
-                                        },
-                                    },
+                                    }},
                                 },
-                            },
-                            .ruleId = "no-unused-vars",
-                            .ruleIndex = 0,
+                            }},
                         },
-                    },
-                },
+                    }},
+                }
             },
         };
 
-        nlohmann::json root_json;
-        to_json(root_json, root);
-
-        root_struct deser;
-        from_json(root_json, deser);
-
-        nlohmann::json deser_json;
-        to_json(deser_json, deser);
+        nlohmann::json root_json = root;
+        root_struct deser = root;
+        nlohmann::json deser_json = deser;
 
         CHECK(root_json == deser_json);
     }

@@ -6,5 +6,9 @@ add_headers(sarif GAP_SARIF_HEADERS
 	definitions.hpp
 )
 
-add_gap_library(gap-sarif "${GAP_SARIF_HEADERS}")
-target_link_libraries(gap-sarif INTERFACE nlohmann_json::nlohmann_json)
+add_sources(sarif GAP_SARIF_SOURCES
+	definitions.cpp
+)
+
+add_gap_static_library(gap-sarif "${GAP_SARIF_HEADERS}" "${GAP_SARIF_SOURCES}")
+target_link_libraries(gap-sarif PUBLIC nlohmann_json::nlohmann_json)
