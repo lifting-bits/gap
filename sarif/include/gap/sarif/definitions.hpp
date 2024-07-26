@@ -60,7 +60,7 @@ namespace gap::sarif
         //
         // The SARIF format version of this log file.
         //
-        version version;
+        ::gap::sarif::version version;
 
         //
         // The set of runs contained in this log file.
@@ -340,7 +340,7 @@ namespace gap::sarif
         //
         // The role or roles played by the artifact in the analysis.
         //
-        std::optional< std::forward_list< roles > > roles = std::nullopt;
+        std::optional< std::forward_list< ::gap::sarif::roles > > roles = std::nullopt;
 
         //
         // The MIME type (RFC 2045) of the artifact.
@@ -448,7 +448,7 @@ namespace gap::sarif
         //
         // A message relevant to the code flow.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // An array of one or more unique threadFlow objects, each of which describes the progress of a program through a thread of execution.
@@ -490,7 +490,7 @@ namespace gap::sarif
         //
         // Specifies the failure level for the report.
         //
-        std::optional< level > level = std::nullopt;
+        std::optional< ::gap::sarif::level > level = std::nullopt;
 
         //
         // Specifies the relative priority of the report. Used for analysis output only.
@@ -756,7 +756,7 @@ namespace gap::sarif
         //
         // The kinds of data contained in this object.
         //
-        std::optional< std::forward_list< contents > > contents = std::nullopt;
+        std::optional< std::forward_list< ::gap::sarif::contents > > contents = std::nullopt;
 
         //
         // Specifies whether this object contains a complete definition of the localizable and/or non-localizable data for this component, as opposed to including only data that is relevant to the results persisted to this log file.
@@ -966,12 +966,12 @@ namespace gap::sarif
         //
         // A tool object that describes the converter.
         //
-        tool tool;
+        ::gap::sarif::tool tool;
 
         //
         // An invocation object that describes the invocation of the converter.
         //
-        std::optional< invocation > invocation = std::nullopt;
+        std::optional< ::gap::sarif::invocation > invocation = std::nullopt;
 
         //
         // The locations of the analysis tool's per-run log files.
@@ -1032,7 +1032,7 @@ namespace gap::sarif
         //
         // A message to display to the user as the edge is traversed.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // The values of relevant expressions after the edge has been traversed.
@@ -1061,7 +1061,7 @@ namespace gap::sarif
         //
         // A message relevant to this call stack.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // An array of stack frames that represents a sequence of calls, rendered in reverse chronological order, that comprise the call stack.
@@ -1095,7 +1095,7 @@ namespace gap::sarif
         //
         // The sequence of function calls leading to the exception.
         //
-        std::optional< stack > stack = std::nullopt;
+        std::optional< ::gap::sarif::stack > stack = std::nullopt;
 
         //
         // An array of exception objects each of which is considered a cause of this exception.
@@ -1129,7 +1129,7 @@ namespace gap::sarif
         //
         // The SARIF format version of this external properties object.
         //
-        std::optional< version > version = std::nullopt;
+        std::optional< ::gap::sarif::version > version = std::nullopt;
 
         //
         // A stable, unique identifer for this external properties object, in the form of a GUID.
@@ -1144,7 +1144,7 @@ namespace gap::sarif
         //
         // A conversion object that will be merged with a separate run.
         //
-        std::optional< conversion > conversion = std::nullopt;
+        std::optional< ::gap::sarif::conversion > conversion = std::nullopt;
 
         //
         // An array of graph objects that will be merged with a separate run.
@@ -1498,7 +1498,7 @@ namespace gap::sarif
         //
         // A message relevant to the region.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // Specifies the source language, if any, of the portion of the artifact specified by the region object.
@@ -1521,7 +1521,7 @@ namespace gap::sarif
         //
         // The address of the location.
         //
-        std::optional< address > address = std::nullopt;
+        std::optional< ::gap::sarif::address > address = std::nullopt;
 
         //
         // The location of the artifact.
@@ -1531,7 +1531,7 @@ namespace gap::sarif
         //
         // Specifies a portion of the artifact.
         //
-        std::optional< region > region = std::nullopt;
+        std::optional< ::gap::sarif::region > region = std::nullopt;
 
         //
         // Specifies a portion of the artifact that encloses the region. Allows a viewer to display additional context around the region.
@@ -1570,7 +1570,7 @@ namespace gap::sarif
         //
         // A message relevant to the location.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // A set of regions relevant to the location.
@@ -1679,7 +1679,7 @@ namespace gap::sarif
         //
         // A code location associated with the node.
         //
-        std::optional< location > location = std::nullopt;
+        std::optional< ::gap::sarif::location > location = std::nullopt;
 
         //
         // Array of child nodes.
@@ -1707,12 +1707,12 @@ namespace gap::sarif
         //
         // A message that describes the condition that was encountered.
         //
-        message message;
+        ::gap::sarif::message message;
 
         //
         // A value specifying the severity level of the notification.
         //
-        std::optional< level > level = std::nullopt;
+        std::optional< ::gap::sarif::level > level = std::nullopt;
 
         //
         // The thread identifier of the code that generated the notification.
@@ -1727,7 +1727,7 @@ namespace gap::sarif
         //
         // The runtime exception, if any, relevant to this notification.
         //
-        std::optional< exception > exception = std::nullopt;
+        std::optional< ::gap::sarif::exception > exception = std::nullopt;
 
         //
         // A reference used to locate the descriptor relevant to this notification.
@@ -1775,7 +1775,7 @@ namespace gap::sarif
         //
         // A message relevant to the rectangle.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the rectangle.
@@ -2120,17 +2120,17 @@ namespace gap::sarif
         //
         // A value that categorizes results by evaluation state.
         //
-        std::optional< kind > kind = std::nullopt;
+        std::optional< ::gap::sarif::kind > kind = std::nullopt;
 
         //
         // A value specifying the severity level of the result.
         //
-        std::optional< level > level = std::nullopt;
+        std::optional< ::gap::sarif::level > level = std::nullopt;
 
         //
         // A message that describes the result. The first sentence of the message only will be displayed when visible space is limited.
         //
-        message message;
+        ::gap::sarif::message message;
 
         //
         // Identifies the artifact that the analysis tool was instructed to scan. This need not be the same as the artifact where the result actually occurred.
@@ -2325,7 +2325,7 @@ namespace gap::sarif
         //
         // Information about the tool or tool pipeline that generated the results in this run. A run can only contain results produced by a single tool or tool pipeline. A run can aggregate results from multiple log files, as long as context around the tool run (tool command-line arguments and the like) is identical for all aggregated files.
         //
-        tool tool;
+        ::gap::sarif::tool tool;
 
         //
         // Describes the invocation of the analysis tool.
@@ -2335,7 +2335,7 @@ namespace gap::sarif
         //
         // A conversion object that describes how a converter transformed an analysis tool's native reporting format into the SARIF format.
         //
-        std::optional< conversion > conversion = std::nullopt;
+        std::optional< ::gap::sarif::conversion > conversion = std::nullopt;
 
         //
         // The language of the messages emitted into the log file during this run (expressed as an ISO 639-1 two-letter lowercase culture code) and an optional region (expressed as an ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The casing is recommended but not required (in order for this data to conform to RFC5646).
@@ -2473,7 +2473,7 @@ namespace gap::sarif
         //
         // The location to which this stack frame refers.
         //
-        std::optional< location > location = std::nullopt;
+        std::optional< ::gap::sarif::location > location = std::nullopt;
 
         //
         // The name of the module that contains the code of this stack frame.
@@ -2523,12 +2523,12 @@ namespace gap::sarif
         //
         // A string that indicates where the suppression is persisted.
         //
-        kind kind;
+        ::gap::sarif::kind kind;
 
         //
         // A string that indicates the state of the suppression.
         //
-        std::optional< state > state = std::nullopt;
+        std::optional< ::gap::sarif::state > state = std::nullopt;
 
         //
         // A string representing the justification for the suppression.
@@ -2538,7 +2538,7 @@ namespace gap::sarif
         //
         // Identifies the location associated with the suppression.
         //
-        std::optional< location > location = std::nullopt;
+        std::optional< ::gap::sarif::location > location = std::nullopt;
 
         //
         // Key/value pairs that provide additional information about the suppression.
@@ -2561,7 +2561,7 @@ namespace gap::sarif
         //
         // A message relevant to the thread flow.
         //
-        std::optional< message > message = std::nullopt;
+        std::optional< ::gap::sarif::message > message = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the thread flow that may change during thread flow execution.
@@ -2611,12 +2611,12 @@ namespace gap::sarif
         //
         // The code location.
         //
-        std::optional< location > location = std::nullopt;
+        std::optional< ::gap::sarif::location > location = std::nullopt;
 
         //
         // The call stack leading to this location.
         //
-        std::optional< stack > stack = std::nullopt;
+        std::optional< ::gap::sarif::stack > stack = std::nullopt;
 
         //
         // A set of distinct strings that categorize the thread flow location. Well-known kinds include 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false', 'true', 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock', 'memory', 'resource', 'scope' and 'value'.
@@ -2656,7 +2656,7 @@ namespace gap::sarif
         //
         // Specifies the importance of this location in understanding the code flow in which it occurs. The order from most to least important is "essential", "important", "unimportant". Default: "important".
         //
-        std::optional< importance > importance = std::nullopt;
+        std::optional< ::gap::sarif::importance > importance = std::nullopt;
 
         //
         // A web request associated with this thread flow location.
