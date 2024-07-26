@@ -309,16 +309,6 @@ namespace gap::sarif
     void from_json(const json &, artifact_content &);
 
     //
-    // A dictionary, each of whose keys is the name of a hash function and each of whose values is the hashed value of the artifact produced by the specified hash function.
-    //
-    struct artifact_hashes {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const artifact_hashes &);
-    void from_json(const json &, artifact_hashes &);
-
-    //
     // A single artifact. In some cases, this artifact might be nested within another artifact.
     //
     struct artifact {
@@ -375,7 +365,7 @@ namespace gap::sarif
         //
         // A dictionary, each of whose keys is the name of a hash function and each of whose values is the hashed value of the artifact produced by the specified hash function.
         //
-        std::optional< artifact_hashes > hashes = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > hashes = std::nullopt;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the artifact was most recently modified. See "Date/time properties" in the SARIF spec for the required format.
@@ -604,16 +594,6 @@ namespace gap::sarif
 
     void to_json(json &, const configuration_override &);
     void from_json(const json &, configuration_override &);
-
-    //
-    // A dictionary, each of whose keys is a resource identifier and each of whose values is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
-    //
-    struct tool_component_global_message_strings {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const tool_component_global_message_strings &);
-    void from_json(const json &, tool_component_global_message_strings &);
     struct reporting_descriptor;
 
     enum class contents {
@@ -746,7 +726,7 @@ namespace gap::sarif
         //
         // A dictionary, each of whose keys is a resource identifier and each of whose values is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
         //
-        std::optional< tool_component_global_message_strings > globalMessageStrings = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > globalMessageStrings = std::nullopt;
 
         //
         // An array of reportingDescriptor objects relevant to the notifications related to the configuration and runtime execution of the tool component.
@@ -840,16 +820,6 @@ namespace gap::sarif
     void to_json(json &, const tool &);
     void from_json(const json &, tool &);
     struct notification;
-
-    //
-    // The environment variables associated with the analysis tool process, expressed as key/value pairs.
-    //
-    struct invocation_environment_variables {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const invocation_environment_variables &);
-    void from_json(const json &, invocation_environment_variables &);
 
     //
     // The runtime environment of the analysis tool run.
@@ -958,7 +928,7 @@ namespace gap::sarif
         //
         // The environment variables associated with the analysis tool process, expressed as key/value pairs.
         //
-        std::optional< invocation_environment_variables > environmentVariables = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > environmentVariables = std::nullopt;
 
         //
         // A file containing the standard input stream to the process that was invoked.
@@ -1051,16 +1021,6 @@ namespace gap::sarif
     void from_json(const json &, edge &);
 
     //
-    // The values of relevant expressions after the edge has been traversed.
-    //
-    struct edge_traversal_final_state {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const edge_traversal_final_state &);
-    void from_json(const json &, edge_traversal_final_state &);
-
-    //
     // Represents the traversal of a single edge during a graph traversal.
     //
     struct edge_traversal {
@@ -1077,7 +1037,7 @@ namespace gap::sarif
         //
         // The values of relevant expressions after the edge has been traversed.
         //
-        std::optional< edge_traversal_final_state > finalState = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > finalState = std::nullopt;
 
         //
         // The number of edge traversals necessary to return from a nested graph.
@@ -1444,26 +1404,6 @@ namespace gap::sarif
     void from_json(const json &, graph &);
 
     //
-    // Values of relevant expressions at the start of the graph traversal that may change during graph traversal.
-    //
-    struct graph_traversal_initial_state {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const graph_traversal_initial_state &);
-    void from_json(const json &, graph_traversal_initial_state &);
-
-    //
-    // Values of relevant expressions at the start of the graph traversal that remain constant for the graph traversal.
-    //
-    struct graph_traversal_immutable_state {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const graph_traversal_immutable_state &);
-    void from_json(const json &, graph_traversal_immutable_state &);
-
-    //
     // Represents a path through a graph.
     //
     struct graph_traversal {
@@ -1485,12 +1425,12 @@ namespace gap::sarif
         //
         // Values of relevant expressions at the start of the graph traversal that may change during graph traversal.
         //
-        std::optional< graph_traversal_initial_state > initialState = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > initialState = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the graph traversal that remain constant for the graph traversal.
         //
-        std::optional< graph_traversal_immutable_state > immutableState = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > immutableState = std::nullopt;
 
         //
         // The sequences of edges traversed by this graph traversal.
@@ -1868,16 +1808,6 @@ namespace gap::sarif
 
     void to_json(json &, const replacement &);
     void from_json(const json &, replacement &);
-
-    //
-    // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
-    //
-    struct reporting_descriptor_message_strings {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const reporting_descriptor_message_strings &);
-    void from_json(const json &, reporting_descriptor_message_strings &);
     struct reporting_descriptor_relationship;
 
     //
@@ -1927,7 +1857,7 @@ namespace gap::sarif
         //
         // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
         //
-        std::optional< reporting_descriptor_message_strings > messageStrings = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > messageStrings = std::nullopt;
 
         //
         // Default reporting configuration information.
@@ -2003,26 +1933,6 @@ namespace gap::sarif
         { kind::kOpen, "open" },
         { kind::kInformational, "informational" },
     })
-
-    //
-    // A set of strings that contribute to the stable, unique identity of the result.
-    //
-    struct result_partial_fingerprints {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const result_partial_fingerprints &);
-    void from_json(const json &, result_partial_fingerprints &);
-
-    //
-    // A set of strings each of which individually defines a stable, unique identity for the result.
-    //
-    struct result_fingerprints {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const result_fingerprints &);
-    void from_json(const json &, result_fingerprints &);
     struct suppression;
 
     enum class baseline_state {
@@ -2083,26 +1993,6 @@ namespace gap::sarif
     void from_json(const json &, result_provenance &);
 
     //
-    // The request headers.
-    //
-    struct web_request_headers {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const web_request_headers &);
-    void from_json(const json &, web_request_headers &);
-
-    //
-    // The request parameters.
-    //
-    struct web_request_parameters {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const web_request_parameters &);
-    void from_json(const json &, web_request_parameters &);
-
-    //
     // Describes an HTTP request.
     //
     struct web_request {
@@ -2134,12 +2024,12 @@ namespace gap::sarif
         //
         // The request headers.
         //
-        std::optional< web_request_headers > headers = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > headers = std::nullopt;
 
         //
         // The request parameters.
         //
-        std::optional< web_request_parameters > parameters = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > parameters = std::nullopt;
 
         //
         // The body of the request.
@@ -2154,16 +2044,6 @@ namespace gap::sarif
 
     void to_json(json &, const web_request &);
     void from_json(const json &, web_request &);
-
-    //
-    // The response headers.
-    //
-    struct web_response_headers {
-        std::unordered_map< std::string, std::string > additional_properties;
-    };
-
-    void to_json(json &, const web_response_headers &);
-    void from_json(const json &, web_response_headers &);
 
     //
     // Describes the response to an HTTP request.
@@ -2197,7 +2077,7 @@ namespace gap::sarif
         //
         // The response headers.
         //
-        std::optional< web_response_headers > headers = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > headers = std::nullopt;
 
         //
         // The body of the response.
@@ -2280,12 +2160,12 @@ namespace gap::sarif
         //
         // A set of strings that contribute to the stable, unique identity of the result.
         //
-        std::optional< result_partial_fingerprints > partialFingerprints = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > partialFingerprints = std::nullopt;
 
         //
         // A set of strings each of which individually defines a stable, unique identity for the result.
         //
-        std::optional< result_fingerprints > fingerprints = std::nullopt;
+        std::optional< std::unordered_map< std::string, std::string > > fingerprints = std::nullopt;
 
         //
         // An array of 'stack' objects relevant to the result.
@@ -2376,16 +2256,6 @@ namespace gap::sarif
     void to_json(json &, const result &);
     void from_json(const json &, result &);
     struct version_control_details;
-
-    //
-    // The artifact location specified by each uriBaseId symbol on the machine where the tool originally ran.
-    //
-    struct run_original_uri_base_ids {
-        std::unordered_map< std::string, artifact_location > additional_properties;
-    };
-
-    void to_json(json &, const run_original_uri_base_ids &);
-    void from_json(const json &, run_original_uri_base_ids &);
 
     //
     // Information that describes a run's identity and role within an engineering system process.
@@ -2480,7 +2350,7 @@ namespace gap::sarif
         //
         // The artifact location specified by each uriBaseId symbol on the machine where the tool originally ran.
         //
-        std::optional< run_original_uri_base_ids > originalUriBaseIds = std::nullopt;
+        std::optional< std::unordered_map< std::string, artifact_location > > originalUriBaseIds = std::nullopt;
 
         //
         // An array of artifact objects relevant to the run.
@@ -2680,26 +2550,6 @@ namespace gap::sarif
     void from_json(const json &, suppression &);
 
     //
-    // Values of relevant expressions at the start of the thread flow that may change during thread flow execution.
-    //
-    struct thread_flow_initial_state {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const thread_flow_initial_state &);
-    void from_json(const json &, thread_flow_initial_state &);
-
-    //
-    // Values of relevant expressions at the start of the thread flow that remain constant.
-    //
-    struct thread_flow_immutable_state {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const thread_flow_immutable_state &);
-    void from_json(const json &, thread_flow_immutable_state &);
-
-    //
     // Describes a sequence of code locations that specify a path through a single thread of execution such as an operating system or fiber.
     //
     struct thread_flow {
@@ -2716,12 +2566,12 @@ namespace gap::sarif
         //
         // Values of relevant expressions at the start of the thread flow that may change during thread flow execution.
         //
-        std::optional< thread_flow_initial_state > initialState = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > initialState = std::nullopt;
 
         //
         // Values of relevant expressions at the start of the thread flow that remain constant.
         //
-        std::optional< thread_flow_immutable_state > immutableState = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > immutableState = std::nullopt;
 
         //
         // A temporally ordered array of 'threadFlowLocation' objects, each of which describes a location visited by the tool while producing the result.
@@ -2736,16 +2586,6 @@ namespace gap::sarif
 
     void to_json(json &, const thread_flow &);
     void from_json(const json &, thread_flow &);
-
-    //
-    // A dictionary, each of whose keys specifies a variable or expression, the associated value of which represents the variable or expression value. For an annotation of kind 'continuation', for example, this dictionary might hold the current assumed values of a set of global variables.
-    //
-    struct thread_flow_location_state {
-        std::unordered_map< std::string, multiformat_message_string > additional_properties;
-    };
-
-    void to_json(json &, const thread_flow_location_state &);
-    void from_json(const json &, thread_flow_location_state &);
 
     enum class importance {
         kImportant,
@@ -2796,7 +2636,7 @@ namespace gap::sarif
         //
         // A dictionary, each of whose keys specifies a variable or expression, the associated value of which represents the variable or expression value. For an annotation of kind 'continuation', for example, this dictionary might hold the current assumed values of a set of global variables.
         //
-        std::optional< thread_flow_location_state > state = std::nullopt;
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > state = std::nullopt;
 
         //
         // An integer representing a containment hierarchy within the thread flow.

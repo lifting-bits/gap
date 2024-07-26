@@ -325,16 +325,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, artifact_hashes &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const artifact_hashes &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, artifact &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
@@ -398,7 +388,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "hashes" ) {
-                artifact_hashes field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.hashes = field;
                 continue;
@@ -728,16 +718,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, tool_component_global_message_strings &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const tool_component_global_message_strings &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, translation_metadata &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
@@ -888,7 +868,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "globalMessageStrings" ) {
-                tool_component_global_message_strings field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.globalMessageStrings = field;
                 continue;
@@ -1086,16 +1066,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, invocation_environment_variables &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const invocation_environment_variables &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, invocation &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "commandLine" ) {
@@ -1217,7 +1187,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "environmentVariables" ) {
-                invocation_environment_variables field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.environmentVariables = field;
                 continue;
@@ -1409,16 +1379,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, edge_traversal_final_state &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const edge_traversal_final_state &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, edge_traversal &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "edgeId" ) {
@@ -1432,7 +1392,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "finalState" ) {
-                edge_traversal_final_state field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.finalState = field;
                 continue;
@@ -2013,26 +1973,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, graph_traversal_initial_state &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const graph_traversal_initial_state &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
-    void from_json(const json &j, graph_traversal_immutable_state &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const graph_traversal_immutable_state &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, graph_traversal &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "runGraphIndex" ) {
@@ -2054,13 +1994,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "initialState" ) {
-                graph_traversal_initial_state field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.initialState = field;
                 continue;
             }
             if ( key == "immutableState" ) {
-                graph_traversal_immutable_state field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.immutableState = field;
                 continue;
@@ -2662,16 +2602,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, reporting_descriptor_message_strings &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const reporting_descriptor_message_strings &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, reporting_descriptor &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
@@ -2721,7 +2651,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "messageStrings" ) {
-                reporting_descriptor_message_strings field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.messageStrings = field;
                 continue;
@@ -2838,26 +2768,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, result_partial_fingerprints &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const result_partial_fingerprints &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
-    void from_json(const json &j, result_fingerprints &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const result_fingerprints &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, result_provenance &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "firstDetectionTimeUtc" ) {
@@ -2927,26 +2837,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, web_request_headers &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const web_request_headers &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
-    void from_json(const json &j, web_request_parameters &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const web_request_parameters &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, web_request &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
@@ -2980,13 +2870,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "headers" ) {
-                web_request_headers field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.headers = field;
                 continue;
             }
             if ( key == "parameters" ) {
-                web_request_parameters field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.parameters = field;
                 continue;
@@ -3034,16 +2924,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, web_response_headers &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const web_response_headers &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, web_response &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
@@ -3077,7 +2957,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "headers" ) {
-                web_response_headers field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.headers = field;
                 continue;
@@ -3198,13 +3078,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "partialFingerprints" ) {
-                result_partial_fingerprints field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.partialFingerprints = field;
                 continue;
             }
             if ( key == "fingerprints" ) {
-                result_fingerprints field;
+                std::unordered_map< std::string, std::string > field;
                 val.get_to(field);
                 o.fingerprints = field;
                 continue;
@@ -3403,16 +3283,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, run_original_uri_base_ids &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const run_original_uri_base_ids &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, run_automation_details &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
@@ -3519,7 +3389,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "originalUriBaseIds" ) {
-                run_original_uri_base_ids field;
+                std::unordered_map< std::string, artifact_location > field;
                 val.get_to(field);
                 o.originalUriBaseIds = field;
                 continue;
@@ -3849,26 +3719,6 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, thread_flow_initial_state &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const thread_flow_initial_state &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
-    void from_json(const json &j, thread_flow_immutable_state &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const thread_flow_immutable_state &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
-        }
-    }
     void from_json(const json &j, thread_flow &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
@@ -3884,13 +3734,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "initialState" ) {
-                thread_flow_initial_state field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.initialState = field;
                 continue;
             }
             if ( key == "immutableState" ) {
-                thread_flow_immutable_state field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.immutableState = field;
                 continue;
@@ -3923,16 +3773,6 @@ namespace gap::sarif {
         j["locations"] = o.locations;
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
-        }
-    }
-    void from_json(const json &j, thread_flow_location_state &o) {
-        for( auto &[key, val] : j.items() ) {
-            val.get_to(o.additional_properties[key]);
-        }
-    }
-    void to_json(json &j, const thread_flow_location_state &o) {
-        for ( auto &[key, val] : o.additional_properties ) {
-            j[key] = val;
         }
     }
     void from_json(const json &j, thread_flow_location &o) {
@@ -3974,7 +3814,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "state" ) {
-                thread_flow_location_state field;
+                std::unordered_map< std::string, multiformat_message_string > field;
                 val.get_to(field);
                 o.state = field;
                 continue;
