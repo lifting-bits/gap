@@ -12,6 +12,8 @@
 
 namespace gap::sarif
 {
+    using json = nlohmann::json;
+
     enum class version_enum {
         k2_1_0,
     };
@@ -31,11 +33,11 @@ namespace gap::sarif
         //
         std::optional<std::forward_list<std::string>> tags = std::nullopt;
 
-        std::unordered_map<std::string, nlohmann::json> additional_properties;
+        std::unordered_map<std::string, json> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const property_bag_struct &);
-    void from_json(const nlohmann::json &, property_bag_struct &);
+    void to_json(json &, const property_bag_struct &);
+    void from_json(const json &, property_bag_struct &);
 
     //
     // Static Analysis Results Format (SARIF) Version 2.1.0 JSON Schema: a standard format for the output of static analysis tools.
@@ -62,8 +64,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const root_struct &);
-    void from_json(const nlohmann::json &, root_struct &);
+    void to_json(json &, const root_struct &);
+    void from_json(const json &, root_struct &);
 
     //
     // A physical or virtual address, or a range of addresses, in an 'addressable region' (memory or a binary file).
@@ -120,8 +122,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const address_struct &);
-    void from_json(const nlohmann::json &, address_struct &);
+    void to_json(json &, const address_struct &);
+    void from_json(const json &, address_struct &);
 
     //
     // Encapsulates a message intended to be read by the end user.
@@ -153,8 +155,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const message_struct &);
-    void from_json(const nlohmann::json &, message_struct &);
+    void to_json(json &, const message_struct &);
+    void from_json(const json &, message_struct &);
 
     //
     // Specifies the location of an artifact.
@@ -186,8 +188,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const artifact_location_struct &);
-    void from_json(const nlohmann::json &, artifact_location_struct &);
+    void to_json(json &, const artifact_location_struct &);
+    void from_json(const json &, artifact_location_struct &);
 
     enum class roles_enum {
         kAnalysisTarget,
@@ -261,8 +263,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const multiformat_message_string_struct &);
-    void from_json(const nlohmann::json &, multiformat_message_string_struct &);
+    void to_json(json &, const multiformat_message_string_struct &);
+    void from_json(const json &, multiformat_message_string_struct &);
 
     //
     // Represents the contents of an artifact.
@@ -289,8 +291,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const artifact_content_struct &);
-    void from_json(const nlohmann::json &, artifact_content_struct &);
+    void to_json(json &, const artifact_content_struct &);
+    void from_json(const json &, artifact_content_struct &);
 
     //
     // A dictionary, each of whose keys is the name of a hash function and each of whose values is the hashed value of the artifact produced by the specified hash function.
@@ -299,8 +301,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const artifact_hashes_struct &);
-    void from_json(const nlohmann::json &, artifact_hashes_struct &);
+    void to_json(json &, const artifact_hashes_struct &);
+    void from_json(const json &, artifact_hashes_struct &);
 
     //
     // A single artifact. In some cases, this artifact might be nested within another artifact.
@@ -372,8 +374,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const artifact_struct &);
-    void from_json(const nlohmann::json &, artifact_struct &);
+    void to_json(json &, const artifact_struct &);
+    void from_json(const json &, artifact_struct &);
     struct replacement_struct;
 
     //
@@ -396,8 +398,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const artifact_change_struct &);
-    void from_json(const nlohmann::json &, artifact_change_struct &);
+    void to_json(json &, const artifact_change_struct &);
+    void from_json(const json &, artifact_change_struct &);
     struct region_struct;
     struct rectangle_struct;
 
@@ -431,8 +433,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const attachment_struct &);
-    void from_json(const nlohmann::json &, attachment_struct &);
+    void to_json(json &, const attachment_struct &);
+    void from_json(const json &, attachment_struct &);
     struct thread_flow_struct;
 
     //
@@ -455,8 +457,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const code_flow_struct &);
-    void from_json(const nlohmann::json &, code_flow_struct &);
+    void to_json(json &, const code_flow_struct &);
+    void from_json(const json &, code_flow_struct &);
 
     enum class level_enum {
         kNone,
@@ -502,8 +504,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const reporting_configuration_struct &);
-    void from_json(const nlohmann::json &, reporting_configuration_struct &);
+    void to_json(json &, const reporting_configuration_struct &);
+    void from_json(const json &, reporting_configuration_struct &);
 
     //
     // Identifies a particular toolComponent object, either the driver or an extension.
@@ -530,8 +532,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const tool_component_reference_struct &);
-    void from_json(const nlohmann::json &, tool_component_reference_struct &);
+    void to_json(json &, const tool_component_reference_struct &);
+    void from_json(const json &, tool_component_reference_struct &);
 
     //
     // Information about how to locate a relevant reporting descriptor.
@@ -563,8 +565,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const reporting_descriptor_reference_struct &);
-    void from_json(const nlohmann::json &, reporting_descriptor_reference_struct &);
+    void to_json(json &, const reporting_descriptor_reference_struct &);
+    void from_json(const json &, reporting_descriptor_reference_struct &);
 
     //
     // Information about how a specific rule or notification was reconfigured at runtime.
@@ -586,8 +588,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const configuration_override_struct &);
-    void from_json(const nlohmann::json &, configuration_override_struct &);
+    void to_json(json &, const configuration_override_struct &);
+    void from_json(const json &, configuration_override_struct &);
 
     //
     // A dictionary, each of whose keys is a resource identifier and each of whose values is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
@@ -596,8 +598,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const tool_component_global_message_strings_struct &);
-    void from_json(const nlohmann::json &, tool_component_global_message_strings_struct &);
+    void to_json(json &, const tool_component_global_message_strings_struct &);
+    void from_json(const json &, tool_component_global_message_strings_struct &);
     struct reporting_descriptor_struct;
 
     enum class contents_enum {
@@ -650,8 +652,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const translation_metadata_struct &);
-    void from_json(const nlohmann::json &, translation_metadata_struct &);
+    void to_json(json &, const translation_metadata_struct &);
+    void from_json(const json &, translation_metadata_struct &);
 
     //
     // A component, such as a plug-in or the driver, of the analysis tool that was run.
@@ -798,8 +800,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const tool_component_struct &);
-    void from_json(const nlohmann::json &, tool_component_struct &);
+    void to_json(json &, const tool_component_struct &);
+    void from_json(const json &, tool_component_struct &);
 
     //
     // The analysis tool that was run.
@@ -821,8 +823,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const tool_struct &);
-    void from_json(const nlohmann::json &, tool_struct &);
+    void to_json(json &, const tool_struct &);
+    void from_json(const json &, tool_struct &);
     struct notification_struct;
 
     //
@@ -832,8 +834,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const invocation_environment_variables_struct &);
-    void from_json(const nlohmann::json &, invocation_environment_variables_struct &);
+    void to_json(json &, const invocation_environment_variables_struct &);
+    void from_json(const json &, invocation_environment_variables_struct &);
 
     //
     // The runtime environment of the analysis tool run.
@@ -970,8 +972,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const invocation_struct &);
-    void from_json(const nlohmann::json &, invocation_struct &);
+    void to_json(json &, const invocation_struct &);
+    void from_json(const json &, invocation_struct &);
 
     //
     // Describes how a converter transformed the output of a static analysis tool from the analysis tool's native output format into the SARIF format.
@@ -998,8 +1000,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const conversion_struct &);
-    void from_json(const nlohmann::json &, conversion_struct &);
+    void to_json(json &, const conversion_struct &);
+    void from_json(const json &, conversion_struct &);
 
     //
     // Represents a directed edge in a graph.
@@ -1031,8 +1033,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const edge_struct &);
-    void from_json(const nlohmann::json &, edge_struct &);
+    void to_json(json &, const edge_struct &);
+    void from_json(const json &, edge_struct &);
 
     //
     // The values of relevant expressions after the edge has been traversed.
@@ -1041,8 +1043,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const edge_traversal_final_state_struct &);
-    void from_json(const nlohmann::json &, edge_traversal_final_state_struct &);
+    void to_json(json &, const edge_traversal_final_state_struct &);
+    void from_json(const json &, edge_traversal_final_state_struct &);
 
     //
     // Represents the traversal of a single edge during a graph traversal.
@@ -1074,8 +1076,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const edge_traversal_struct &);
-    void from_json(const nlohmann::json &, edge_traversal_struct &);
+    void to_json(json &, const edge_traversal_struct &);
+    void from_json(const json &, edge_traversal_struct &);
     struct stack_frame_struct;
 
     //
@@ -1098,8 +1100,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const stack_struct &);
-    void from_json(const nlohmann::json &, stack_struct &);
+    void to_json(json &, const stack_struct &);
+    void from_json(const json &, stack_struct &);
     struct exception_struct;
 
     //
@@ -1132,8 +1134,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const exception_struct &);
-    void from_json(const nlohmann::json &, exception_struct &);
+    void to_json(json &, const exception_struct &);
+    void from_json(const json &, exception_struct &);
     struct graph_struct;
     struct logical_location_struct;
     struct thread_flow_location_struct;
@@ -1251,8 +1253,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const external_properties_struct &);
-    void from_json(const nlohmann::json &, external_properties_struct &);
+    void to_json(json &, const external_properties_struct &);
+    void from_json(const json &, external_properties_struct &);
 
     //
     // Contains information that enables a SARIF consumer to locate the external property file that contains the value of an externalized property associated with the run.
@@ -1279,8 +1281,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const external_property_file_reference_struct &);
-    void from_json(const nlohmann::json &, external_property_file_reference_struct &);
+    void to_json(json &, const external_property_file_reference_struct &);
+    void from_json(const json &, external_property_file_reference_struct &);
 
     //
     // References to external property files that should be inlined with the content of a root log file.
@@ -1372,8 +1374,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const external_property_file_references_struct &);
-    void from_json(const nlohmann::json &, external_property_file_references_struct &);
+    void to_json(json &, const external_property_file_references_struct &);
+    void from_json(const json &, external_property_file_references_struct &);
 
     //
     // A proposed fix for the problem represented by a result object. A fix specifies a set of artifacts to modify. For each artifact, it specifies a set of bytes to remove, and provides a set of new bytes to replace them.
@@ -1395,8 +1397,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const fix_struct &);
-    void from_json(const nlohmann::json &, fix_struct &);
+    void to_json(json &, const fix_struct &);
+    void from_json(const json &, fix_struct &);
     struct node_struct;
 
     //
@@ -1424,8 +1426,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const graph_struct &);
-    void from_json(const nlohmann::json &, graph_struct &);
+    void to_json(json &, const graph_struct &);
+    void from_json(const json &, graph_struct &);
 
     //
     // Values of relevant expressions at the start of the graph traversal that may change during graph traversal.
@@ -1434,8 +1436,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const graph_traversal_initial_state_struct &);
-    void from_json(const nlohmann::json &, graph_traversal_initial_state_struct &);
+    void to_json(json &, const graph_traversal_initial_state_struct &);
+    void from_json(const json &, graph_traversal_initial_state_struct &);
 
     //
     // Values of relevant expressions at the start of the graph traversal that remain constant for the graph traversal.
@@ -1444,8 +1446,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const graph_traversal_immutable_state_struct &);
-    void from_json(const nlohmann::json &, graph_traversal_immutable_state_struct &);
+    void to_json(json &, const graph_traversal_immutable_state_struct &);
+    void from_json(const json &, graph_traversal_immutable_state_struct &);
 
     //
     // Represents a path through a graph.
@@ -1487,8 +1489,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const graph_traversal_struct &);
-    void from_json(const nlohmann::json &, graph_traversal_struct &);
+    void to_json(json &, const graph_traversal_struct &);
+    void from_json(const json &, graph_traversal_struct &);
 
     //
     // A region within an artifact where a result was detected.
@@ -1555,8 +1557,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const region_struct &);
-    void from_json(const nlohmann::json &, region_struct &);
+    void to_json(json &, const region_struct &);
+    void from_json(const json &, region_struct &);
 
     //
     // A physical location relevant to a result. Specifies a reference to a programming artifact together with a range of bytes or characters within that artifact.
@@ -1588,8 +1590,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const physical_location_struct &);
-    void from_json(const nlohmann::json &, physical_location_struct &);
+    void to_json(json &, const physical_location_struct &);
+    void from_json(const json &, physical_location_struct &);
     struct location_relationship_struct;
 
     //
@@ -1632,8 +1634,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const location_struct &);
-    void from_json(const nlohmann::json &, location_struct &);
+    void to_json(json &, const location_struct &);
+    void from_json(const json &, location_struct &);
 
     //
     // Information about the relation of one location to another.
@@ -1660,8 +1662,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const location_relationship_struct &);
-    void from_json(const nlohmann::json &, location_relationship_struct &);
+    void to_json(json &, const location_relationship_struct &);
+    void from_json(const json &, location_relationship_struct &);
 
     //
     // A logical location of a construct that produced a result.
@@ -1703,8 +1705,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const logical_location_struct &);
-    void from_json(const nlohmann::json &, logical_location_struct &);
+    void to_json(json &, const logical_location_struct &);
+    void from_json(const json &, logical_location_struct &);
 
     //
     // Represents a node in a graph.
@@ -1736,8 +1738,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const node_struct &);
-    void from_json(const nlohmann::json &, node_struct &);
+    void to_json(json &, const node_struct &);
+    void from_json(const json &, node_struct &);
 
     //
     // Describes a condition relevant to the tool itself, as opposed to being relevant to a target being analyzed by the tool.
@@ -1789,8 +1791,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const notification_struct &);
-    void from_json(const nlohmann::json &, notification_struct &);
+    void to_json(json &, const notification_struct &);
+    void from_json(const json &, notification_struct &);
 
     //
     // An area within an image.
@@ -1827,8 +1829,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const rectangle_struct &);
-    void from_json(const nlohmann::json &, rectangle_struct &);
+    void to_json(json &, const rectangle_struct &);
+    void from_json(const json &, rectangle_struct &);
 
     //
     // The replacement of a single region of an artifact.
@@ -1850,8 +1852,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const replacement_struct &);
-    void from_json(const nlohmann::json &, replacement_struct &);
+    void to_json(json &, const replacement_struct &);
+    void from_json(const json &, replacement_struct &);
 
     //
     // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
@@ -1860,8 +1862,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const reporting_descriptor_message_strings_struct &);
-    void from_json(const nlohmann::json &, reporting_descriptor_message_strings_struct &);
+    void to_json(json &, const reporting_descriptor_message_strings_struct &);
+    void from_json(const json &, reporting_descriptor_message_strings_struct &);
     struct reporting_descriptor_relationship_struct;
 
     //
@@ -1939,8 +1941,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const reporting_descriptor_struct &);
-    void from_json(const nlohmann::json &, reporting_descriptor_struct &);
+    void to_json(json &, const reporting_descriptor_struct &);
+    void from_json(const json &, reporting_descriptor_struct &);
 
     //
     // Information about the relation of one reporting descriptor to another.
@@ -1967,8 +1969,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const reporting_descriptor_relationship_struct &);
-    void from_json(const nlohmann::json &, reporting_descriptor_relationship_struct &);
+    void to_json(json &, const reporting_descriptor_relationship_struct &);
+    void from_json(const json &, reporting_descriptor_relationship_struct &);
 
     enum class kind_enum {
         kNotApplicable,
@@ -1995,8 +1997,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const result_partial_fingerprints_struct &);
-    void from_json(const nlohmann::json &, result_partial_fingerprints_struct &);
+    void to_json(json &, const result_partial_fingerprints_struct &);
+    void from_json(const json &, result_partial_fingerprints_struct &);
 
     //
     // A set of strings each of which individually defines a stable, unique identity for the result.
@@ -2005,8 +2007,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const result_fingerprints_struct &);
-    void from_json(const nlohmann::json &, result_fingerprints_struct &);
+    void to_json(json &, const result_fingerprints_struct &);
+    void from_json(const json &, result_fingerprints_struct &);
     struct suppression_struct;
 
     enum class baseline_state_enum {
@@ -2063,8 +2065,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const result_provenance_struct &);
-    void from_json(const nlohmann::json &, result_provenance_struct &);
+    void to_json(json &, const result_provenance_struct &);
+    void from_json(const json &, result_provenance_struct &);
 
     //
     // The request headers.
@@ -2073,8 +2075,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const web_request_headers_struct &);
-    void from_json(const nlohmann::json &, web_request_headers_struct &);
+    void to_json(json &, const web_request_headers_struct &);
+    void from_json(const json &, web_request_headers_struct &);
 
     //
     // The request parameters.
@@ -2083,8 +2085,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const web_request_parameters_struct &);
-    void from_json(const nlohmann::json &, web_request_parameters_struct &);
+    void to_json(json &, const web_request_parameters_struct &);
+    void from_json(const json &, web_request_parameters_struct &);
 
     //
     // Describes an HTTP request.
@@ -2136,8 +2138,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const web_request_struct &);
-    void from_json(const nlohmann::json &, web_request_struct &);
+    void to_json(json &, const web_request_struct &);
+    void from_json(const json &, web_request_struct &);
 
     //
     // The response headers.
@@ -2146,8 +2148,8 @@ namespace gap::sarif
         std::unordered_map<std::string, std::string> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const web_response_headers_struct &);
-    void from_json(const nlohmann::json &, web_response_headers_struct &);
+    void to_json(json &, const web_response_headers_struct &);
+    void from_json(const json &, web_response_headers_struct &);
 
     //
     // Describes the response to an HTTP request.
@@ -2199,8 +2201,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const web_response_struct &);
-    void from_json(const nlohmann::json &, web_response_struct &);
+    void to_json(json &, const web_response_struct &);
+    void from_json(const json &, web_response_struct &);
 
     //
     // A result produced by an analysis tool.
@@ -2357,8 +2359,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const result_struct &);
-    void from_json(const nlohmann::json &, result_struct &);
+    void to_json(json &, const result_struct &);
+    void from_json(const json &, result_struct &);
     struct version_control_details_struct;
 
     //
@@ -2368,8 +2370,8 @@ namespace gap::sarif
         std::unordered_map<std::string, artifact_location_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const run_original_uri_base_ids_struct &);
-    void from_json(const nlohmann::json &, run_original_uri_base_ids_struct &);
+    void to_json(json &, const run_original_uri_base_ids_struct &);
+    void from_json(const json &, run_original_uri_base_ids_struct &);
 
     //
     // Information that describes a run's identity and role within an engineering system process.
@@ -2401,8 +2403,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const run_automation_details_struct &);
-    void from_json(const nlohmann::json &, run_automation_details_struct &);
+    void to_json(json &, const run_automation_details_struct &);
+    void from_json(const json &, run_automation_details_struct &);
 
     enum class column_kind_enum {
         kUtf16CodeUnits,
@@ -2429,8 +2431,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const special_locations_struct &);
-    void from_json(const nlohmann::json &, special_locations_struct &);
+    void to_json(json &, const special_locations_struct &);
+    void from_json(const json &, special_locations_struct &);
 
     //
     // Describes a single run of an analysis tool, and contains the reported output of that run.
@@ -2577,8 +2579,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const run_struct &);
-    void from_json(const nlohmann::json &, run_struct &);
+    void to_json(json &, const run_struct &);
+    void from_json(const json &, run_struct &);
 
     //
     // A function call within a stack trace.
@@ -2610,8 +2612,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const stack_frame_struct &);
-    void from_json(const nlohmann::json &, stack_frame_struct &);
+    void to_json(json &, const stack_frame_struct &);
+    void from_json(const json &, stack_frame_struct &);
 
     enum class state_enum {
         kAccepted,
@@ -2660,8 +2662,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const suppression_struct &);
-    void from_json(const nlohmann::json &, suppression_struct &);
+    void to_json(json &, const suppression_struct &);
+    void from_json(const json &, suppression_struct &);
 
     //
     // Values of relevant expressions at the start of the thread flow that may change during thread flow execution.
@@ -2670,8 +2672,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const thread_flow_initial_state_struct &);
-    void from_json(const nlohmann::json &, thread_flow_initial_state_struct &);
+    void to_json(json &, const thread_flow_initial_state_struct &);
+    void from_json(const json &, thread_flow_initial_state_struct &);
 
     //
     // Values of relevant expressions at the start of the thread flow that remain constant.
@@ -2680,8 +2682,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const thread_flow_immutable_state_struct &);
-    void from_json(const nlohmann::json &, thread_flow_immutable_state_struct &);
+    void to_json(json &, const thread_flow_immutable_state_struct &);
+    void from_json(const json &, thread_flow_immutable_state_struct &);
 
     //
     // Describes a sequence of code locations that specify a path through a single thread of execution such as an operating system or fiber.
@@ -2718,8 +2720,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const thread_flow_struct &);
-    void from_json(const nlohmann::json &, thread_flow_struct &);
+    void to_json(json &, const thread_flow_struct &);
+    void from_json(const json &, thread_flow_struct &);
 
     //
     // A dictionary, each of whose keys specifies a variable or expression, the associated value of which represents the variable or expression value. For an annotation of kind 'continuation', for example, this dictionary might hold the current assumed values of a set of global variables.
@@ -2728,8 +2730,8 @@ namespace gap::sarif
         std::unordered_map<std::string, multiformat_message_string_struct> additional_properties;
     };
 
-    void to_json(nlohmann::json &, const thread_flow_location_state_struct &);
-    void from_json(const nlohmann::json &, thread_flow_location_state_struct &);
+    void to_json(json &, const thread_flow_location_state_struct &);
+    void from_json(const json &, thread_flow_location_state_struct &);
 
     enum class importance_enum {
         kImportant,
@@ -2818,8 +2820,8 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const thread_flow_location_struct &);
-    void from_json(const nlohmann::json &, thread_flow_location_struct &);
+    void to_json(json &, const thread_flow_location_struct &);
+    void from_json(const json &, thread_flow_location_struct &);
 
     //
     // Specifies the information necessary to retrieve a desired revision from a version control system.
@@ -2861,6 +2863,6 @@ namespace gap::sarif
         std::optional<property_bag_struct> properties = std::nullopt;
     };
 
-    void to_json(nlohmann::json &, const version_control_details_struct &);
-    void from_json(const nlohmann::json &, version_control_details_struct &);
+    void to_json(json &, const version_control_details_struct &);
+    void from_json(const json &, version_control_details_struct &);
 } // namespace gap::sarif::definitions

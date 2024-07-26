@@ -3,7 +3,7 @@
 #include <gap/sarif/definitions.hpp>
 
 namespace gap::sarif {
-    void from_json(const nlohmann::json &j, property_bag_struct &o) {
+    void from_json(const json &j, property_bag_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tags" ) {
                 std::forward_list<std::string> field;
@@ -14,7 +14,7 @@ namespace gap::sarif {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const property_bag_struct &o) {
+    void to_json(json &j, const property_bag_struct &o) {
         if ( o.tags.has_value() ) {
             j["tags"] = *o.tags;
         }
@@ -22,7 +22,7 @@ namespace gap::sarif {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, root_struct &o) {
+    void from_json(const json &j, root_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "version" ) {
                 val.get_to(o.version);
@@ -46,7 +46,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const root_struct &o) {
+    void to_json(json &j, const root_struct &o) {
         j["version"] = o.version;
         j["runs"] = o.runs;
         if ( o.inlineExternalProperties.has_value() ) {
@@ -56,7 +56,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, address_struct &o) {
+    void from_json(const json &j, address_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "absoluteAddress" ) {
                 int64_t field;
@@ -120,7 +120,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const address_struct &o) {
+    void to_json(json &j, const address_struct &o) {
         if ( o.absoluteAddress.has_value() ) {
             j["absoluteAddress"] = *o.absoluteAddress;
         }
@@ -152,7 +152,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, message_struct &o) {
+    void from_json(const json &j, message_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "text" ) {
                 std::string field;
@@ -186,7 +186,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const message_struct &o) {
+    void to_json(json &j, const message_struct &o) {
         if ( o.text.has_value() ) {
             j["text"] = *o.text;
         }
@@ -203,7 +203,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, artifact_location_struct &o) {
+    void from_json(const json &j, artifact_location_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "uri" ) {
                 std::string field;
@@ -237,7 +237,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const artifact_location_struct &o) {
+    void to_json(json &j, const artifact_location_struct &o) {
         if ( o.uri.has_value() ) {
             j["uri"] = *o.uri;
         }
@@ -254,7 +254,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, multiformat_message_string_struct &o) {
+    void from_json(const json &j, multiformat_message_string_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "text" ) {
                 val.get_to(o.text);
@@ -274,7 +274,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const multiformat_message_string_struct &o) {
+    void to_json(json &j, const multiformat_message_string_struct &o) {
         j["text"] = o.text;
         if ( o.markdown.has_value() ) {
             j["markdown"] = *o.markdown;
@@ -283,7 +283,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, artifact_content_struct &o) {
+    void from_json(const json &j, artifact_content_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "text" ) {
                 std::string field;
@@ -311,7 +311,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const artifact_content_struct &o) {
+    void to_json(json &j, const artifact_content_struct &o) {
         if ( o.text.has_value() ) {
             j["text"] = *o.text;
         }
@@ -325,17 +325,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, artifact_hashes_struct &o) {
+    void from_json(const json &j, artifact_hashes_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const artifact_hashes_struct &o) {
+    void to_json(json &j, const artifact_hashes_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, artifact_struct &o) {
+    void from_json(const json &j, artifact_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
                 message_struct field;
@@ -417,7 +417,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const artifact_struct &o) {
+    void to_json(json &j, const artifact_struct &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -458,7 +458,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, artifact_change_struct &o) {
+    void from_json(const json &j, artifact_change_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "artifactLocation" ) {
                 val.get_to(o.artifactLocation);
@@ -476,14 +476,14 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const artifact_change_struct &o) {
+    void to_json(json &j, const artifact_change_struct &o) {
         j["artifactLocation"] = o.artifactLocation;
         j["replacements"] = o.replacements;
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, attachment_struct &o) {
+    void from_json(const json &j, attachment_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
                 message_struct field;
@@ -515,7 +515,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const attachment_struct &o) {
+    void to_json(json &j, const attachment_struct &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -530,7 +530,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, code_flow_struct &o) {
+    void from_json(const json &j, code_flow_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "message" ) {
                 message_struct field;
@@ -550,7 +550,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const code_flow_struct &o) {
+    void to_json(json &j, const code_flow_struct &o) {
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
         }
@@ -559,7 +559,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, reporting_configuration_struct &o) {
+    void from_json(const json &j, reporting_configuration_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "enabled" ) {
                 bool field;
@@ -593,7 +593,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const reporting_configuration_struct &o) {
+    void to_json(json &j, const reporting_configuration_struct &o) {
         if ( o.enabled.has_value() ) {
             j["enabled"] = *o.enabled;
         }
@@ -610,7 +610,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, tool_component_reference_struct &o) {
+    void from_json(const json &j, tool_component_reference_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
                 std::string field;
@@ -638,7 +638,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const tool_component_reference_struct &o) {
+    void to_json(json &j, const tool_component_reference_struct &o) {
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
@@ -652,7 +652,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, reporting_descriptor_reference_struct &o) {
+    void from_json(const json &j, reporting_descriptor_reference_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 std::string field;
@@ -686,7 +686,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const reporting_descriptor_reference_struct &o) {
+    void to_json(json &j, const reporting_descriptor_reference_struct &o) {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
@@ -703,7 +703,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, configuration_override_struct &o) {
+    void from_json(const json &j, configuration_override_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "configuration" ) {
                 val.get_to(o.configuration);
@@ -721,24 +721,24 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const configuration_override_struct &o) {
+    void to_json(json &j, const configuration_override_struct &o) {
         j["configuration"] = o.configuration;
         j["descriptor"] = o.descriptor;
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, tool_component_global_message_strings_struct &o) {
+    void from_json(const json &j, tool_component_global_message_strings_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const tool_component_global_message_strings_struct &o) {
+    void to_json(json &j, const tool_component_global_message_strings_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, translation_metadata_struct &o) {
+    void from_json(const json &j, translation_metadata_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
                 val.get_to(o.name);
@@ -782,7 +782,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const translation_metadata_struct &o) {
+    void to_json(json &j, const translation_metadata_struct &o) {
         j["name"] = o.name;
         if ( o.fullName.has_value() ) {
             j["fullName"] = *o.fullName;
@@ -803,7 +803,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, tool_component_struct &o) {
+    void from_json(const json &j, tool_component_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "guid" ) {
                 std::string field;
@@ -973,7 +973,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const tool_component_struct &o) {
+    void to_json(json &j, const tool_component_struct &o) {
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
         }
@@ -1057,7 +1057,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, tool_struct &o) {
+    void from_json(const json &j, tool_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "driver" ) {
                 val.get_to(o.driver);
@@ -1077,7 +1077,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const tool_struct &o) {
+    void to_json(json &j, const tool_struct &o) {
         j["driver"] = o.driver;
         if ( o.extensions.has_value() ) {
             j["extensions"] = *o.extensions;
@@ -1086,17 +1086,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, invocation_environment_variables_struct &o) {
+    void from_json(const json &j, invocation_environment_variables_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const invocation_environment_variables_struct &o) {
+    void to_json(json &j, const invocation_environment_variables_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, invocation_struct &o) {
+    void from_json(const json &j, invocation_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "commandLine" ) {
                 std::string field;
@@ -1254,7 +1254,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const invocation_struct &o) {
+    void to_json(json &j, const invocation_struct &o) {
         if ( o.commandLine.has_value() ) {
             j["commandLine"] = *o.commandLine;
         }
@@ -1332,7 +1332,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, conversion_struct &o) {
+    void from_json(const json &j, conversion_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tool" ) {
                 val.get_to(o.tool);
@@ -1358,7 +1358,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const conversion_struct &o) {
+    void to_json(json &j, const conversion_struct &o) {
         j["tool"] = o.tool;
         if ( o.invocation.has_value() ) {
             j["invocation"] = *o.invocation;
@@ -1370,7 +1370,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, edge_struct &o) {
+    void from_json(const json &j, edge_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 val.get_to(o.id);
@@ -1398,7 +1398,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const edge_struct &o) {
+    void to_json(json &j, const edge_struct &o) {
         j["id"] = o.id;
         if ( o.label.has_value() ) {
             j["label"] = *o.label;
@@ -1409,17 +1409,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, edge_traversal_final_state_struct &o) {
+    void from_json(const json &j, edge_traversal_final_state_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const edge_traversal_final_state_struct &o) {
+    void to_json(json &j, const edge_traversal_final_state_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, edge_traversal_struct &o) {
+    void from_json(const json &j, edge_traversal_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "edgeId" ) {
                 val.get_to(o.edgeId);
@@ -1451,7 +1451,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const edge_traversal_struct &o) {
+    void to_json(json &j, const edge_traversal_struct &o) {
         j["edgeId"] = o.edgeId;
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
@@ -1466,7 +1466,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, stack_struct &o) {
+    void from_json(const json &j, stack_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "message" ) {
                 message_struct field;
@@ -1486,7 +1486,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const stack_struct &o) {
+    void to_json(json &j, const stack_struct &o) {
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
         }
@@ -1495,7 +1495,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, exception_struct &o) {
+    void from_json(const json &j, exception_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "kind" ) {
                 std::string field;
@@ -1529,7 +1529,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const exception_struct &o) {
+    void to_json(json &j, const exception_struct &o) {
         if ( o.kind.has_value() ) {
             j["kind"] = *o.kind;
         }
@@ -1546,7 +1546,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, external_properties_struct &o) {
+    void from_json(const json &j, external_properties_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "schema" ) {
                 std::string field;
@@ -1676,7 +1676,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const external_properties_struct &o) {
+    void to_json(json &j, const external_properties_struct &o) {
         if ( o.schema.has_value() ) {
             j["schema"] = *o.schema;
         }
@@ -1741,7 +1741,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, external_property_file_reference_struct &o) {
+    void from_json(const json &j, external_property_file_reference_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "location" ) {
                 artifact_location_struct field;
@@ -1769,7 +1769,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const external_property_file_reference_struct &o) {
+    void to_json(json &j, const external_property_file_reference_struct &o) {
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
         }
@@ -1783,7 +1783,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, external_property_file_references_struct &o) {
+    void from_json(const json &j, external_property_file_references_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "conversion" ) {
                 external_property_file_reference_struct field;
@@ -1889,7 +1889,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const external_property_file_references_struct &o) {
+    void to_json(json &j, const external_property_file_references_struct &o) {
         if ( o.conversion.has_value() ) {
             j["conversion"] = *o.conversion;
         }
@@ -1942,7 +1942,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, fix_struct &o) {
+    void from_json(const json &j, fix_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
                 message_struct field;
@@ -1962,7 +1962,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const fix_struct &o) {
+    void to_json(json &j, const fix_struct &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -1971,7 +1971,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, graph_struct &o) {
+    void from_json(const json &j, graph_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
                 message_struct field;
@@ -1999,7 +1999,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const graph_struct &o) {
+    void to_json(json &j, const graph_struct &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -2013,27 +2013,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, graph_traversal_initial_state_struct &o) {
+    void from_json(const json &j, graph_traversal_initial_state_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const graph_traversal_initial_state_struct &o) {
+    void to_json(json &j, const graph_traversal_initial_state_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, graph_traversal_immutable_state_struct &o) {
+    void from_json(const json &j, graph_traversal_immutable_state_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const graph_traversal_immutable_state_struct &o) {
+    void to_json(json &j, const graph_traversal_immutable_state_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, graph_traversal_struct &o) {
+    void from_json(const json &j, graph_traversal_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "runGraphIndex" ) {
                 int64_t field;
@@ -2079,7 +2079,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const graph_traversal_struct &o) {
+    void to_json(json &j, const graph_traversal_struct &o) {
         if ( o.runGraphIndex.has_value() ) {
             j["runGraphIndex"] = *o.runGraphIndex;
         }
@@ -2102,7 +2102,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, region_struct &o) {
+    void from_json(const json &j, region_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "startLine" ) {
                 int64_t field;
@@ -2178,7 +2178,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const region_struct &o) {
+    void to_json(json &j, const region_struct &o) {
         if ( o.startLine.has_value() ) {
             j["startLine"] = *o.startLine;
         }
@@ -2216,7 +2216,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, physical_location_struct &o) {
+    void from_json(const json &j, physical_location_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "address" ) {
                 address_struct field;
@@ -2250,7 +2250,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const physical_location_struct &o) {
+    void to_json(json &j, const physical_location_struct &o) {
         if ( o.address.has_value() ) {
             j["address"] = *o.address;
         }
@@ -2267,7 +2267,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, location_struct &o) {
+    void from_json(const json &j, location_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 int64_t field;
@@ -2313,7 +2313,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const location_struct &o) {
+    void to_json(json &j, const location_struct &o) {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
@@ -2336,7 +2336,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, location_relationship_struct &o) {
+    void from_json(const json &j, location_relationship_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "target" ) {
                 val.get_to(o.target);
@@ -2362,7 +2362,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const location_relationship_struct &o) {
+    void to_json(json &j, const location_relationship_struct &o) {
         j["target"] = o.target;
         if ( o.kinds.has_value() ) {
             j["kinds"] = *o.kinds;
@@ -2374,7 +2374,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, logical_location_struct &o) {
+    void from_json(const json &j, logical_location_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
                 std::string field;
@@ -2420,7 +2420,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const logical_location_struct &o) {
+    void to_json(json &j, const logical_location_struct &o) {
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
@@ -2443,7 +2443,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, node_struct &o) {
+    void from_json(const json &j, node_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 val.get_to(o.id);
@@ -2475,7 +2475,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const node_struct &o) {
+    void to_json(json &j, const node_struct &o) {
         j["id"] = o.id;
         if ( o.label.has_value() ) {
             j["label"] = *o.label;
@@ -2490,7 +2490,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, notification_struct &o) {
+    void from_json(const json &j, notification_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "locations" ) {
                 std::forward_list<location_struct> field;
@@ -2546,7 +2546,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const notification_struct &o) {
+    void to_json(json &j, const notification_struct &o) {
         if ( o.locations.has_value() ) {
             j["locations"] = *o.locations;
         }
@@ -2573,7 +2573,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, rectangle_struct &o) {
+    void from_json(const json &j, rectangle_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "top" ) {
                 double field;
@@ -2613,7 +2613,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const rectangle_struct &o) {
+    void to_json(json &j, const rectangle_struct &o) {
         if ( o.top.has_value() ) {
             j["top"] = *o.top;
         }
@@ -2633,7 +2633,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, replacement_struct &o) {
+    void from_json(const json &j, replacement_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "deletedRegion" ) {
                 val.get_to(o.deletedRegion);
@@ -2653,7 +2653,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const replacement_struct &o) {
+    void to_json(json &j, const replacement_struct &o) {
         j["deletedRegion"] = o.deletedRegion;
         if ( o.insertedContent.has_value() ) {
             j["insertedContent"] = *o.insertedContent;
@@ -2662,17 +2662,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, reporting_descriptor_message_strings_struct &o) {
+    void from_json(const json &j, reporting_descriptor_message_strings_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const reporting_descriptor_message_strings_struct &o) {
+    void to_json(json &j, const reporting_descriptor_message_strings_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, reporting_descriptor_struct &o) {
+    void from_json(const json &j, reporting_descriptor_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 val.get_to(o.id);
@@ -2758,7 +2758,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const reporting_descriptor_struct &o) {
+    void to_json(json &j, const reporting_descriptor_struct &o) {
         j["id"] = o.id;
         if ( o.deprecatedIds.has_value() ) {
             j["deprecatedIds"] = *o.deprecatedIds;
@@ -2800,7 +2800,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, reporting_descriptor_relationship_struct &o) {
+    void from_json(const json &j, reporting_descriptor_relationship_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "target" ) {
                 val.get_to(o.target);
@@ -2826,7 +2826,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const reporting_descriptor_relationship_struct &o) {
+    void to_json(json &j, const reporting_descriptor_relationship_struct &o) {
         j["target"] = o.target;
         if ( o.kinds.has_value() ) {
             j["kinds"] = *o.kinds;
@@ -2838,27 +2838,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, result_partial_fingerprints_struct &o) {
+    void from_json(const json &j, result_partial_fingerprints_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const result_partial_fingerprints_struct &o) {
+    void to_json(json &j, const result_partial_fingerprints_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, result_fingerprints_struct &o) {
+    void from_json(const json &j, result_fingerprints_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const result_fingerprints_struct &o) {
+    void to_json(json &j, const result_fingerprints_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, result_provenance_struct &o) {
+    void from_json(const json &j, result_provenance_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "firstDetectionTimeUtc" ) {
                 std::string field;
@@ -2904,7 +2904,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const result_provenance_struct &o) {
+    void to_json(json &j, const result_provenance_struct &o) {
         if ( o.firstDetectionTimeUtc.has_value() ) {
             j["firstDetectionTimeUtc"] = *o.firstDetectionTimeUtc;
         }
@@ -2927,27 +2927,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, web_request_headers_struct &o) {
+    void from_json(const json &j, web_request_headers_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const web_request_headers_struct &o) {
+    void to_json(json &j, const web_request_headers_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, web_request_parameters_struct &o) {
+    void from_json(const json &j, web_request_parameters_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const web_request_parameters_struct &o) {
+    void to_json(json &j, const web_request_parameters_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, web_request_struct &o) {
+    void from_json(const json &j, web_request_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
                 int64_t field;
@@ -3005,7 +3005,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const web_request_struct &o) {
+    void to_json(json &j, const web_request_struct &o) {
         if ( o.index.has_value() ) {
             j["index"] = *o.index;
         }
@@ -3034,17 +3034,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, web_response_headers_struct &o) {
+    void from_json(const json &j, web_response_headers_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const web_response_headers_struct &o) {
+    void to_json(json &j, const web_response_headers_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, web_response_struct &o) {
+    void from_json(const json &j, web_response_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
                 int64_t field;
@@ -3102,7 +3102,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const web_response_struct &o) {
+    void to_json(json &j, const web_response_struct &o) {
         if ( o.index.has_value() ) {
             j["index"] = *o.index;
         }
@@ -3131,7 +3131,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, result_struct &o) {
+    void from_json(const json &j, result_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "ruleId" ) {
                 std::string field;
@@ -3313,7 +3313,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const result_struct &o) {
+    void to_json(json &j, const result_struct &o) {
         if ( o.ruleId.has_value() ) {
             j["ruleId"] = *o.ruleId;
         }
@@ -3403,17 +3403,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, run_original_uri_base_ids_struct &o) {
+    void from_json(const json &j, run_original_uri_base_ids_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const run_original_uri_base_ids_struct &o) {
+    void to_json(json &j, const run_original_uri_base_ids_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, run_automation_details_struct &o) {
+    void from_json(const json &j, run_automation_details_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
                 message_struct field;
@@ -3447,7 +3447,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const run_automation_details_struct &o) {
+    void to_json(json &j, const run_automation_details_struct &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -3464,7 +3464,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, special_locations_struct &o) {
+    void from_json(const json &j, special_locations_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "displayBase" ) {
                 artifact_location_struct field;
@@ -3480,7 +3480,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const special_locations_struct &o) {
+    void to_json(json &j, const special_locations_struct &o) {
         if ( o.displayBase.has_value() ) {
             j["displayBase"] = *o.displayBase;
         }
@@ -3488,7 +3488,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, run_struct &o) {
+    void from_json(const json &j, run_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tool" ) {
                 val.get_to(o.tool);
@@ -3658,7 +3658,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const run_struct &o) {
+    void to_json(json &j, const run_struct &o) {
         j["tool"] = o.tool;
         if ( o.invocations.has_value() ) {
             j["invocations"] = *o.invocations;
@@ -3742,7 +3742,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, stack_frame_struct &o) {
+    void from_json(const json &j, stack_frame_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "location" ) {
                 location_struct field;
@@ -3776,7 +3776,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const stack_frame_struct &o) {
+    void to_json(json &j, const stack_frame_struct &o) {
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
         }
@@ -3793,7 +3793,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, suppression_struct &o) {
+    void from_json(const json &j, suppression_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "guid" ) {
                 std::string field;
@@ -3831,7 +3831,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const suppression_struct &o) {
+    void to_json(json &j, const suppression_struct &o) {
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
         }
@@ -3849,27 +3849,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, thread_flow_initial_state_struct &o) {
+    void from_json(const json &j, thread_flow_initial_state_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const thread_flow_initial_state_struct &o) {
+    void to_json(json &j, const thread_flow_initial_state_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, thread_flow_immutable_state_struct &o) {
+    void from_json(const json &j, thread_flow_immutable_state_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const thread_flow_immutable_state_struct &o) {
+    void to_json(json &j, const thread_flow_immutable_state_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, thread_flow_struct &o) {
+    void from_json(const json &j, thread_flow_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 std::string field;
@@ -3907,7 +3907,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const thread_flow_struct &o) {
+    void to_json(json &j, const thread_flow_struct &o) {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
@@ -3925,17 +3925,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, thread_flow_location_state_struct &o) {
+    void from_json(const json &j, thread_flow_location_state_struct &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(nlohmann::json &j, const thread_flow_location_state_struct &o) {
+    void to_json(json &j, const thread_flow_location_state_struct &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const nlohmann::json &j, thread_flow_location_struct &o) {
+    void from_json(const json &j, thread_flow_location_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
                 int64_t field;
@@ -4023,7 +4023,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const thread_flow_location_struct &o) {
+    void to_json(json &j, const thread_flow_location_struct &o) {
         if ( o.index.has_value() ) {
             j["index"] = *o.index;
         }
@@ -4067,7 +4067,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const nlohmann::json &j, version_control_details_struct &o) {
+    void from_json(const json &j, version_control_details_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "repositoryUri" ) {
                 val.get_to(o.repositoryUri);
@@ -4111,7 +4111,7 @@ namespace gap::sarif {
             }
         }
     }
-    void to_json(nlohmann::json &j, const version_control_details_struct &o) {
+    void to_json(json &j, const version_control_details_struct &o) {
         j["repositoryUri"] = o.repositoryUri;
         if ( o.revisionId.has_value() ) {
             j["revisionId"] = *o.revisionId;

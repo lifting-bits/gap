@@ -69,15 +69,15 @@ namespace gap::sarif {
             },
         };
 
-        nlohmann::json root_json = root;
+        json root_json = root;
         root_struct deser = root;
-        nlohmann::json deser_json = deser;
+        json deser_json = deser;
 
         CHECK_EQ(root_json, deser_json);
     }
 
     TEST_CASE("JSON to struct roundtrip") {
-        auto j = nlohmann::json::parse(R"({
+        auto j = json::parse(R"({
   "version": "2.1.0",
   "runs": [
     {
@@ -136,7 +136,7 @@ namespace gap::sarif {
 
         root_struct root = j;
 
-        nlohmann::json j2 = root;
+        json j2 = root;
 
         CHECK_EQ(j, j2);
     }
