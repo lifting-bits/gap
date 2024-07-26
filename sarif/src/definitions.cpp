@@ -6,7 +6,7 @@ namespace gap::sarif {
     void from_json(const json &j, property_bag_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tags" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.tags = field;
                 continue;
@@ -33,7 +33,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "inlineExternalProperties" ) {
-                std::forward_list<external_properties_struct> field;
+                std::forward_list< external_properties_struct > field;
                 val.get_to(field);
                 o.inlineExternalProperties = field;
                 continue;
@@ -173,7 +173,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "arguments" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.arguments = field;
                 continue;
@@ -368,7 +368,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "roles" ) {
-                std::forward_list<roles_enum> field;
+                std::forward_list< roles_enum > field;
                 val.get_to(field);
                 o.roles = field;
                 continue;
@@ -496,13 +496,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "regions" ) {
-                std::forward_list<region_struct> field;
+                std::forward_list< region_struct > field;
                 val.get_to(field);
                 o.regions = field;
                 continue;
             }
             if ( key == "rectangles" ) {
-                std::forward_list<rectangle_struct> field;
+                std::forward_list< rectangle_struct > field;
                 val.get_to(field);
                 o.rectangles = field;
                 continue;
@@ -894,25 +894,25 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "notifications" ) {
-                std::forward_list<reporting_descriptor_struct> field;
+                std::forward_list< reporting_descriptor_struct > field;
                 val.get_to(field);
                 o.notifications = field;
                 continue;
             }
             if ( key == "rules" ) {
-                std::forward_list<reporting_descriptor_struct> field;
+                std::forward_list< reporting_descriptor_struct > field;
                 val.get_to(field);
                 o.rules = field;
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list<reporting_descriptor_struct> field;
+                std::forward_list< reporting_descriptor_struct > field;
                 val.get_to(field);
                 o.taxa = field;
                 continue;
             }
             if ( key == "locations" ) {
-                std::forward_list<artifact_location_struct> field;
+                std::forward_list< artifact_location_struct > field;
                 val.get_to(field);
                 o.locations = field;
                 continue;
@@ -924,7 +924,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "contents" ) {
-                std::forward_list<contents_enum> field;
+                std::forward_list< contents_enum > field;
                 val.get_to(field);
                 o.contents = field;
                 continue;
@@ -960,7 +960,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "supportedTaxonomies" ) {
-                std::forward_list<tool_component_reference_struct> field;
+                std::forward_list< tool_component_reference_struct > field;
                 val.get_to(field);
                 o.supportedTaxonomies = field;
                 continue;
@@ -1064,7 +1064,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.extensions = field;
                 continue;
@@ -1105,13 +1105,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "arguments" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.arguments = field;
                 continue;
             }
             if ( key == "responseFiles" ) {
-                std::forward_list<artifact_location_struct> field;
+                std::forward_list< artifact_location_struct > field;
                 val.get_to(field);
                 o.responseFiles = field;
                 continue;
@@ -1135,25 +1135,25 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "ruleConfigurationOverrides" ) {
-                std::forward_list<configuration_override_struct> field;
+                std::forward_list< configuration_override_struct > field;
                 val.get_to(field);
                 o.ruleConfigurationOverrides = field;
                 continue;
             }
             if ( key == "notificationConfigurationOverrides" ) {
-                std::forward_list<configuration_override_struct> field;
+                std::forward_list< configuration_override_struct > field;
                 val.get_to(field);
                 o.notificationConfigurationOverrides = field;
                 continue;
             }
             if ( key == "toolExecutionNotifications" ) {
-                std::forward_list<notification_struct> field;
+                std::forward_list< notification_struct > field;
                 val.get_to(field);
                 o.toolExecutionNotifications = field;
                 continue;
             }
             if ( key == "toolConfigurationNotifications" ) {
-                std::forward_list<notification_struct> field;
+                std::forward_list< notification_struct > field;
                 val.get_to(field);
                 o.toolConfigurationNotifications = field;
                 continue;
@@ -1345,7 +1345,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "analysisToolLogFiles" ) {
-                std::forward_list<artifact_location_struct> field;
+                std::forward_list< artifact_location_struct > field;
                 val.get_to(field);
                 o.analysisToolLogFiles = field;
                 continue;
@@ -1516,7 +1516,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "innerExceptions" ) {
-                std::forward_list<exception_struct> field;
+                std::forward_list< exception_struct > field;
                 val.get_to(field);
                 o.innerExceptions = field;
                 continue;
@@ -1579,7 +1579,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list<graph_struct> field;
+                std::forward_list< graph_struct > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
@@ -1591,37 +1591,37 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list<artifact_struct> field;
+                std::forward_list< artifact_struct > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list<invocation_struct> field;
+                std::forward_list< invocation_struct > field;
                 val.get_to(field);
                 o.invocations = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list<logical_location_struct> field;
+                std::forward_list< logical_location_struct > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list<thread_flow_location_struct> field;
+                std::forward_list< thread_flow_location_struct > field;
                 val.get_to(field);
                 o.threadFlowLocations = field;
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list<result_struct> field;
+                std::forward_list< result_struct > field;
                 val.get_to(field);
                 o.results = field;
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.taxonomies = field;
                 continue;
@@ -1633,37 +1633,37 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.extensions = field;
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.policies = field;
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.translations = field;
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list<address_struct> field;
+                std::forward_list< address_struct > field;
                 val.get_to(field);
                 o.addresses = field;
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list<web_request_struct> field;
+                std::forward_list< web_request_struct > field;
                 val.get_to(field);
                 o.webRequests = field;
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list<web_response_struct> field;
+                std::forward_list< web_response_struct > field;
                 val.get_to(field);
                 o.webResponses = field;
                 continue;
@@ -1792,7 +1792,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
@@ -1804,43 +1804,43 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.invocations = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.threadFlowLocations = field;
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.results = field;
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.taxonomies = field;
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.addresses = field;
                 continue;
@@ -1852,31 +1852,31 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.extensions = field;
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.policies = field;
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.translations = field;
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.webRequests = field;
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list<external_property_file_reference_struct> field;
+                std::forward_list< external_property_file_reference_struct > field;
                 val.get_to(field);
                 o.webResponses = field;
                 continue;
@@ -1980,13 +1980,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "nodes" ) {
-                std::forward_list<node_struct> field;
+                std::forward_list< node_struct > field;
                 val.get_to(field);
                 o.nodes = field;
                 continue;
             }
             if ( key == "edges" ) {
-                std::forward_list<edge_struct> field;
+                std::forward_list< edge_struct > field;
                 val.get_to(field);
                 o.edges = field;
                 continue;
@@ -2066,7 +2066,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "edgeTraversals" ) {
-                std::forward_list<edge_traversal_struct> field;
+                std::forward_list< edge_traversal_struct > field;
                 val.get_to(field);
                 o.edgeTraversals = field;
                 continue;
@@ -2282,7 +2282,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list<logical_location_struct> field;
+                std::forward_list< logical_location_struct > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
@@ -2294,13 +2294,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "annotations" ) {
-                std::forward_list<region_struct> field;
+                std::forward_list< region_struct > field;
                 val.get_to(field);
                 o.annotations = field;
                 continue;
             }
             if ( key == "relationships" ) {
-                std::forward_list<location_relationship_struct> field;
+                std::forward_list< location_relationship_struct > field;
                 val.get_to(field);
                 o.relationships = field;
                 continue;
@@ -2343,7 +2343,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kinds" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.kinds = field;
                 continue;
@@ -2462,7 +2462,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "children" ) {
-                std::forward_list<node_struct> field;
+                std::forward_list< node_struct > field;
                 val.get_to(field);
                 o.children = field;
                 continue;
@@ -2493,7 +2493,7 @@ namespace gap::sarif {
     void from_json(const json &j, notification_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "locations" ) {
-                std::forward_list<location_struct> field;
+                std::forward_list< location_struct > field;
                 val.get_to(field);
                 o.locations = field;
                 continue;
@@ -2679,7 +2679,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "deprecatedIds" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.deprecatedIds = field;
                 continue;
@@ -2691,7 +2691,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "deprecatedGuids" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.deprecatedGuids = field;
                 continue;
@@ -2703,7 +2703,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "deprecatedNames" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.deprecatedNames = field;
                 continue;
@@ -2745,7 +2745,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "relationships" ) {
-                std::forward_list<reporting_descriptor_relationship_struct> field;
+                std::forward_list< reporting_descriptor_relationship_struct > field;
                 val.get_to(field);
                 o.relationships = field;
                 continue;
@@ -2807,7 +2807,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kinds" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.kinds = field;
                 continue;
@@ -2891,7 +2891,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "conversionSources" ) {
-                std::forward_list<physical_location_struct> field;
+                std::forward_list< physical_location_struct > field;
                 val.get_to(field);
                 o.conversionSources = field;
                 continue;
@@ -3174,7 +3174,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "locations" ) {
-                std::forward_list<location_struct> field;
+                std::forward_list< location_struct > field;
                 val.get_to(field);
                 o.locations = field;
                 continue;
@@ -3210,37 +3210,37 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "stacks" ) {
-                std::forward_list<stack_struct> field;
+                std::forward_list< stack_struct > field;
                 val.get_to(field);
                 o.stacks = field;
                 continue;
             }
             if ( key == "codeFlows" ) {
-                std::forward_list<code_flow_struct> field;
+                std::forward_list< code_flow_struct > field;
                 val.get_to(field);
                 o.codeFlows = field;
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list<graph_struct> field;
+                std::forward_list< graph_struct > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
             }
             if ( key == "graphTraversals" ) {
-                std::forward_list<graph_traversal_struct> field;
+                std::forward_list< graph_traversal_struct > field;
                 val.get_to(field);
                 o.graphTraversals = field;
                 continue;
             }
             if ( key == "relatedLocations" ) {
-                std::forward_list<location_struct> field;
+                std::forward_list< location_struct > field;
                 val.get_to(field);
                 o.relatedLocations = field;
                 continue;
             }
             if ( key == "suppressions" ) {
-                std::forward_list<suppression_struct> field;
+                std::forward_list< suppression_struct > field;
                 val.get_to(field);
                 o.suppressions = field;
                 continue;
@@ -3258,7 +3258,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "attachments" ) {
-                std::forward_list<attachment_struct> field;
+                std::forward_list< attachment_struct > field;
                 val.get_to(field);
                 o.attachments = field;
                 continue;
@@ -3270,7 +3270,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "workItemUris" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.workItemUris = field;
                 continue;
@@ -3282,13 +3282,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "fixes" ) {
-                std::forward_list<fix_struct> field;
+                std::forward_list< fix_struct > field;
                 val.get_to(field);
                 o.fixes = field;
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list<reporting_descriptor_reference_struct> field;
+                std::forward_list< reporting_descriptor_reference_struct > field;
                 val.get_to(field);
                 o.taxa = field;
                 continue;
@@ -3495,7 +3495,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list<invocation_struct> field;
+                std::forward_list< invocation_struct > field;
                 val.get_to(field);
                 o.invocations = field;
                 continue;
@@ -3513,7 +3513,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "versionControlProvenance" ) {
-                std::forward_list<version_control_details_struct> field;
+                std::forward_list< version_control_details_struct > field;
                 val.get_to(field);
                 o.versionControlProvenance = field;
                 continue;
@@ -3525,25 +3525,25 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list<artifact_struct> field;
+                std::forward_list< artifact_struct > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list<logical_location_struct> field;
+                std::forward_list< logical_location_struct > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list<graph_struct> field;
+                std::forward_list< graph_struct > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list<result_struct> field;
+                std::forward_list< result_struct > field;
                 val.get_to(field);
                 o.results = field;
                 continue;
@@ -3555,7 +3555,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "runAggregates" ) {
-                std::forward_list<run_automation_details_struct> field;
+                std::forward_list< run_automation_details_struct > field;
                 val.get_to(field);
                 o.runAggregates = field;
                 continue;
@@ -3567,7 +3567,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "redactionTokens" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.redactionTokens = field;
                 continue;
@@ -3585,7 +3585,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "newlineSequences" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.newlineSequences = field;
                 continue;
@@ -3603,43 +3603,43 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list<thread_flow_location_struct> field;
+                std::forward_list< thread_flow_location_struct > field;
                 val.get_to(field);
                 o.threadFlowLocations = field;
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.taxonomies = field;
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list<address_struct> field;
+                std::forward_list< address_struct > field;
                 val.get_to(field);
                 o.addresses = field;
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.translations = field;
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list<tool_component_struct> field;
+                std::forward_list< tool_component_struct > field;
                 val.get_to(field);
                 o.policies = field;
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list<web_request_struct> field;
+                std::forward_list< web_request_struct > field;
                 val.get_to(field);
                 o.webRequests = field;
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list<web_response_struct> field;
+                std::forward_list< web_response_struct > field;
                 val.get_to(field);
                 o.webResponses = field;
                 continue;
@@ -3763,7 +3763,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "parameters" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.parameters = field;
                 continue;
@@ -3956,13 +3956,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kinds" ) {
-                std::forward_list<std::string> field;
+                std::forward_list< std::string > field;
                 val.get_to(field);
                 o.kinds = field;
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list<reporting_descriptor_reference_struct> field;
+                std::forward_list< reporting_descriptor_reference_struct > field;
                 val.get_to(field);
                 o.taxa = field;
                 continue;
