@@ -33,7 +33,7 @@ namespace gap::sarif
         //
         std::optional<std::forward_list<std::string>> tags = std::nullopt;
 
-        std::unordered_map<std::string, json> additional_properties;
+        json additional_properties;
     };
 
     void to_json(json &, const property_bag_struct &);

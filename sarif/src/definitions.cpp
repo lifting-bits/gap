@@ -18,7 +18,7 @@ namespace gap::sarif {
         if ( o.tags.has_value() ) {
             j["tags"] = *o.tags;
         }
-        for ( auto &[key, val] : o.additional_properties ) {
+        for ( auto &[key, val] : o.additional_properties.items() ) {
             j[key] = val;
         }
     }
