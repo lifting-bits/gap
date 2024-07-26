@@ -3,7 +3,7 @@
 #include <gap/sarif/definitions.hpp>
 
 namespace gap::sarif {
-    void from_json(const json &j, property_bag_struct &o) {
+    void from_json(const json &j, property_bag &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tags" ) {
                 std::forward_list< std::string > field;
@@ -14,7 +14,7 @@ namespace gap::sarif {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const property_bag_struct &o) {
+    void to_json(json &j, const property_bag &o) {
         if ( o.tags.has_value() ) {
             j["tags"] = *o.tags;
         }
@@ -22,7 +22,7 @@ namespace gap::sarif {
             j[key] = val;
         }
     }
-    void from_json(const json &j, root_struct &o) {
+    void from_json(const json &j, root &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "version" ) {
                 val.get_to(o.version);
@@ -33,20 +33,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "inlineExternalProperties" ) {
-                std::forward_list< external_properties_struct > field;
+                std::forward_list< external_properties > field;
                 val.get_to(field);
                 o.inlineExternalProperties = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const root_struct &o) {
+    void to_json(json &j, const root &o) {
         j["version"] = o.version;
         j["runs"] = o.runs;
         if ( o.inlineExternalProperties.has_value() ) {
@@ -56,7 +56,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, address_struct &o) {
+    void from_json(const json &j, address &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "absoluteAddress" ) {
                 int64_t field;
@@ -113,14 +113,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const address_struct &o) {
+    void to_json(json &j, const address &o) {
         if ( o.absoluteAddress.has_value() ) {
             j["absoluteAddress"] = *o.absoluteAddress;
         }
@@ -152,7 +152,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, message_struct &o) {
+    void from_json(const json &j, message &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "text" ) {
                 std::string field;
@@ -179,14 +179,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const message_struct &o) {
+    void to_json(json &j, const message &o) {
         if ( o.text.has_value() ) {
             j["text"] = *o.text;
         }
@@ -203,7 +203,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, artifact_location_struct &o) {
+    void from_json(const json &j, artifact_location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "uri" ) {
                 std::string field;
@@ -224,20 +224,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const artifact_location_struct &o) {
+    void to_json(json &j, const artifact_location &o) {
         if ( o.uri.has_value() ) {
             j["uri"] = *o.uri;
         }
@@ -254,7 +254,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, multiformat_message_string_struct &o) {
+    void from_json(const json &j, multiformat_message_string &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "text" ) {
                 val.get_to(o.text);
@@ -267,14 +267,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const multiformat_message_string_struct &o) {
+    void to_json(json &j, const multiformat_message_string &o) {
         j["text"] = o.text;
         if ( o.markdown.has_value() ) {
             j["markdown"] = *o.markdown;
@@ -283,7 +283,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, artifact_content_struct &o) {
+    void from_json(const json &j, artifact_content &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "text" ) {
                 std::string field;
@@ -298,20 +298,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "rendered" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.rendered = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const artifact_content_struct &o) {
+    void to_json(json &j, const artifact_content &o) {
         if ( o.text.has_value() ) {
             j["text"] = *o.text;
         }
@@ -325,26 +325,26 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, artifact_hashes_struct &o) {
+    void from_json(const json &j, artifact_hashes &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const artifact_hashes_struct &o) {
+    void to_json(json &j, const artifact_hashes &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, artifact_struct &o) {
+    void from_json(const json &j, artifact &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
             }
             if ( key == "location" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.location = field;
                 continue;
@@ -368,7 +368,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "roles" ) {
-                std::forward_list< roles_enum > field;
+                std::forward_list< roles > field;
                 val.get_to(field);
                 o.roles = field;
                 continue;
@@ -380,7 +380,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "contents" ) {
-                artifact_content_struct field;
+                artifact_content field;
                 val.get_to(field);
                 o.contents = field;
                 continue;
@@ -398,7 +398,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "hashes" ) {
-                artifact_hashes_struct field;
+                artifact_hashes field;
                 val.get_to(field);
                 o.hashes = field;
                 continue;
@@ -410,14 +410,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const artifact_struct &o) {
+    void to_json(json &j, const artifact &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -458,7 +458,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, artifact_change_struct &o) {
+    void from_json(const json &j, artifact_change &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "artifactLocation" ) {
                 val.get_to(o.artifactLocation);
@@ -469,24 +469,24 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const artifact_change_struct &o) {
+    void to_json(json &j, const artifact_change &o) {
         j["artifactLocation"] = o.artifactLocation;
         j["replacements"] = o.replacements;
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, attachment_struct &o) {
+    void from_json(const json &j, attachment &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
@@ -496,26 +496,26 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "regions" ) {
-                std::forward_list< region_struct > field;
+                std::forward_list< region > field;
                 val.get_to(field);
                 o.regions = field;
                 continue;
             }
             if ( key == "rectangles" ) {
-                std::forward_list< rectangle_struct > field;
+                std::forward_list< rectangle > field;
                 val.get_to(field);
                 o.rectangles = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const attachment_struct &o) {
+    void to_json(json &j, const attachment &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -530,10 +530,10 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, code_flow_struct &o) {
+    void from_json(const json &j, code_flow &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
@@ -543,14 +543,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const code_flow_struct &o) {
+    void to_json(json &j, const code_flow &o) {
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
         }
@@ -559,7 +559,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, reporting_configuration_struct &o) {
+    void from_json(const json &j, reporting_configuration &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "enabled" ) {
                 bool field;
@@ -568,7 +568,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "level" ) {
-                level_enum field;
+                level field;
                 val.get_to(field);
                 o.level = field;
                 continue;
@@ -580,20 +580,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "parameters" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.parameters = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const reporting_configuration_struct &o) {
+    void to_json(json &j, const reporting_configuration &o) {
         if ( o.enabled.has_value() ) {
             j["enabled"] = *o.enabled;
         }
@@ -610,7 +610,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, tool_component_reference_struct &o) {
+    void from_json(const json &j, tool_component_reference &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
                 std::string field;
@@ -631,14 +631,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const tool_component_reference_struct &o) {
+    void to_json(json &j, const tool_component_reference &o) {
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
@@ -652,7 +652,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, reporting_descriptor_reference_struct &o) {
+    void from_json(const json &j, reporting_descriptor_reference &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 std::string field;
@@ -673,20 +673,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "toolComponent" ) {
-                tool_component_reference_struct field;
+                tool_component_reference field;
                 val.get_to(field);
                 o.toolComponent = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const reporting_descriptor_reference_struct &o) {
+    void to_json(json &j, const reporting_descriptor_reference &o) {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
@@ -703,7 +703,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, configuration_override_struct &o) {
+    void from_json(const json &j, configuration_override &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "configuration" ) {
                 val.get_to(o.configuration);
@@ -714,31 +714,31 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const configuration_override_struct &o) {
+    void to_json(json &j, const configuration_override &o) {
         j["configuration"] = o.configuration;
         j["descriptor"] = o.descriptor;
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, tool_component_global_message_strings_struct &o) {
+    void from_json(const json &j, tool_component_global_message_strings &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const tool_component_global_message_strings_struct &o) {
+    void to_json(json &j, const tool_component_global_message_strings &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, translation_metadata_struct &o) {
+    void from_json(const json &j, translation_metadata &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
                 val.get_to(o.name);
@@ -751,13 +751,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "shortDescription" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.shortDescription = field;
                 continue;
             }
             if ( key == "fullDescription" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.fullDescription = field;
                 continue;
@@ -775,14 +775,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const translation_metadata_struct &o) {
+    void to_json(json &j, const translation_metadata &o) {
         j["name"] = o.name;
         if ( o.fullName.has_value() ) {
             j["fullName"] = *o.fullName;
@@ -803,7 +803,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, tool_component_struct &o) {
+    void from_json(const json &j, tool_component &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "guid" ) {
                 std::string field;
@@ -834,13 +834,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "shortDescription" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.shortDescription = field;
                 continue;
             }
             if ( key == "fullDescription" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.fullDescription = field;
                 continue;
@@ -888,31 +888,31 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "globalMessageStrings" ) {
-                tool_component_global_message_strings_struct field;
+                tool_component_global_message_strings field;
                 val.get_to(field);
                 o.globalMessageStrings = field;
                 continue;
             }
             if ( key == "notifications" ) {
-                std::forward_list< reporting_descriptor_struct > field;
+                std::forward_list< reporting_descriptor > field;
                 val.get_to(field);
                 o.notifications = field;
                 continue;
             }
             if ( key == "rules" ) {
-                std::forward_list< reporting_descriptor_struct > field;
+                std::forward_list< reporting_descriptor > field;
                 val.get_to(field);
                 o.rules = field;
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list< reporting_descriptor_struct > field;
+                std::forward_list< reporting_descriptor > field;
                 val.get_to(field);
                 o.taxa = field;
                 continue;
             }
             if ( key == "locations" ) {
-                std::forward_list< artifact_location_struct > field;
+                std::forward_list< artifact_location > field;
                 val.get_to(field);
                 o.locations = field;
                 continue;
@@ -924,7 +924,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "contents" ) {
-                std::forward_list< contents_enum > field;
+                std::forward_list< contents > field;
                 val.get_to(field);
                 o.contents = field;
                 continue;
@@ -948,32 +948,32 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "associatedComponent" ) {
-                tool_component_reference_struct field;
+                tool_component_reference field;
                 val.get_to(field);
                 o.associatedComponent = field;
                 continue;
             }
             if ( key == "translationMetadata" ) {
-                translation_metadata_struct field;
+                translation_metadata field;
                 val.get_to(field);
                 o.translationMetadata = field;
                 continue;
             }
             if ( key == "supportedTaxonomies" ) {
-                std::forward_list< tool_component_reference_struct > field;
+                std::forward_list< tool_component_reference > field;
                 val.get_to(field);
                 o.supportedTaxonomies = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const tool_component_struct &o) {
+    void to_json(json &j, const tool_component &o) {
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
         }
@@ -1057,27 +1057,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, tool_struct &o) {
+    void from_json(const json &j, tool &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "driver" ) {
                 val.get_to(o.driver);
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.extensions = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const tool_struct &o) {
+    void to_json(json &j, const tool &o) {
         j["driver"] = o.driver;
         if ( o.extensions.has_value() ) {
             j["extensions"] = *o.extensions;
@@ -1086,17 +1086,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, invocation_environment_variables_struct &o) {
+    void from_json(const json &j, invocation_environment_variables &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const invocation_environment_variables_struct &o) {
+    void to_json(json &j, const invocation_environment_variables &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, invocation_struct &o) {
+    void from_json(const json &j, invocation &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "commandLine" ) {
                 std::string field;
@@ -1111,7 +1111,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "responseFiles" ) {
-                std::forward_list< artifact_location_struct > field;
+                std::forward_list< artifact_location > field;
                 val.get_to(field);
                 o.responseFiles = field;
                 continue;
@@ -1135,25 +1135,25 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "ruleConfigurationOverrides" ) {
-                std::forward_list< configuration_override_struct > field;
+                std::forward_list< configuration_override > field;
                 val.get_to(field);
                 o.ruleConfigurationOverrides = field;
                 continue;
             }
             if ( key == "notificationConfigurationOverrides" ) {
-                std::forward_list< configuration_override_struct > field;
+                std::forward_list< configuration_override > field;
                 val.get_to(field);
                 o.notificationConfigurationOverrides = field;
                 continue;
             }
             if ( key == "toolExecutionNotifications" ) {
-                std::forward_list< notification_struct > field;
+                std::forward_list< notification > field;
                 val.get_to(field);
                 o.toolExecutionNotifications = field;
                 continue;
             }
             if ( key == "toolConfigurationNotifications" ) {
-                std::forward_list< notification_struct > field;
+                std::forward_list< notification > field;
                 val.get_to(field);
                 o.toolConfigurationNotifications = field;
                 continue;
@@ -1205,56 +1205,56 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "executableLocation" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.executableLocation = field;
                 continue;
             }
             if ( key == "workingDirectory" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.workingDirectory = field;
                 continue;
             }
             if ( key == "environmentVariables" ) {
-                invocation_environment_variables_struct field;
+                invocation_environment_variables field;
                 val.get_to(field);
                 o.environmentVariables = field;
                 continue;
             }
             if ( key == "stdin" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.stdin = field;
                 continue;
             }
             if ( key == "stdout" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.stdout = field;
                 continue;
             }
             if ( key == "stderr" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.stderr = field;
                 continue;
             }
             if ( key == "stdoutStderr" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.stdoutStderr = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const invocation_struct &o) {
+    void to_json(json &j, const invocation &o) {
         if ( o.commandLine.has_value() ) {
             j["commandLine"] = *o.commandLine;
         }
@@ -1332,33 +1332,33 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, conversion_struct &o) {
+    void from_json(const json &j, conversion &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tool" ) {
                 val.get_to(o.tool);
                 continue;
             }
             if ( key == "invocation" ) {
-                invocation_struct field;
+                invocation field;
                 val.get_to(field);
                 o.invocation = field;
                 continue;
             }
             if ( key == "analysisToolLogFiles" ) {
-                std::forward_list< artifact_location_struct > field;
+                std::forward_list< artifact_location > field;
                 val.get_to(field);
                 o.analysisToolLogFiles = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const conversion_struct &o) {
+    void to_json(json &j, const conversion &o) {
         j["tool"] = o.tool;
         if ( o.invocation.has_value() ) {
             j["invocation"] = *o.invocation;
@@ -1370,14 +1370,14 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, edge_struct &o) {
+    void from_json(const json &j, edge &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 val.get_to(o.id);
                 continue;
             }
             if ( key == "label" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.label = field;
                 continue;
@@ -1391,14 +1391,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const edge_struct &o) {
+    void to_json(json &j, const edge &o) {
         j["id"] = o.id;
         if ( o.label.has_value() ) {
             j["label"] = *o.label;
@@ -1409,30 +1409,30 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, edge_traversal_final_state_struct &o) {
+    void from_json(const json &j, edge_traversal_final_state &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const edge_traversal_final_state_struct &o) {
+    void to_json(json &j, const edge_traversal_final_state &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, edge_traversal_struct &o) {
+    void from_json(const json &j, edge_traversal &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "edgeId" ) {
                 val.get_to(o.edgeId);
                 continue;
             }
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
             }
             if ( key == "finalState" ) {
-                edge_traversal_final_state_struct field;
+                edge_traversal_final_state field;
                 val.get_to(field);
                 o.finalState = field;
                 continue;
@@ -1444,14 +1444,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const edge_traversal_struct &o) {
+    void to_json(json &j, const edge_traversal &o) {
         j["edgeId"] = o.edgeId;
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
@@ -1466,10 +1466,10 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, stack_struct &o) {
+    void from_json(const json &j, stack &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
@@ -1479,14 +1479,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const stack_struct &o) {
+    void to_json(json &j, const stack &o) {
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
         }
@@ -1495,7 +1495,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, exception_struct &o) {
+    void from_json(const json &j, exception &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "kind" ) {
                 std::string field;
@@ -1510,26 +1510,26 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "stack" ) {
-                stack_struct field;
+                stack field;
                 val.get_to(field);
                 o.stack = field;
                 continue;
             }
             if ( key == "innerExceptions" ) {
-                std::forward_list< exception_struct > field;
+                std::forward_list< exception > field;
                 val.get_to(field);
                 o.innerExceptions = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const exception_struct &o) {
+    void to_json(json &j, const exception &o) {
         if ( o.kind.has_value() ) {
             j["kind"] = *o.kind;
         }
@@ -1546,7 +1546,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, external_properties_struct &o) {
+    void from_json(const json &j, external_properties &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "schema" ) {
                 std::string field;
@@ -1555,7 +1555,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "version" ) {
-                version_enum field;
+                version field;
                 val.get_to(field);
                 o.version = field;
                 continue;
@@ -1573,110 +1573,110 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "conversion" ) {
-                conversion_struct field;
+                conversion field;
                 val.get_to(field);
                 o.conversion = field;
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< graph_struct > field;
+                std::forward_list< graph > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
             }
             if ( key == "externalizedProperties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.externalizedProperties = field;
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list< artifact_struct > field;
+                std::forward_list< artifact > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list< invocation_struct > field;
+                std::forward_list< invocation > field;
                 val.get_to(field);
                 o.invocations = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< logical_location_struct > field;
+                std::forward_list< logical_location > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list< thread_flow_location_struct > field;
+                std::forward_list< thread_flow_location > field;
                 val.get_to(field);
                 o.threadFlowLocations = field;
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list< result_struct > field;
+                std::forward_list< result > field;
                 val.get_to(field);
                 o.results = field;
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.taxonomies = field;
                 continue;
             }
             if ( key == "driver" ) {
-                tool_component_struct field;
+                tool_component field;
                 val.get_to(field);
                 o.driver = field;
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.extensions = field;
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.policies = field;
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.translations = field;
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list< address_struct > field;
+                std::forward_list< address > field;
                 val.get_to(field);
                 o.addresses = field;
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list< web_request_struct > field;
+                std::forward_list< web_request > field;
                 val.get_to(field);
                 o.webRequests = field;
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list< web_response_struct > field;
+                std::forward_list< web_response > field;
                 val.get_to(field);
                 o.webResponses = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const external_properties_struct &o) {
+    void to_json(json &j, const external_properties &o) {
         if ( o.schema.has_value() ) {
             j["schema"] = *o.schema;
         }
@@ -1741,10 +1741,10 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, external_property_file_reference_struct &o) {
+    void from_json(const json &j, external_property_file_reference &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "location" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.location = field;
                 continue;
@@ -1762,14 +1762,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const external_property_file_reference_struct &o) {
+    void to_json(json &j, const external_property_file_reference &o) {
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
         }
@@ -1783,113 +1783,113 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, external_property_file_references_struct &o) {
+    void from_json(const json &j, external_property_file_references &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "conversion" ) {
-                external_property_file_reference_struct field;
+                external_property_file_reference field;
                 val.get_to(field);
                 o.conversion = field;
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
             }
             if ( key == "externalizedProperties" ) {
-                external_property_file_reference_struct field;
+                external_property_file_reference field;
                 val.get_to(field);
                 o.externalizedProperties = field;
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.invocations = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.threadFlowLocations = field;
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.results = field;
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.taxonomies = field;
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.addresses = field;
                 continue;
             }
             if ( key == "driver" ) {
-                external_property_file_reference_struct field;
+                external_property_file_reference field;
                 val.get_to(field);
                 o.driver = field;
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.extensions = field;
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.policies = field;
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.translations = field;
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.webRequests = field;
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list< external_property_file_reference_struct > field;
+                std::forward_list< external_property_file_reference > field;
                 val.get_to(field);
                 o.webResponses = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const external_property_file_references_struct &o) {
+    void to_json(json &j, const external_property_file_references &o) {
         if ( o.conversion.has_value() ) {
             j["conversion"] = *o.conversion;
         }
@@ -1942,10 +1942,10 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, fix_struct &o) {
+    void from_json(const json &j, fix &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
@@ -1955,14 +1955,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const fix_struct &o) {
+    void to_json(json &j, const fix &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -1971,35 +1971,35 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, graph_struct &o) {
+    void from_json(const json &j, graph &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
             }
             if ( key == "nodes" ) {
-                std::forward_list< node_struct > field;
+                std::forward_list< node > field;
                 val.get_to(field);
                 o.nodes = field;
                 continue;
             }
             if ( key == "edges" ) {
-                std::forward_list< edge_struct > field;
+                std::forward_list< edge > field;
                 val.get_to(field);
                 o.edges = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const graph_struct &o) {
+    void to_json(json &j, const graph &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -2013,27 +2013,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, graph_traversal_initial_state_struct &o) {
+    void from_json(const json &j, graph_traversal_initial_state &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const graph_traversal_initial_state_struct &o) {
+    void to_json(json &j, const graph_traversal_initial_state &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, graph_traversal_immutable_state_struct &o) {
+    void from_json(const json &j, graph_traversal_immutable_state &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const graph_traversal_immutable_state_struct &o) {
+    void to_json(json &j, const graph_traversal_immutable_state &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, graph_traversal_struct &o) {
+    void from_json(const json &j, graph_traversal &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "runGraphIndex" ) {
                 int64_t field;
@@ -2048,38 +2048,38 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
             }
             if ( key == "initialState" ) {
-                graph_traversal_initial_state_struct field;
+                graph_traversal_initial_state field;
                 val.get_to(field);
                 o.initialState = field;
                 continue;
             }
             if ( key == "immutableState" ) {
-                graph_traversal_immutable_state_struct field;
+                graph_traversal_immutable_state field;
                 val.get_to(field);
                 o.immutableState = field;
                 continue;
             }
             if ( key == "edgeTraversals" ) {
-                std::forward_list< edge_traversal_struct > field;
+                std::forward_list< edge_traversal > field;
                 val.get_to(field);
                 o.edgeTraversals = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const graph_traversal_struct &o) {
+    void to_json(json &j, const graph_traversal &o) {
         if ( o.runGraphIndex.has_value() ) {
             j["runGraphIndex"] = *o.runGraphIndex;
         }
@@ -2102,7 +2102,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, region_struct &o) {
+    void from_json(const json &j, region &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "startLine" ) {
                 int64_t field;
@@ -2153,13 +2153,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "snippet" ) {
-                artifact_content_struct field;
+                artifact_content field;
                 val.get_to(field);
                 o.snippet = field;
                 continue;
             }
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
@@ -2171,14 +2171,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const region_struct &o) {
+    void to_json(json &j, const region &o) {
         if ( o.startLine.has_value() ) {
             j["startLine"] = *o.startLine;
         }
@@ -2216,41 +2216,41 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, physical_location_struct &o) {
+    void from_json(const json &j, physical_location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "address" ) {
-                address_struct field;
+                address field;
                 val.get_to(field);
                 o.address = field;
                 continue;
             }
             if ( key == "artifactLocation" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.artifactLocation = field;
                 continue;
             }
             if ( key == "region" ) {
-                region_struct field;
+                region field;
                 val.get_to(field);
                 o.region = field;
                 continue;
             }
             if ( key == "contextRegion" ) {
-                region_struct field;
+                region field;
                 val.get_to(field);
                 o.contextRegion = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const physical_location_struct &o) {
+    void to_json(json &j, const physical_location &o) {
         if ( o.address.has_value() ) {
             j["address"] = *o.address;
         }
@@ -2267,7 +2267,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, location_struct &o) {
+    void from_json(const json &j, location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 int64_t field;
@@ -2276,44 +2276,44 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "physicalLocation" ) {
-                physical_location_struct field;
+                physical_location field;
                 val.get_to(field);
                 o.physicalLocation = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< logical_location_struct > field;
+                std::forward_list< logical_location > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
             }
             if ( key == "annotations" ) {
-                std::forward_list< region_struct > field;
+                std::forward_list< region > field;
                 val.get_to(field);
                 o.annotations = field;
                 continue;
             }
             if ( key == "relationships" ) {
-                std::forward_list< location_relationship_struct > field;
+                std::forward_list< location_relationship > field;
                 val.get_to(field);
                 o.relationships = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const location_struct &o) {
+    void to_json(json &j, const location &o) {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
@@ -2336,7 +2336,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, location_relationship_struct &o) {
+    void from_json(const json &j, location_relationship &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "target" ) {
                 val.get_to(o.target);
@@ -2349,20 +2349,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const location_relationship_struct &o) {
+    void to_json(json &j, const location_relationship &o) {
         j["target"] = o.target;
         if ( o.kinds.has_value() ) {
             j["kinds"] = *o.kinds;
@@ -2374,7 +2374,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, logical_location_struct &o) {
+    void from_json(const json &j, logical_location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "name" ) {
                 std::string field;
@@ -2413,14 +2413,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const logical_location_struct &o) {
+    void to_json(json &j, const logical_location &o) {
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
@@ -2443,39 +2443,39 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, node_struct &o) {
+    void from_json(const json &j, node &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 val.get_to(o.id);
                 continue;
             }
             if ( key == "label" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.label = field;
                 continue;
             }
             if ( key == "location" ) {
-                location_struct field;
+                location field;
                 val.get_to(field);
                 o.location = field;
                 continue;
             }
             if ( key == "children" ) {
-                std::forward_list< node_struct > field;
+                std::forward_list< node > field;
                 val.get_to(field);
                 o.children = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const node_struct &o) {
+    void to_json(json &j, const node &o) {
         j["id"] = o.id;
         if ( o.label.has_value() ) {
             j["label"] = *o.label;
@@ -2490,10 +2490,10 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, notification_struct &o) {
+    void from_json(const json &j, notification &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "locations" ) {
-                std::forward_list< location_struct > field;
+                std::forward_list< location > field;
                 val.get_to(field);
                 o.locations = field;
                 continue;
@@ -2503,7 +2503,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "level" ) {
-                level_enum field;
+                level field;
                 val.get_to(field);
                 o.level = field;
                 continue;
@@ -2521,32 +2521,32 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "exception" ) {
-                exception_struct field;
+                exception field;
                 val.get_to(field);
                 o.exception = field;
                 continue;
             }
             if ( key == "descriptor" ) {
-                reporting_descriptor_reference_struct field;
+                reporting_descriptor_reference field;
                 val.get_to(field);
                 o.descriptor = field;
                 continue;
             }
             if ( key == "associatedRule" ) {
-                reporting_descriptor_reference_struct field;
+                reporting_descriptor_reference field;
                 val.get_to(field);
                 o.associatedRule = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const notification_struct &o) {
+    void to_json(json &j, const notification &o) {
         if ( o.locations.has_value() ) {
             j["locations"] = *o.locations;
         }
@@ -2573,7 +2573,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, rectangle_struct &o) {
+    void from_json(const json &j, rectangle &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "top" ) {
                 double field;
@@ -2600,20 +2600,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const rectangle_struct &o) {
+    void to_json(json &j, const rectangle &o) {
         if ( o.top.has_value() ) {
             j["top"] = *o.top;
         }
@@ -2633,27 +2633,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, replacement_struct &o) {
+    void from_json(const json &j, replacement &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "deletedRegion" ) {
                 val.get_to(o.deletedRegion);
                 continue;
             }
             if ( key == "insertedContent" ) {
-                artifact_content_struct field;
+                artifact_content field;
                 val.get_to(field);
                 o.insertedContent = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const replacement_struct &o) {
+    void to_json(json &j, const replacement &o) {
         j["deletedRegion"] = o.deletedRegion;
         if ( o.insertedContent.has_value() ) {
             j["insertedContent"] = *o.insertedContent;
@@ -2662,17 +2662,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, reporting_descriptor_message_strings_struct &o) {
+    void from_json(const json &j, reporting_descriptor_message_strings &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const reporting_descriptor_message_strings_struct &o) {
+    void to_json(json &j, const reporting_descriptor_message_strings &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, reporting_descriptor_struct &o) {
+    void from_json(const json &j, reporting_descriptor &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 val.get_to(o.id);
@@ -2709,25 +2709,25 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "shortDescription" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.shortDescription = field;
                 continue;
             }
             if ( key == "fullDescription" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.fullDescription = field;
                 continue;
             }
             if ( key == "messageStrings" ) {
-                reporting_descriptor_message_strings_struct field;
+                reporting_descriptor_message_strings field;
                 val.get_to(field);
                 o.messageStrings = field;
                 continue;
             }
             if ( key == "defaultConfiguration" ) {
-                reporting_configuration_struct field;
+                reporting_configuration field;
                 val.get_to(field);
                 o.defaultConfiguration = field;
                 continue;
@@ -2739,26 +2739,26 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "help" ) {
-                multiformat_message_string_struct field;
+                multiformat_message_string field;
                 val.get_to(field);
                 o.help = field;
                 continue;
             }
             if ( key == "relationships" ) {
-                std::forward_list< reporting_descriptor_relationship_struct > field;
+                std::forward_list< reporting_descriptor_relationship > field;
                 val.get_to(field);
                 o.relationships = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const reporting_descriptor_struct &o) {
+    void to_json(json &j, const reporting_descriptor &o) {
         j["id"] = o.id;
         if ( o.deprecatedIds.has_value() ) {
             j["deprecatedIds"] = *o.deprecatedIds;
@@ -2800,7 +2800,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, reporting_descriptor_relationship_struct &o) {
+    void from_json(const json &j, reporting_descriptor_relationship &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "target" ) {
                 val.get_to(o.target);
@@ -2813,20 +2813,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const reporting_descriptor_relationship_struct &o) {
+    void to_json(json &j, const reporting_descriptor_relationship &o) {
         j["target"] = o.target;
         if ( o.kinds.has_value() ) {
             j["kinds"] = *o.kinds;
@@ -2838,27 +2838,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, result_partial_fingerprints_struct &o) {
+    void from_json(const json &j, result_partial_fingerprints &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const result_partial_fingerprints_struct &o) {
+    void to_json(json &j, const result_partial_fingerprints &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, result_fingerprints_struct &o) {
+    void from_json(const json &j, result_fingerprints &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const result_fingerprints_struct &o) {
+    void to_json(json &j, const result_fingerprints &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, result_provenance_struct &o) {
+    void from_json(const json &j, result_provenance &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "firstDetectionTimeUtc" ) {
                 std::string field;
@@ -2891,20 +2891,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "conversionSources" ) {
-                std::forward_list< physical_location_struct > field;
+                std::forward_list< physical_location > field;
                 val.get_to(field);
                 o.conversionSources = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const result_provenance_struct &o) {
+    void to_json(json &j, const result_provenance &o) {
         if ( o.firstDetectionTimeUtc.has_value() ) {
             j["firstDetectionTimeUtc"] = *o.firstDetectionTimeUtc;
         }
@@ -2927,27 +2927,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, web_request_headers_struct &o) {
+    void from_json(const json &j, web_request_headers &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const web_request_headers_struct &o) {
+    void to_json(json &j, const web_request_headers &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, web_request_parameters_struct &o) {
+    void from_json(const json &j, web_request_parameters &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const web_request_parameters_struct &o) {
+    void to_json(json &j, const web_request_parameters &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, web_request_struct &o) {
+    void from_json(const json &j, web_request &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
                 int64_t field;
@@ -2980,32 +2980,32 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "headers" ) {
-                web_request_headers_struct field;
+                web_request_headers field;
                 val.get_to(field);
                 o.headers = field;
                 continue;
             }
             if ( key == "parameters" ) {
-                web_request_parameters_struct field;
+                web_request_parameters field;
                 val.get_to(field);
                 o.parameters = field;
                 continue;
             }
             if ( key == "body" ) {
-                artifact_content_struct field;
+                artifact_content field;
                 val.get_to(field);
                 o.body = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const web_request_struct &o) {
+    void to_json(json &j, const web_request &o) {
         if ( o.index.has_value() ) {
             j["index"] = *o.index;
         }
@@ -3034,17 +3034,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, web_response_headers_struct &o) {
+    void from_json(const json &j, web_response_headers &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const web_response_headers_struct &o) {
+    void to_json(json &j, const web_response_headers &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, web_response_struct &o) {
+    void from_json(const json &j, web_response &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
                 int64_t field;
@@ -3077,13 +3077,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "headers" ) {
-                web_response_headers_struct field;
+                web_response_headers field;
                 val.get_to(field);
                 o.headers = field;
                 continue;
             }
             if ( key == "body" ) {
-                artifact_content_struct field;
+                artifact_content field;
                 val.get_to(field);
                 o.body = field;
                 continue;
@@ -3095,14 +3095,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const web_response_struct &o) {
+    void to_json(json &j, const web_response &o) {
         if ( o.index.has_value() ) {
             j["index"] = *o.index;
         }
@@ -3131,7 +3131,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, result_struct &o) {
+    void from_json(const json &j, result &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "ruleId" ) {
                 std::string field;
@@ -3146,19 +3146,19 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "rule" ) {
-                reporting_descriptor_reference_struct field;
+                reporting_descriptor_reference field;
                 val.get_to(field);
                 o.rule = field;
                 continue;
             }
             if ( key == "kind" ) {
-                kind_enum field;
+                kind field;
                 val.get_to(field);
                 o.kind = field;
                 continue;
             }
             if ( key == "level" ) {
-                level_enum field;
+                level field;
                 val.get_to(field);
                 o.level = field;
                 continue;
@@ -3168,13 +3168,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "analysisTarget" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.analysisTarget = field;
                 continue;
             }
             if ( key == "locations" ) {
-                std::forward_list< location_struct > field;
+                std::forward_list< location > field;
                 val.get_to(field);
                 o.locations = field;
                 continue;
@@ -3198,55 +3198,55 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "partialFingerprints" ) {
-                result_partial_fingerprints_struct field;
+                result_partial_fingerprints field;
                 val.get_to(field);
                 o.partialFingerprints = field;
                 continue;
             }
             if ( key == "fingerprints" ) {
-                result_fingerprints_struct field;
+                result_fingerprints field;
                 val.get_to(field);
                 o.fingerprints = field;
                 continue;
             }
             if ( key == "stacks" ) {
-                std::forward_list< stack_struct > field;
+                std::forward_list< stack > field;
                 val.get_to(field);
                 o.stacks = field;
                 continue;
             }
             if ( key == "codeFlows" ) {
-                std::forward_list< code_flow_struct > field;
+                std::forward_list< code_flow > field;
                 val.get_to(field);
                 o.codeFlows = field;
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< graph_struct > field;
+                std::forward_list< graph > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
             }
             if ( key == "graphTraversals" ) {
-                std::forward_list< graph_traversal_struct > field;
+                std::forward_list< graph_traversal > field;
                 val.get_to(field);
                 o.graphTraversals = field;
                 continue;
             }
             if ( key == "relatedLocations" ) {
-                std::forward_list< location_struct > field;
+                std::forward_list< location > field;
                 val.get_to(field);
                 o.relatedLocations = field;
                 continue;
             }
             if ( key == "suppressions" ) {
-                std::forward_list< suppression_struct > field;
+                std::forward_list< suppression > field;
                 val.get_to(field);
                 o.suppressions = field;
                 continue;
             }
             if ( key == "baselineState" ) {
-                baseline_state_enum field;
+                baseline_state field;
                 val.get_to(field);
                 o.baselineState = field;
                 continue;
@@ -3258,7 +3258,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "attachments" ) {
-                std::forward_list< attachment_struct > field;
+                std::forward_list< attachment > field;
                 val.get_to(field);
                 o.attachments = field;
                 continue;
@@ -3276,44 +3276,44 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "provenance" ) {
-                result_provenance_struct field;
+                result_provenance field;
                 val.get_to(field);
                 o.provenance = field;
                 continue;
             }
             if ( key == "fixes" ) {
-                std::forward_list< fix_struct > field;
+                std::forward_list< fix > field;
                 val.get_to(field);
                 o.fixes = field;
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list< reporting_descriptor_reference_struct > field;
+                std::forward_list< reporting_descriptor_reference > field;
                 val.get_to(field);
                 o.taxa = field;
                 continue;
             }
             if ( key == "webRequest" ) {
-                web_request_struct field;
+                web_request field;
                 val.get_to(field);
                 o.webRequest = field;
                 continue;
             }
             if ( key == "webResponse" ) {
-                web_response_struct field;
+                web_response field;
                 val.get_to(field);
                 o.webResponse = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const result_struct &o) {
+    void to_json(json &j, const result &o) {
         if ( o.ruleId.has_value() ) {
             j["ruleId"] = *o.ruleId;
         }
@@ -3403,20 +3403,20 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, run_original_uri_base_ids_struct &o) {
+    void from_json(const json &j, run_original_uri_base_ids &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const run_original_uri_base_ids_struct &o) {
+    void to_json(json &j, const run_original_uri_base_ids &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, run_automation_details_struct &o) {
+    void from_json(const json &j, run_automation_details &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "description" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.description = field;
                 continue;
@@ -3440,14 +3440,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const run_automation_details_struct &o) {
+    void to_json(json &j, const run_automation_details &o) {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
@@ -3464,23 +3464,23 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, special_locations_struct &o) {
+    void from_json(const json &j, special_locations &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "displayBase" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.displayBase = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const special_locations_struct &o) {
+    void to_json(json &j, const special_locations &o) {
         if ( o.displayBase.has_value() ) {
             j["displayBase"] = *o.displayBase;
         }
@@ -3488,20 +3488,20 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, run_struct &o) {
+    void from_json(const json &j, run &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tool" ) {
                 val.get_to(o.tool);
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list< invocation_struct > field;
+                std::forward_list< invocation > field;
                 val.get_to(field);
                 o.invocations = field;
                 continue;
             }
             if ( key == "conversion" ) {
-                conversion_struct field;
+                conversion field;
                 val.get_to(field);
                 o.conversion = field;
                 continue;
@@ -3513,49 +3513,49 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "versionControlProvenance" ) {
-                std::forward_list< version_control_details_struct > field;
+                std::forward_list< version_control_details > field;
                 val.get_to(field);
                 o.versionControlProvenance = field;
                 continue;
             }
             if ( key == "originalUriBaseIds" ) {
-                run_original_uri_base_ids_struct field;
+                run_original_uri_base_ids field;
                 val.get_to(field);
                 o.originalUriBaseIds = field;
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list< artifact_struct > field;
+                std::forward_list< artifact > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< logical_location_struct > field;
+                std::forward_list< logical_location > field;
                 val.get_to(field);
                 o.logicalLocations = field;
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< graph_struct > field;
+                std::forward_list< graph > field;
                 val.get_to(field);
                 o.graphs = field;
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list< result_struct > field;
+                std::forward_list< result > field;
                 val.get_to(field);
                 o.results = field;
                 continue;
             }
             if ( key == "automationDetails" ) {
-                run_automation_details_struct field;
+                run_automation_details field;
                 val.get_to(field);
                 o.automationDetails = field;
                 continue;
             }
             if ( key == "runAggregates" ) {
-                std::forward_list< run_automation_details_struct > field;
+                std::forward_list< run_automation_details > field;
                 val.get_to(field);
                 o.runAggregates = field;
                 continue;
@@ -3591,74 +3591,74 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "columnKind" ) {
-                column_kind_enum field;
+                column_kind field;
                 val.get_to(field);
                 o.columnKind = field;
                 continue;
             }
             if ( key == "externalPropertyFileReferences" ) {
-                external_property_file_references_struct field;
+                external_property_file_references field;
                 val.get_to(field);
                 o.externalPropertyFileReferences = field;
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list< thread_flow_location_struct > field;
+                std::forward_list< thread_flow_location > field;
                 val.get_to(field);
                 o.threadFlowLocations = field;
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.taxonomies = field;
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list< address_struct > field;
+                std::forward_list< address > field;
                 val.get_to(field);
                 o.addresses = field;
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.translations = field;
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list< tool_component_struct > field;
+                std::forward_list< tool_component > field;
                 val.get_to(field);
                 o.policies = field;
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list< web_request_struct > field;
+                std::forward_list< web_request > field;
                 val.get_to(field);
                 o.webRequests = field;
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list< web_response_struct > field;
+                std::forward_list< web_response > field;
                 val.get_to(field);
                 o.webResponses = field;
                 continue;
             }
             if ( key == "specialLocations" ) {
-                special_locations_struct field;
+                special_locations field;
                 val.get_to(field);
                 o.specialLocations = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const run_struct &o) {
+    void to_json(json &j, const run &o) {
         j["tool"] = o.tool;
         if ( o.invocations.has_value() ) {
             j["invocations"] = *o.invocations;
@@ -3742,10 +3742,10 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, stack_frame_struct &o) {
+    void from_json(const json &j, stack_frame &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "location" ) {
-                location_struct field;
+                location field;
                 val.get_to(field);
                 o.location = field;
                 continue;
@@ -3769,14 +3769,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const stack_frame_struct &o) {
+    void to_json(json &j, const stack_frame &o) {
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
         }
@@ -3793,7 +3793,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, suppression_struct &o) {
+    void from_json(const json &j, suppression &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "guid" ) {
                 std::string field;
@@ -3806,7 +3806,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "state" ) {
-                state_enum field;
+                state field;
                 val.get_to(field);
                 o.state = field;
                 continue;
@@ -3818,20 +3818,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "location" ) {
-                location_struct field;
+                location field;
                 val.get_to(field);
                 o.location = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const suppression_struct &o) {
+    void to_json(json &j, const suppression &o) {
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
         }
@@ -3849,27 +3849,27 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, thread_flow_initial_state_struct &o) {
+    void from_json(const json &j, thread_flow_initial_state &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const thread_flow_initial_state_struct &o) {
+    void to_json(json &j, const thread_flow_initial_state &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, thread_flow_immutable_state_struct &o) {
+    void from_json(const json &j, thread_flow_immutable_state &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const thread_flow_immutable_state_struct &o) {
+    void to_json(json &j, const thread_flow_immutable_state &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, thread_flow_struct &o) {
+    void from_json(const json &j, thread_flow &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
                 std::string field;
@@ -3878,19 +3878,19 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "message" ) {
-                message_struct field;
+                message field;
                 val.get_to(field);
                 o.message = field;
                 continue;
             }
             if ( key == "initialState" ) {
-                thread_flow_initial_state_struct field;
+                thread_flow_initial_state field;
                 val.get_to(field);
                 o.initialState = field;
                 continue;
             }
             if ( key == "immutableState" ) {
-                thread_flow_immutable_state_struct field;
+                thread_flow_immutable_state field;
                 val.get_to(field);
                 o.immutableState = field;
                 continue;
@@ -3900,14 +3900,14 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const thread_flow_struct &o) {
+    void to_json(json &j, const thread_flow &o) {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
@@ -3925,17 +3925,17 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, thread_flow_location_state_struct &o) {
+    void from_json(const json &j, thread_flow_location_state &o) {
         for( auto &[key, val] : j.items() ) {
             val.get_to(o.additional_properties[key]);
         }
     }
-    void to_json(json &j, const thread_flow_location_state_struct &o) {
+    void to_json(json &j, const thread_flow_location_state &o) {
         for ( auto &[key, val] : o.additional_properties ) {
             j[key] = val;
         }
     }
-    void from_json(const json &j, thread_flow_location_struct &o) {
+    void from_json(const json &j, thread_flow_location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
                 int64_t field;
@@ -3944,13 +3944,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "location" ) {
-                location_struct field;
+                location field;
                 val.get_to(field);
                 o.location = field;
                 continue;
             }
             if ( key == "stack" ) {
-                stack_struct field;
+                stack field;
                 val.get_to(field);
                 o.stack = field;
                 continue;
@@ -3962,7 +3962,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list< reporting_descriptor_reference_struct > field;
+                std::forward_list< reporting_descriptor_reference > field;
                 val.get_to(field);
                 o.taxa = field;
                 continue;
@@ -3974,7 +3974,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "state" ) {
-                thread_flow_location_state_struct field;
+                thread_flow_location_state field;
                 val.get_to(field);
                 o.state = field;
                 continue;
@@ -3998,32 +3998,32 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "importance" ) {
-                importance_enum field;
+                importance field;
                 val.get_to(field);
                 o.importance = field;
                 continue;
             }
             if ( key == "webRequest" ) {
-                web_request_struct field;
+                web_request field;
                 val.get_to(field);
                 o.webRequest = field;
                 continue;
             }
             if ( key == "webResponse" ) {
-                web_response_struct field;
+                web_response field;
                 val.get_to(field);
                 o.webResponse = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const thread_flow_location_struct &o) {
+    void to_json(json &j, const thread_flow_location &o) {
         if ( o.index.has_value() ) {
             j["index"] = *o.index;
         }
@@ -4067,7 +4067,7 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-    void from_json(const json &j, version_control_details_struct &o) {
+    void from_json(const json &j, version_control_details &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "repositoryUri" ) {
                 val.get_to(o.repositoryUri);
@@ -4098,20 +4098,20 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "mappedTo" ) {
-                artifact_location_struct field;
+                artifact_location field;
                 val.get_to(field);
                 o.mappedTo = field;
                 continue;
             }
             if ( key == "properties" ) {
-                property_bag_struct field;
+                property_bag field;
                 val.get_to(field);
                 o.properties = field;
                 continue;
             }
         }
     }
-    void to_json(json &j, const version_control_details_struct &o) {
+    void to_json(json &j, const version_control_details &o) {
         j["repositoryUri"] = o.repositoryUri;
         if ( o.revisionId.has_value() ) {
             j["revisionId"] = *o.revisionId;

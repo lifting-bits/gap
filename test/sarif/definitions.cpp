@@ -6,8 +6,8 @@
 namespace gap::sarif {
     TEST_CASE("Struct to JSON roundtrip") {
         // Sample SARIF output from https://github.com/microsoft/sarif-tutorials/blob/main/docs/1-Introduction.md
-        root_struct root{
-            .version = version_enum::k2_1_0,
+        root obj{
+            .version = version::k2_1_0,
             .runs = {
                 {
                     .tool = {
@@ -41,7 +41,7 @@ namespace gap::sarif {
                         {
                             .ruleId = "no-unused-vars",
                             .ruleIndex = 0,
-                            .level = level_enum::kError,
+                            .level = level::kError,
                             .message = {
                                 .text = "'x' is assigned a value but never used.",
                             },
@@ -69,11 +69,11 @@ namespace gap::sarif {
             },
         };
 
-        json root_json = root;
-        root_struct deser = root;
+        json obj_json = obj;
+        root deser = obj;
         json deser_json = deser;
 
-        CHECK_EQ(root_json, deser_json);
+        CHECK_EQ(obj_json, deser_json);
     }
 
     TEST_CASE("JSON to struct roundtrip") {
@@ -134,7 +134,7 @@ namespace gap::sarif {
   ]
 })");
 
-        root_struct root = j;
+        root root = j;
 
         json j2 = root;
 
