@@ -3,7 +3,7 @@
 #include <doctest/doctest.h>
 #include <gap/sarif/definitions.hpp>
 
-namespace gap::sarif::definitions {
+namespace gap::sarif {
     TEST_CASE("Struct to JSON roundtrip") {
         // Sample SARIF output from https://github.com/microsoft/sarif-tutorials/blob/main/docs/1-Introduction.md
         root_struct root{

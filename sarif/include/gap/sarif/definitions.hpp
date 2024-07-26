@@ -10,7 +10,7 @@
 
 #include <nlohmann/json.hpp>
 
-namespace gap::sarif::definitions
+namespace gap::sarif
 {
     enum class version_enum {
         k2_1_0,

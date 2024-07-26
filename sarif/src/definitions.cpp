@@ -2,7 +2,7 @@
 
 #include <gap/sarif/definitions.hpp>
 
-namespace gap::sarif::definitions {
+namespace gap::sarif {
     void from_json(const nlohmann::json &j, property_bag_struct &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tags" ) {
