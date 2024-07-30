@@ -7,11 +7,7 @@
 // found at https://github.com/microsoft/sarif-python-om/blob/7a84e8c2b2b9d8b9a8d25b1d376f039a0bf92a7c/sarif-schema-2.1.0.json
 //
 // The naming convention used is to convert all of the definition names from camelCase to snake_case,
-// suffixed with either _struct or _enum depending on the kind.
-// "Nested" definitions are prefixed by the name of the parent definition, for example the `headers`
-// property of the `webRequest` definition is called web_request_headers_struct, in order to
-// distinguish it from the `headers` property of the `webResponse` definition.
-// Property names are kept as-is.
+// property names are kept as-is.
 //
 // Enum value names are converted from camelCase to PascalCase and prefixed with `k`.
 //
@@ -2719,4 +2715,4 @@ namespace gap::sarif
 
     void to_json(json &, const version_control_details &);
     void from_json(const json &, version_control_details &);
-} // namespace gap::sarif::definitions
+} // namespace gap::sarif

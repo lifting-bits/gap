@@ -3742,4 +3742,4 @@ namespace gap::sarif {
             j["properties"] = *o.properties;
         }
     }
-}
+} // namespace gap::sarif
