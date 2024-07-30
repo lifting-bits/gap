@@ -1,6 +1,6 @@
 // Copyright (c) 2024-present, Trail of Bits, Inc.
 
-#include <gap/sarif/definitions.hpp>
+#include <gap/sarif/sarif.hpp>
 
 namespace gap::sarif {
     void from_json(const json &j, property_bag &o) {

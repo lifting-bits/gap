@@ -1,7 +1,7 @@
 // Copyright (c) 2024-present, Trail of Bits, Inc.
 
 #include <doctest/doctest.h>
-#include <gap/sarif/definitions.hpp>
+#include <gap/sarif/sarif.hpp>
 
 namespace gap::sarif {
     TEST_CASE("Struct to JSON roundtrip") {

@@ -3,11 +3,11 @@
 find_package(nlohmann_json CONFIG REQUIRED)
 
 add_headers(sarif GAP_SARIF_HEADERS
-	definitions.hpp
+	sarif.hpp
 )
 
 add_sources(sarif GAP_SARIF_SOURCES
-	definitions.cpp
+	sarif.cpp
 )
 
 add_gap_static_library(gap-sarif "${GAP_SARIF_HEADERS}" "${GAP_SARIF_SOURCES}")
