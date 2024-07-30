@@ -45,7 +45,7 @@ namespace gap::sarif
         //
         // A set of distinct strings that provide additional information.
         //
-        std::optional< std::forward_list< std::string > > tags = std::nullopt;
+        std::forward_list< std::string > tags = {};
 
         json additional_properties;
     };
@@ -70,7 +70,7 @@ namespace gap::sarif
         //
         // References to external property files that share data between runs.
         //
-        std::optional< std::forward_list< external_properties > > inlineExternalProperties = std::nullopt;
+        std::forward_list< external_properties > inlineExternalProperties = {};
 
         //
         // Key/value pairs that provide additional information about the log file.
@@ -88,7 +88,7 @@ namespace gap::sarif
         //
         // The address expressed as a byte offset from the start of the addressable region.
         //
-        std::optional< int64_t > absoluteAddress = std::nullopt;
+        int64_t absoluteAddress = -1;
 
         //
         // The address expressed as a byte offset from the absolute address of the top-most parent object.
@@ -123,12 +123,12 @@ namespace gap::sarif
         //
         // The index within run.addresses of the cached object for this address.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // The index within run.addresses of the parent object.
         //
-        std::optional< int64_t > parentIndex = std::nullopt;
+        int64_t parentIndex = -1;
 
         //
         // Key/value pairs that provide additional information about the address.
@@ -161,7 +161,7 @@ namespace gap::sarif
         //
         // An array of strings to substitute into the message string.
         //
-        std::optional< std::forward_list< std::string > > arguments = std::nullopt;
+        std::forward_list< std::string > arguments = {};
 
         //
         // Key/value pairs that provide additional information about the message.
@@ -189,7 +189,7 @@ namespace gap::sarif
         //
         // The index within the run artifacts array of the artifact object associated with the artifact location.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // A short description of the artifact location.
@@ -325,7 +325,7 @@ namespace gap::sarif
         //
         // Identifies the index of the immediate parent of the artifact, if this artifact is nested.
         //
-        std::optional< int64_t > parentIndex = std::nullopt;
+        int64_t parentIndex = -1;
 
         //
         // The offset in bytes of the artifact within its containing artifact.
@@ -335,12 +335,12 @@ namespace gap::sarif
         //
         // The length of the artifact in bytes.
         //
-        std::optional< int64_t > length = std::nullopt;
+        int64_t length = -1;
 
         //
         // The role or roles played by the artifact in the analysis.
         //
-        std::optional< std::forward_list< ::gap::sarif::roles > > roles = std::nullopt;
+        std::forward_list< ::gap::sarif::roles > roles = {};
 
         //
         // The MIME type (RFC 2045) of the artifact.
@@ -424,12 +424,12 @@ namespace gap::sarif
         //
         // An array of regions of interest within the attachment.
         //
-        std::optional< std::forward_list< region > > regions = std::nullopt;
+        std::forward_list< region > regions = {};
 
         //
         // An array of rectangles specifying areas of interest within the image.
         //
-        std::optional< std::forward_list< rectangle > > rectangles = std::nullopt;
+        std::forward_list< rectangle > rectangles = {};
 
         //
         // Key/value pairs that provide additional information about the attachment.
@@ -485,17 +485,17 @@ namespace gap::sarif
         //
         // Specifies whether the report may be produced during the scan.
         //
-        std::optional< bool > enabled = std::nullopt;
+        bool enabled = true;
 
         //
         // Specifies the failure level for the report.
         //
-        std::optional< ::gap::sarif::level > level = std::nullopt;
+        ::gap::sarif::level level = ::gap::sarif::level::kWarning;
 
         //
         // Specifies the relative priority of the report. Used for analysis output only.
         //
-        std::optional< double > rank = std::nullopt;
+        double rank = -1.0;
 
         //
         // Contains configuration information specific to a report.
@@ -523,7 +523,7 @@ namespace gap::sarif
         //
         // An index into the referenced toolComponent in tool.extensions.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // The 'guid' property of the referenced toolComponent.
@@ -551,7 +551,7 @@ namespace gap::sarif
         //
         // The index into an array of descriptors in toolComponent.ruleDescriptors, toolComponent.notificationDescriptors, or toolComponent.taxonomyDescriptors, depending on context.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // A guid that uniquely identifies the descriptor.
@@ -731,37 +731,37 @@ namespace gap::sarif
         //
         // An array of reportingDescriptor objects relevant to the notifications related to the configuration and runtime execution of the tool component.
         //
-        std::optional< std::forward_list< reporting_descriptor > > notifications = std::nullopt;
+        std::forward_list< reporting_descriptor > notifications = {};
 
         //
         // An array of reportingDescriptor objects relevant to the analysis performed by the tool component.
         //
-        std::optional< std::forward_list< reporting_descriptor > > rules = std::nullopt;
+        std::forward_list< reporting_descriptor > rules = {};
 
         //
         // An array of reportingDescriptor objects relevant to the definitions of both standalone and tool-defined taxonomies.
         //
-        std::optional< std::forward_list< reporting_descriptor > > taxa = std::nullopt;
+        std::forward_list< reporting_descriptor > taxa = {};
 
         //
         // An array of the artifactLocation objects associated with the tool component.
         //
-        std::optional< std::forward_list< artifact_location > > locations = std::nullopt;
+        std::forward_list< artifact_location > locations = {};
 
         //
         // The language of the messages emitted into the log file during this run (expressed as an ISO 639-1 two-letter lowercase language code) and an optional region (expressed as an ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The casing is recommended but not required (in order for this data to conform to RFC5646).
         //
-        std::optional< std::string > language = std::nullopt;
+        std::string language = "en-US";
 
         //
         // The kinds of data contained in this object.
         //
-        std::optional< std::forward_list< ::gap::sarif::contents > > contents = std::nullopt;
+        std::forward_list< ::gap::sarif::contents > contents = { ::gap::sarif::contents::kLocalizedData, ::gap::sarif::contents::kNonLocalizedData };
 
         //
         // Specifies whether this object contains a complete definition of the localizable and/or non-localizable data for this component, as opposed to including only data that is relevant to the results persisted to this log file.
         //
-        std::optional< bool > isComprehensive = std::nullopt;
+        bool isComprehensive = false;
 
         //
         // The semantic version of the localized strings defined in this component; maintained by components that provide translations.
@@ -786,7 +786,7 @@ namespace gap::sarif
         //
         // An array of toolComponentReference objects to declare the taxonomies supported by the tool component.
         //
-        std::optional< std::forward_list< tool_component_reference > > supportedTaxonomies = std::nullopt;
+        std::forward_list< tool_component_reference > supportedTaxonomies = {};
 
         //
         // Key/value pairs that provide additional information about the tool component.
@@ -809,7 +809,7 @@ namespace gap::sarif
         //
         // Tool extensions that contributed to or reconfigured the analysis tool that was run.
         //
-        std::optional< std::forward_list< tool_component > > extensions = std::nullopt;
+        std::forward_list< tool_component > extensions = {};
 
         //
         // Key/value pairs that provide additional information about the tool.
@@ -833,12 +833,12 @@ namespace gap::sarif
         //
         // An array of strings, containing in order the command line arguments passed to the tool from the operating system.
         //
-        std::optional< std::forward_list< std::string > > arguments = std::nullopt;
+        std::forward_list< std::string > arguments = {};
 
         //
         // The locations of any response files specified on the tool's command line.
         //
-        std::optional< std::forward_list< artifact_location > > responseFiles = std::nullopt;
+        std::forward_list< artifact_location > responseFiles = {};
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the run started. See "Date/time properties" in the SARIF spec for the required format.
@@ -858,22 +858,22 @@ namespace gap::sarif
         //
         // An array of configurationOverride objects that describe rules related runtime overrides.
         //
-        std::optional< std::forward_list< configuration_override > > ruleConfigurationOverrides = std::nullopt;
+        std::forward_list< configuration_override > ruleConfigurationOverrides = {};
 
         //
         // An array of configurationOverride objects that describe notifications related runtime overrides.
         //
-        std::optional< std::forward_list< configuration_override > > notificationConfigurationOverrides = std::nullopt;
+        std::forward_list< configuration_override > notificationConfigurationOverrides = {};
 
         //
         // A list of runtime conditions detected by the tool during the analysis.
         //
-        std::optional< std::forward_list< notification > > toolExecutionNotifications = std::nullopt;
+        std::forward_list< notification > toolExecutionNotifications = {};
 
         //
         // A list of conditions detected by the tool that are relevant to the tool's configuration.
         //
-        std::optional< std::forward_list< notification > > toolConfigurationNotifications = std::nullopt;
+        std::forward_list< notification > toolConfigurationNotifications = {};
 
         //
         // The reason for the process exit.
@@ -976,7 +976,7 @@ namespace gap::sarif
         //
         // The locations of the analysis tool's per-run log files.
         //
-        std::optional< std::forward_list< artifact_location > > analysisToolLogFiles = std::nullopt;
+        std::forward_list< artifact_location > analysisToolLogFiles = {};
 
         //
         // Key/value pairs that provide additional information about the conversion.
@@ -1100,7 +1100,7 @@ namespace gap::sarif
         //
         // An array of exception objects each of which is considered a cause of this exception.
         //
-        std::optional< std::forward_list< exception > > innerExceptions = std::nullopt;
+        std::forward_list< exception > innerExceptions = {};
 
         //
         // Key/value pairs that provide additional information about the exception.
@@ -1149,7 +1149,7 @@ namespace gap::sarif
         //
         // An array of graph objects that will be merged with a separate run.
         //
-        std::optional< std::forward_list< graph > > graphs = std::nullopt;
+        std::forward_list< graph > graphs = {};
 
         //
         // Key/value pairs that provide additional information that will be merged with a separate run.
@@ -1159,32 +1159,32 @@ namespace gap::sarif
         //
         // An array of artifact objects that will be merged with a separate run.
         //
-        std::optional< std::forward_list< artifact > > artifacts = std::nullopt;
+        std::forward_list< artifact > artifacts = {};
 
         //
         // Describes the invocation of the analysis tool that will be merged with a separate run.
         //
-        std::optional< std::forward_list< invocation > > invocations = std::nullopt;
+        std::forward_list< invocation > invocations = {};
 
         //
         // An array of logical locations such as namespaces, types or functions that will be merged with a separate run.
         //
-        std::optional< std::forward_list< logical_location > > logicalLocations = std::nullopt;
+        std::forward_list< logical_location > logicalLocations = {};
 
         //
         // An array of threadFlowLocation objects that will be merged with a separate run.
         //
-        std::optional< std::forward_list< thread_flow_location > > threadFlowLocations = std::nullopt;
+        std::forward_list< thread_flow_location > threadFlowLocations = {};
 
         //
         // An array of result objects that will be merged with a separate run.
         //
-        std::optional< std::forward_list< result > > results = std::nullopt;
+        std::forward_list< result > results = {};
 
         //
         // Tool taxonomies that will be merged with a separate run.
         //
-        std::optional< std::forward_list< tool_component > > taxonomies = std::nullopt;
+        std::forward_list< tool_component > taxonomies = {};
 
         //
         // The analysis tool object that will be merged with a separate run.
@@ -1194,32 +1194,32 @@ namespace gap::sarif
         //
         // Tool extensions that will be merged with a separate run.
         //
-        std::optional< std::forward_list< tool_component > > extensions = std::nullopt;
+        std::forward_list< tool_component > extensions = {};
 
         //
         // Tool policies that will be merged with a separate run.
         //
-        std::optional< std::forward_list< tool_component > > policies = std::nullopt;
+        std::forward_list< tool_component > policies = {};
 
         //
         // Tool translations that will be merged with a separate run.
         //
-        std::optional< std::forward_list< tool_component > > translations = std::nullopt;
+        std::forward_list< tool_component > translations = {};
 
         //
         // Addresses that will be merged with a separate run.
         //
-        std::optional< std::forward_list< address > > addresses = std::nullopt;
+        std::forward_list< address > addresses = {};
 
         //
         // Requests that will be merged with a separate run.
         //
-        std::optional< std::forward_list< web_request > > webRequests = std::nullopt;
+        std::forward_list< web_request > webRequests = {};
 
         //
         // Responses that will be merged with a separate run.
         //
-        std::optional< std::forward_list< web_response > > webResponses = std::nullopt;
+        std::forward_list< web_response > webResponses = {};
 
         //
         // Key/value pairs that provide additional information about the external properties.
@@ -1247,7 +1247,7 @@ namespace gap::sarif
         //
         // A non-negative integer specifying the number of items contained in the external property file.
         //
-        std::optional< int64_t > itemCount = std::nullopt;
+        int64_t itemCount = -1;
 
         //
         // Key/value pairs that provide additional information about the external property file.
@@ -1270,7 +1270,7 @@ namespace gap::sarif
         //
         // An array of external property files containing a run.graphs object to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > graphs = std::nullopt;
+        std::forward_list< external_property_file_reference > graphs = {};
 
         //
         // An external property file containing a run.properties object to be merged with the root log file.
@@ -1280,37 +1280,37 @@ namespace gap::sarif
         //
         // An array of external property files containing run.artifacts arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > artifacts = std::nullopt;
+        std::forward_list< external_property_file_reference > artifacts = {};
 
         //
         // An array of external property files containing run.invocations arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > invocations = std::nullopt;
+        std::forward_list< external_property_file_reference > invocations = {};
 
         //
         // An array of external property files containing run.logicalLocations arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > logicalLocations = std::nullopt;
+        std::forward_list< external_property_file_reference > logicalLocations = {};
 
         //
         // An array of external property files containing run.threadFlowLocations arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > threadFlowLocations = std::nullopt;
+        std::forward_list< external_property_file_reference > threadFlowLocations = {};
 
         //
         // An array of external property files containing run.results arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > results = std::nullopt;
+        std::forward_list< external_property_file_reference > results = {};
 
         //
         // An array of external property files containing run.taxonomies arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > taxonomies = std::nullopt;
+        std::forward_list< external_property_file_reference > taxonomies = {};
 
         //
         // An array of external property files containing run.addresses arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > addresses = std::nullopt;
+        std::forward_list< external_property_file_reference > addresses = {};
 
         //
         // An external property file containing a run.driver object to be merged with the root log file.
@@ -1320,27 +1320,27 @@ namespace gap::sarif
         //
         // An array of external property files containing run.extensions arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > extensions = std::nullopt;
+        std::forward_list< external_property_file_reference > extensions = {};
 
         //
         // An array of external property files containing run.policies arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > policies = std::nullopt;
+        std::forward_list< external_property_file_reference > policies = {};
 
         //
         // An array of external property files containing run.translations arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > translations = std::nullopt;
+        std::forward_list< external_property_file_reference > translations = {};
 
         //
         // An array of external property files containing run.requests arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > webRequests = std::nullopt;
+        std::forward_list< external_property_file_reference > webRequests = {};
 
         //
         // An array of external property files containing run.responses arrays to be merged with the root log file.
         //
-        std::optional< std::forward_list< external_property_file_reference > > webResponses = std::nullopt;
+        std::forward_list< external_property_file_reference > webResponses = {};
 
         //
         // Key/value pairs that provide additional information about the external property files.
@@ -1387,12 +1387,12 @@ namespace gap::sarif
         //
         // An array of node objects representing the nodes of the graph.
         //
-        std::optional< std::forward_list< node > > nodes = std::nullopt;
+        std::forward_list< node > nodes = {};
 
         //
         // An array of edge objects representing the edges of the graph.
         //
-        std::optional< std::forward_list< edge > > edges = std::nullopt;
+        std::forward_list< edge > edges = {};
 
         //
         // Key/value pairs that provide additional information about the graph.
@@ -1410,12 +1410,12 @@ namespace gap::sarif
         //
         // The index within the run.graphs to be associated with the result.
         //
-        std::optional< int64_t > runGraphIndex = std::nullopt;
+        int64_t runGraphIndex = -1;
 
         //
         // The index within the result.graphs to be associated with the result.
         //
-        std::optional< int64_t > resultGraphIndex = std::nullopt;
+        int64_t resultGraphIndex = -1;
 
         //
         // A description of this graph traversal.
@@ -1435,7 +1435,7 @@ namespace gap::sarif
         //
         // The sequences of edges traversed by this graph traversal.
         //
-        std::optional< std::forward_list< edge_traversal > > edgeTraversals = std::nullopt;
+        std::forward_list< edge_traversal > edgeTraversals = {};
 
         //
         // Key/value pairs that provide additional information about the graph traversal.
@@ -1473,7 +1473,7 @@ namespace gap::sarif
         //
         // The zero-based offset from the beginning of the artifact of the first character in the region.
         //
-        std::optional< int64_t > charOffset = std::nullopt;
+        int64_t charOffset = -1;
 
         //
         // The length of the region in characters.
@@ -1483,7 +1483,7 @@ namespace gap::sarif
         //
         // The zero-based offset from the beginning of the artifact of the first byte in the region.
         //
-        std::optional< int64_t > byteOffset = std::nullopt;
+        int64_t byteOffset = -1;
 
         //
         // The length of the region in bytes.
@@ -1555,7 +1555,7 @@ namespace gap::sarif
         //
         // Value that distinguishes this location from all other locations within a single result object.
         //
-        std::optional< int64_t > id = std::nullopt;
+        int64_t id = -1;
 
         //
         // Identifies the artifact and region.
@@ -1565,7 +1565,7 @@ namespace gap::sarif
         //
         // The logical locations associated with the result.
         //
-        std::optional< std::forward_list< logical_location > > logicalLocations = std::nullopt;
+        std::forward_list< logical_location > logicalLocations = {};
 
         //
         // A message relevant to the location.
@@ -1575,12 +1575,12 @@ namespace gap::sarif
         //
         // A set of regions relevant to the location.
         //
-        std::optional< std::forward_list< region > > annotations = std::nullopt;
+        std::forward_list< region > annotations = {};
 
         //
         // An array of objects that describe relationships between this location and others.
         //
-        std::optional< std::forward_list< location_relationship > > relationships = std::nullopt;
+        std::forward_list< location_relationship > relationships = {};
 
         //
         // Key/value pairs that provide additional information about the location.
@@ -1603,7 +1603,7 @@ namespace gap::sarif
         //
         // A set of distinct strings that categorize the relationship. Well-known kinds include 'includes', 'isIncludedBy' and 'relevant'.
         //
-        std::optional< std::forward_list< std::string > > kinds = std::nullopt;
+        std::forward_list< std::string > kinds = { "relevant" };
 
         //
         // A description of the location relationship.
@@ -1631,7 +1631,7 @@ namespace gap::sarif
         //
         // The index within the logical locations array.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // The human-readable fully qualified name of the logical location.
@@ -1646,7 +1646,7 @@ namespace gap::sarif
         //
         // Identifies the index of the immediate parent of the construct in which the result was detected. For example, this property might point to a logical location that represents the namespace that holds a type.
         //
-        std::optional< int64_t > parentIndex = std::nullopt;
+        int64_t parentIndex = -1;
 
         //
         // The type of construct this logical location component refers to. Should be one of 'function', 'member', 'module', 'namespace', 'parameter', 'resource', 'returnType', 'type', 'variable', 'object', 'array', 'property', 'value', 'element', 'text', 'attribute', 'comment', 'declaration', 'dtd' or 'processingInstruction', if any of those accurately describe the construct.
@@ -1684,7 +1684,7 @@ namespace gap::sarif
         //
         // Array of child nodes.
         //
-        std::optional< std::forward_list< node > > children = std::nullopt;
+        std::forward_list< node > children = {};
 
         //
         // Key/value pairs that provide additional information about the node.
@@ -1702,7 +1702,7 @@ namespace gap::sarif
         //
         // The locations relevant to this notification.
         //
-        std::optional< std::forward_list< location > > locations = std::nullopt;
+        std::forward_list< location > locations = {};
 
         //
         // A message that describes the condition that was encountered.
@@ -1712,7 +1712,7 @@ namespace gap::sarif
         //
         // A value specifying the severity level of the notification.
         //
-        std::optional< ::gap::sarif::level > level = std::nullopt;
+        ::gap::sarif::level level = ::gap::sarif::level::kWarning;
 
         //
         // The thread identifier of the code that generated the notification.
@@ -1822,7 +1822,7 @@ namespace gap::sarif
         //
         // An array of stable, opaque identifiers by which this report was known in some previous version of the analysis tool.
         //
-        std::optional< std::forward_list< std::string > > deprecatedIds = std::nullopt;
+        std::forward_list< std::string > deprecatedIds = {};
 
         //
         // A unique identifer for the reporting descriptor in the form of a GUID.
@@ -1832,7 +1832,7 @@ namespace gap::sarif
         //
         // An array of unique identifies in the form of a GUID by which this report was known in some previous version of the analysis tool.
         //
-        std::optional< std::forward_list< std::string > > deprecatedGuids = std::nullopt;
+        std::forward_list< std::string > deprecatedGuids = {};
 
         //
         // A report identifier that is understandable to an end user.
@@ -1842,7 +1842,7 @@ namespace gap::sarif
         //
         // An array of readable identifiers by which this report was known in some previous version of the analysis tool.
         //
-        std::optional< std::forward_list< std::string > > deprecatedNames = std::nullopt;
+        std::forward_list< std::string > deprecatedNames = {};
 
         //
         // A concise description of the report. Should be a single sentence that is understandable when visible space is limited to a single line of text.
@@ -1877,7 +1877,7 @@ namespace gap::sarif
         //
         // An array of objects that describe relationships between this reporting descriptor and others.
         //
-        std::optional< std::forward_list< reporting_descriptor_relationship > > relationships = std::nullopt;
+        std::forward_list< reporting_descriptor_relationship > relationships = {};
 
         //
         // Key/value pairs that provide additional information about the report.
@@ -1900,7 +1900,7 @@ namespace gap::sarif
         //
         // A set of distinct strings that categorize the relationship. Well-known kinds include 'canPrecede', 'canFollow', 'willPrecede', 'willFollow', 'superset', 'subset', 'equal', 'disjoint', 'relevant', and 'incomparable'.
         //
-        std::optional< std::forward_list< std::string > > kinds = std::nullopt;
+        std::forward_list< std::string > kinds = { "relevant" };
 
         //
         // A description of the reporting descriptor relationship.
@@ -1976,12 +1976,12 @@ namespace gap::sarif
         //
         // The index within the run.invocations array of the invocation object which describes the tool invocation that detected the result.
         //
-        std::optional< int64_t > invocationIndex = std::nullopt;
+        int64_t invocationIndex = -1;
 
         //
         // An array of physicalLocation objects which specify the portions of an analysis tool's output that a converter transformed into the result.
         //
-        std::optional< std::forward_list< physical_location > > conversionSources = std::nullopt;
+        std::forward_list< physical_location > conversionSources = {};
 
         //
         // Key/value pairs that provide additional information about the result.
@@ -1999,7 +1999,7 @@ namespace gap::sarif
         //
         // The index within the run.webRequests array of the request object associated with this result.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // The request protocol. Example: 'http'.
@@ -2052,7 +2052,7 @@ namespace gap::sarif
         //
         // The index within the run.webResponses array of the response object associated with this result.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // The response protocol. Example: 'http'.
@@ -2087,7 +2087,7 @@ namespace gap::sarif
         //
         // Specifies whether a response was received from the server.
         //
-        std::optional< bool > noResponseReceived = std::nullopt;
+        bool noResponseReceived = false;
 
         //
         // Key/value pairs that provide additional information about the response.
@@ -2110,7 +2110,7 @@ namespace gap::sarif
         //
         // The index within the tool component rules array of the rule object associated with this result.
         //
-        std::optional< int64_t > ruleIndex = std::nullopt;
+        int64_t ruleIndex = -1;
 
         //
         // A reference used to locate the rule descriptor relevant to this result.
@@ -2120,12 +2120,12 @@ namespace gap::sarif
         //
         // A value that categorizes results by evaluation state.
         //
-        std::optional< ::gap::sarif::kind > kind = std::nullopt;
+        ::gap::sarif::kind kind = ::gap::sarif::kind::kFail;
 
         //
         // A value specifying the severity level of the result.
         //
-        std::optional< ::gap::sarif::level > level = std::nullopt;
+        ::gap::sarif::level level = ::gap::sarif::level::kWarning;
 
         //
         // A message that describes the result. The first sentence of the message only will be displayed when visible space is limited.
@@ -2140,7 +2140,7 @@ namespace gap::sarif
         //
         // The set of locations where the result was detected. Specify only one location unless the problem indicated by the result can only be corrected by making a change at every specified location.
         //
-        std::optional< std::forward_list< location > > locations = std::nullopt;
+        std::forward_list< location > locations = {};
 
         //
         // A stable, unique identifer for the result in the form of a GUID.
@@ -2170,32 +2170,32 @@ namespace gap::sarif
         //
         // An array of 'stack' objects relevant to the result.
         //
-        std::optional< std::forward_list< stack > > stacks = std::nullopt;
+        std::forward_list< stack > stacks = {};
 
         //
         // An array of 'codeFlow' objects relevant to the result.
         //
-        std::optional< std::forward_list< code_flow > > codeFlows = std::nullopt;
+        std::forward_list< code_flow > codeFlows = {};
 
         //
         // An array of zero or more unique graph objects associated with the result.
         //
-        std::optional< std::forward_list< graph > > graphs = std::nullopt;
+        std::forward_list< graph > graphs = {};
 
         //
         // An array of one or more unique 'graphTraversal' objects.
         //
-        std::optional< std::forward_list< graph_traversal > > graphTraversals = std::nullopt;
+        std::forward_list< graph_traversal > graphTraversals = {};
 
         //
         // A set of locations relevant to this result.
         //
-        std::optional< std::forward_list< location > > relatedLocations = std::nullopt;
+        std::forward_list< location > relatedLocations = {};
 
         //
         // A set of suppressions relevant to this result.
         //
-        std::optional< std::forward_list< suppression > > suppressions = std::nullopt;
+        std::forward_list< suppression > suppressions = {};
 
         //
         // The state of a result relative to a baseline of a previous run.
@@ -2205,12 +2205,12 @@ namespace gap::sarif
         //
         // A number representing the priority or importance of the result.
         //
-        std::optional< double > rank = std::nullopt;
+        double rank = -1.0;
 
         //
         // A set of artifacts relevant to the result.
         //
-        std::optional< std::forward_list< attachment > > attachments = std::nullopt;
+        std::forward_list< attachment > attachments = {};
 
         //
         // An absolute URI at which the result can be viewed.
@@ -2220,7 +2220,7 @@ namespace gap::sarif
         //
         // The URIs of the work items associated with this result.
         //
-        std::optional< std::forward_list< std::string > > workItemUris = std::nullopt;
+        std::forward_list< std::string > workItemUris = {};
 
         //
         // Information about how and when the result was detected.
@@ -2230,12 +2230,12 @@ namespace gap::sarif
         //
         // An array of 'fix' objects, each of which represents a proposed fix to the problem indicated by the result.
         //
-        std::optional< std::forward_list< fix > > fixes = std::nullopt;
+        std::forward_list< fix > fixes = {};
 
         //
         // An array of references to taxonomy reporting descriptors that are applicable to the result.
         //
-        std::optional< std::forward_list< reporting_descriptor_reference > > taxa = std::nullopt;
+        std::forward_list< reporting_descriptor_reference > taxa = {};
 
         //
         // A web request associated with this result.
@@ -2330,7 +2330,7 @@ namespace gap::sarif
         //
         // Describes the invocation of the analysis tool.
         //
-        std::optional< std::forward_list< invocation > > invocations = std::nullopt;
+        std::forward_list< invocation > invocations = {};
 
         //
         // A conversion object that describes how a converter transformed an analysis tool's native reporting format into the SARIF format.
@@ -2340,12 +2340,12 @@ namespace gap::sarif
         //
         // The language of the messages emitted into the log file during this run (expressed as an ISO 639-1 two-letter lowercase culture code) and an optional region (expressed as an ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The casing is recommended but not required (in order for this data to conform to RFC5646).
         //
-        std::optional< std::string > language = std::nullopt;
+        std::string language = "en-US";
 
         //
         // Specifies the revision in version control of the artifacts that were scanned.
         //
-        std::optional< std::forward_list< version_control_details > > versionControlProvenance = std::nullopt;
+        std::forward_list< version_control_details > versionControlProvenance = {};
 
         //
         // The artifact location specified by each uriBaseId symbol on the machine where the tool originally ran.
@@ -2355,22 +2355,22 @@ namespace gap::sarif
         //
         // An array of artifact objects relevant to the run.
         //
-        std::optional< std::forward_list< artifact > > artifacts = std::nullopt;
+        std::forward_list< artifact > artifacts = {};
 
         //
         // An array of logical locations such as namespaces, types or functions.
         //
-        std::optional< std::forward_list< logical_location > > logicalLocations = std::nullopt;
+        std::forward_list< logical_location > logicalLocations = {};
 
         //
         // An array of zero or more unique graph objects associated with the run.
         //
-        std::optional< std::forward_list< graph > > graphs = std::nullopt;
+        std::forward_list< graph > graphs = {};
 
         //
         // The set of results contained in an SARIF log. The results array can be omitted when a run is solely exporting rules metadata. It must be present (but may be empty) if a log file represents an actual scan.
         //
-        std::optional< std::forward_list< result > > results = std::nullopt;
+        std::forward_list< result > results = {};
 
         //
         // Automation details that describe this run.
@@ -2380,7 +2380,7 @@ namespace gap::sarif
         //
         // Automation details that describe the aggregate of runs to which this run belongs.
         //
-        std::optional< std::forward_list< run_automation_details > > runAggregates = std::nullopt;
+        std::forward_list< run_automation_details > runAggregates = {};
 
         //
         // The 'guid' property of a previous SARIF 'run' that comprises the baseline that was used to compute result 'baselineState' properties for the run.
@@ -2390,7 +2390,7 @@ namespace gap::sarif
         //
         // An array of strings used to replace sensitive information in a redaction-aware property.
         //
-        std::optional< std::forward_list< std::string > > redactionTokens = std::nullopt;
+        std::forward_list< std::string > redactionTokens = {};
 
         //
         // Specifies the default encoding for any artifact object that refers to a text file.
@@ -2405,7 +2405,7 @@ namespace gap::sarif
         //
         // An ordered list of character sequences that were treated as line breaks when computing region information for the run.
         //
-        std::optional< std::forward_list< std::string > > newlineSequences = std::nullopt;
+        std::forward_list< std::string > newlineSequences = { "\r\n", "\n" };
 
         //
         // Specifies the unit in which the tool measures columns.
@@ -2420,37 +2420,37 @@ namespace gap::sarif
         //
         // An array of threadFlowLocation objects cached at run level.
         //
-        std::optional< std::forward_list< thread_flow_location > > threadFlowLocations = std::nullopt;
+        std::forward_list< thread_flow_location > threadFlowLocations = {};
 
         //
         // An array of toolComponent objects relevant to a taxonomy in which results are categorized.
         //
-        std::optional< std::forward_list< tool_component > > taxonomies = std::nullopt;
+        std::forward_list< tool_component > taxonomies = {};
 
         //
         // Addresses associated with this run instance, if any.
         //
-        std::optional< std::forward_list< address > > addresses = std::nullopt;
+        std::forward_list< address > addresses = {};
 
         //
         // The set of available translations of the localized data provided by the tool.
         //
-        std::optional< std::forward_list< tool_component > > translations = std::nullopt;
+        std::forward_list< tool_component > translations = {};
 
         //
         // Contains configurations that may potentially override both reportingDescriptor.defaultConfiguration (the tool's default severities) and invocation.configurationOverrides (severities established at run-time from the command line).
         //
-        std::optional< std::forward_list< tool_component > > policies = std::nullopt;
+        std::forward_list< tool_component > policies = {};
 
         //
         // An array of request objects cached at run level.
         //
-        std::optional< std::forward_list< web_request > > webRequests = std::nullopt;
+        std::forward_list< web_request > webRequests = {};
 
         //
         // An array of response objects cached at run level.
         //
-        std::optional< std::forward_list< web_response > > webResponses = std::nullopt;
+        std::forward_list< web_response > webResponses = {};
 
         //
         // A specialLocations object that defines locations of special significance to SARIF consumers.
@@ -2488,7 +2488,7 @@ namespace gap::sarif
         //
         // The parameters of the call that is executing.
         //
-        std::optional< std::forward_list< std::string > > parameters = std::nullopt;
+        std::forward_list< std::string > parameters = {};
 
         //
         // Key/value pairs that provide additional information about the stack frame.
@@ -2606,7 +2606,7 @@ namespace gap::sarif
         //
         // The index within the run threadFlowLocations array.
         //
-        std::optional< int64_t > index = std::nullopt;
+        int64_t index = -1;
 
         //
         // The code location.
@@ -2621,12 +2621,12 @@ namespace gap::sarif
         //
         // A set of distinct strings that categorize the thread flow location. Well-known kinds include 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false', 'true', 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock', 'memory', 'resource', 'scope' and 'value'.
         //
-        std::optional< std::forward_list< std::string > > kinds = std::nullopt;
+        std::forward_list< std::string > kinds = {};
 
         //
         // An array of references to rule or taxonomy reporting descriptors that are applicable to the thread flow location.
         //
-        std::optional< std::forward_list< reporting_descriptor_reference > > taxa = std::nullopt;
+        std::forward_list< reporting_descriptor_reference > taxa = {};
 
         //
         // The name of the module that contains the code that is executing.
@@ -2646,7 +2646,7 @@ namespace gap::sarif
         //
         // An integer representing the temporal order in which execution reached this location.
         //
-        std::optional< int64_t > executionOrder = std::nullopt;
+        int64_t executionOrder = -1;
 
         //
         // The Coordinated Universal Time (UTC) date and time at which this location was executed.
@@ -2656,7 +2656,7 @@ namespace gap::sarif
         //
         // Specifies the importance of this location in understanding the code flow in which it occurs. The order from most to least important is "essential", "important", "unimportant". Default: "important".
         //
-        std::optional< ::gap::sarif::importance > importance = std::nullopt;
+        ::gap::sarif::importance importance = ::gap::sarif::importance::kImportant;
 
         //
         // A web request associated with this thread flow location.

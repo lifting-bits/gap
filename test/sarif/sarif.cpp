@@ -14,7 +14,7 @@ namespace gap::sarif {
                         .driver = {
                             .name = "ESLint",
                             .informationUri = "https://eslint.org",
-                            .rules = {{
+                            .rules = {
                                 {
                                     .id = "no-unused-vars",
                                     .shortDescription = {{
@@ -27,16 +27,16 @@ namespace gap::sarif {
                                         },
                                     }},
                                 }
-                            }},
+                            },
                         },
                     },
-                    .artifacts = {{
+                    .artifacts = {
                         {
                             .location = {{
                                 .uri = "file:///C:/dev/sarif/sarif-tutorials/samples/Introduction/simple-example.js",
                             }},
                         },
-                    }},
+                    },
                     .results = {{
                         {
                             .ruleId = "no-unused-vars",

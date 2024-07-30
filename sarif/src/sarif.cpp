@@ -6,17 +6,15 @@ namespace gap::sarif {
     void from_json(const json &j, property_bag &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "tags" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.tags = field;
+                val.get_to(o.tags);
                 continue;
             }
             val.get_to(o.additional_properties[key]);
         }
     }
     void to_json(json &j, const property_bag &o) {
-        if ( o.tags.has_value() ) {
-            j["tags"] = *o.tags;
+        if ( !o.tags.empty() ) {
+            j["tags"] = o.tags;
         }
         for ( auto &[key, val] : o.additional_properties.items() ) {
             j[key] = val;
@@ -49,8 +47,8 @@ namespace gap::sarif {
     void to_json(json &j, const root &o) {
         j["version"] = o.version;
         j["runs"] = o.runs;
-        if ( o.inlineExternalProperties.has_value() ) {
-            j["inlineExternalProperties"] = *o.inlineExternalProperties;
+        if ( !o.inlineExternalProperties.empty() ) {
+            j["inlineExternalProperties"] = o.inlineExternalProperties;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -59,9 +57,7 @@ namespace gap::sarif {
     void from_json(const json &j, address &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "absoluteAddress" ) {
-                int64_t field;
-                val.get_to(field);
-                o.absoluteAddress = field;
+                val.get_to(o.absoluteAddress);
                 continue;
             }
             if ( key == "relativeAddress" ) {
@@ -101,15 +97,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "parentIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.parentIndex = field;
+                val.get_to(o.parentIndex);
                 continue;
             }
             if ( key == "properties" ) {
@@ -121,8 +113,8 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const address &o) {
-        if ( o.absoluteAddress.has_value() ) {
-            j["absoluteAddress"] = *o.absoluteAddress;
+        if ( o.absoluteAddress != -1 ) {
+            j["absoluteAddress"] = o.absoluteAddress;
         }
         if ( o.relativeAddress.has_value() ) {
             j["relativeAddress"] = *o.relativeAddress;
@@ -142,11 +134,11 @@ namespace gap::sarif {
         if ( o.offsetFromParent.has_value() ) {
             j["offsetFromParent"] = *o.offsetFromParent;
         }
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
-        if ( o.parentIndex.has_value() ) {
-            j["parentIndex"] = *o.parentIndex;
+        if ( o.parentIndex != -1 ) {
+            j["parentIndex"] = o.parentIndex;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -173,9 +165,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "arguments" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.arguments = field;
+                val.get_to(o.arguments);
                 continue;
             }
             if ( key == "properties" ) {
@@ -196,8 +186,8 @@ namespace gap::sarif {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
-        if ( o.arguments.has_value() ) {
-            j["arguments"] = *o.arguments;
+        if ( !o.arguments.empty() ) {
+            j["arguments"] = o.arguments;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -218,9 +208,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "description" ) {
@@ -244,8 +232,8 @@ namespace gap::sarif {
         if ( o.uriBaseId.has_value() ) {
             j["uriBaseId"] = *o.uriBaseId;
         }
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
@@ -340,9 +328,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "parentIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.parentIndex = field;
+                val.get_to(o.parentIndex);
                 continue;
             }
             if ( key == "offset" ) {
@@ -352,15 +338,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "length" ) {
-                int64_t field;
-                val.get_to(field);
-                o.length = field;
+                val.get_to(o.length);
                 continue;
             }
             if ( key == "roles" ) {
-                std::forward_list< roles > field;
-                val.get_to(field);
-                o.roles = field;
+                val.get_to(o.roles);
                 continue;
             }
             if ( key == "mimeType" ) {
@@ -414,17 +396,17 @@ namespace gap::sarif {
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
         }
-        if ( o.parentIndex.has_value() ) {
-            j["parentIndex"] = *o.parentIndex;
+        if ( o.parentIndex != -1 ) {
+            j["parentIndex"] = o.parentIndex;
         }
         if ( o.offset.has_value() ) {
             j["offset"] = *o.offset;
         }
-        if ( o.length.has_value() ) {
-            j["length"] = *o.length;
+        if ( o.length != -1 ) {
+            j["length"] = o.length;
         }
-        if ( o.roles.has_value() ) {
-            j["roles"] = *o.roles;
+        if ( !o.roles.empty() ) {
+            j["roles"] = o.roles;
         }
         if ( o.mimeType.has_value() ) {
             j["mimeType"] = *o.mimeType;
@@ -486,15 +468,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "regions" ) {
-                std::forward_list< region > field;
-                val.get_to(field);
-                o.regions = field;
+                val.get_to(o.regions);
                 continue;
             }
             if ( key == "rectangles" ) {
-                std::forward_list< rectangle > field;
-                val.get_to(field);
-                o.rectangles = field;
+                val.get_to(o.rectangles);
                 continue;
             }
             if ( key == "properties" ) {
@@ -510,11 +488,11 @@ namespace gap::sarif {
             j["description"] = *o.description;
         }
         j["artifactLocation"] = o.artifactLocation;
-        if ( o.regions.has_value() ) {
-            j["regions"] = *o.regions;
+        if ( !o.regions.empty() ) {
+            j["regions"] = o.regions;
         }
-        if ( o.rectangles.has_value() ) {
-            j["rectangles"] = *o.rectangles;
+        if ( !o.rectangles.empty() ) {
+            j["rectangles"] = o.rectangles;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -552,21 +530,15 @@ namespace gap::sarif {
     void from_json(const json &j, reporting_configuration &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "enabled" ) {
-                bool field;
-                val.get_to(field);
-                o.enabled = field;
+                val.get_to(o.enabled);
                 continue;
             }
             if ( key == "level" ) {
-                level field;
-                val.get_to(field);
-                o.level = field;
+                val.get_to(o.level);
                 continue;
             }
             if ( key == "rank" ) {
-                double field;
-                val.get_to(field);
-                o.rank = field;
+                val.get_to(o.rank);
                 continue;
             }
             if ( key == "parameters" ) {
@@ -584,14 +556,14 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const reporting_configuration &o) {
-        if ( o.enabled.has_value() ) {
-            j["enabled"] = *o.enabled;
+        if ( o.enabled != true ) {
+            j["enabled"] = o.enabled;
         }
-        if ( o.level.has_value() ) {
-            j["level"] = *o.level;
+        if ( o.level != ::gap::sarif::level::kWarning ) {
+            j["level"] = o.level;
         }
-        if ( o.rank.has_value() ) {
-            j["rank"] = *o.rank;
+        if ( o.rank != -1.0 ) {
+            j["rank"] = o.rank;
         }
         if ( o.parameters.has_value() ) {
             j["parameters"] = *o.parameters;
@@ -609,9 +581,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "guid" ) {
@@ -632,8 +602,8 @@ namespace gap::sarif {
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
@@ -651,9 +621,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "guid" ) {
@@ -680,8 +648,8 @@ namespace gap::sarif {
         if ( o.id.has_value() ) {
             j["id"] = *o.id;
         }
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
@@ -874,45 +842,31 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "notifications" ) {
-                std::forward_list< reporting_descriptor > field;
-                val.get_to(field);
-                o.notifications = field;
+                val.get_to(o.notifications);
                 continue;
             }
             if ( key == "rules" ) {
-                std::forward_list< reporting_descriptor > field;
-                val.get_to(field);
-                o.rules = field;
+                val.get_to(o.rules);
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list< reporting_descriptor > field;
-                val.get_to(field);
-                o.taxa = field;
+                val.get_to(o.taxa);
                 continue;
             }
             if ( key == "locations" ) {
-                std::forward_list< artifact_location > field;
-                val.get_to(field);
-                o.locations = field;
+                val.get_to(o.locations);
                 continue;
             }
             if ( key == "language" ) {
-                std::string field;
-                val.get_to(field);
-                o.language = field;
+                val.get_to(o.language);
                 continue;
             }
             if ( key == "contents" ) {
-                std::forward_list< contents > field;
-                val.get_to(field);
-                o.contents = field;
+                val.get_to(o.contents);
                 continue;
             }
             if ( key == "isComprehensive" ) {
-                bool field;
-                val.get_to(field);
-                o.isComprehensive = field;
+                val.get_to(o.isComprehensive);
                 continue;
             }
             if ( key == "localizedDataSemanticVersion" ) {
@@ -940,9 +894,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "supportedTaxonomies" ) {
-                std::forward_list< tool_component_reference > field;
-                val.get_to(field);
-                o.supportedTaxonomies = field;
+                val.get_to(o.supportedTaxonomies);
                 continue;
             }
             if ( key == "properties" ) {
@@ -997,26 +949,26 @@ namespace gap::sarif {
         if ( o.globalMessageStrings.has_value() ) {
             j["globalMessageStrings"] = *o.globalMessageStrings;
         }
-        if ( o.notifications.has_value() ) {
-            j["notifications"] = *o.notifications;
+        if ( !o.notifications.empty() ) {
+            j["notifications"] = o.notifications;
         }
-        if ( o.rules.has_value() ) {
-            j["rules"] = *o.rules;
+        if ( !o.rules.empty() ) {
+            j["rules"] = o.rules;
         }
-        if ( o.taxa.has_value() ) {
-            j["taxa"] = *o.taxa;
+        if ( !o.taxa.empty() ) {
+            j["taxa"] = o.taxa;
         }
-        if ( o.locations.has_value() ) {
-            j["locations"] = *o.locations;
+        if ( !o.locations.empty() ) {
+            j["locations"] = o.locations;
         }
-        if ( o.language.has_value() ) {
-            j["language"] = *o.language;
+        if ( o.language != "en-US" ) {
+            j["language"] = o.language;
         }
-        if ( o.contents.has_value() ) {
-            j["contents"] = *o.contents;
+        if ( o.contents != decltype(o.contents){ ::gap::sarif::contents::kLocalizedData, ::gap::sarif::contents::kNonLocalizedData } ) {
+            j["contents"] = o.contents;
         }
-        if ( o.isComprehensive.has_value() ) {
-            j["isComprehensive"] = *o.isComprehensive;
+        if ( o.isComprehensive != false ) {
+            j["isComprehensive"] = o.isComprehensive;
         }
         if ( o.localizedDataSemanticVersion.has_value() ) {
             j["localizedDataSemanticVersion"] = *o.localizedDataSemanticVersion;
@@ -1030,8 +982,8 @@ namespace gap::sarif {
         if ( o.translationMetadata.has_value() ) {
             j["translationMetadata"] = *o.translationMetadata;
         }
-        if ( o.supportedTaxonomies.has_value() ) {
-            j["supportedTaxonomies"] = *o.supportedTaxonomies;
+        if ( !o.supportedTaxonomies.empty() ) {
+            j["supportedTaxonomies"] = o.supportedTaxonomies;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1044,9 +996,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.extensions = field;
+                val.get_to(o.extensions);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1059,8 +1009,8 @@ namespace gap::sarif {
     }
     void to_json(json &j, const tool &o) {
         j["driver"] = o.driver;
-        if ( o.extensions.has_value() ) {
-            j["extensions"] = *o.extensions;
+        if ( !o.extensions.empty() ) {
+            j["extensions"] = o.extensions;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1105,27 +1055,19 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "ruleConfigurationOverrides" ) {
-                std::forward_list< configuration_override > field;
-                val.get_to(field);
-                o.ruleConfigurationOverrides = field;
+                val.get_to(o.ruleConfigurationOverrides);
                 continue;
             }
             if ( key == "notificationConfigurationOverrides" ) {
-                std::forward_list< configuration_override > field;
-                val.get_to(field);
-                o.notificationConfigurationOverrides = field;
+                val.get_to(o.notificationConfigurationOverrides);
                 continue;
             }
             if ( key == "toolExecutionNotifications" ) {
-                std::forward_list< notification > field;
-                val.get_to(field);
-                o.toolExecutionNotifications = field;
+                val.get_to(o.toolExecutionNotifications);
                 continue;
             }
             if ( key == "toolConfigurationNotifications" ) {
-                std::forward_list< notification > field;
-                val.get_to(field);
-                o.toolConfigurationNotifications = field;
+                val.get_to(o.toolConfigurationNotifications);
                 continue;
             }
             if ( key == "exitCodeDescription" ) {
@@ -1228,11 +1170,11 @@ namespace gap::sarif {
         if ( o.commandLine.has_value() ) {
             j["commandLine"] = *o.commandLine;
         }
-        if ( o.arguments.has_value() ) {
-            j["arguments"] = *o.arguments;
+        if ( !o.arguments.empty() ) {
+            j["arguments"] = o.arguments;
         }
-        if ( o.responseFiles.has_value() ) {
-            j["responseFiles"] = *o.responseFiles;
+        if ( !o.responseFiles.empty() ) {
+            j["responseFiles"] = o.responseFiles;
         }
         if ( o.startTimeUtc.has_value() ) {
             j["startTimeUtc"] = *o.startTimeUtc;
@@ -1243,17 +1185,17 @@ namespace gap::sarif {
         if ( o.exitCode.has_value() ) {
             j["exitCode"] = *o.exitCode;
         }
-        if ( o.ruleConfigurationOverrides.has_value() ) {
-            j["ruleConfigurationOverrides"] = *o.ruleConfigurationOverrides;
+        if ( !o.ruleConfigurationOverrides.empty() ) {
+            j["ruleConfigurationOverrides"] = o.ruleConfigurationOverrides;
         }
-        if ( o.notificationConfigurationOverrides.has_value() ) {
-            j["notificationConfigurationOverrides"] = *o.notificationConfigurationOverrides;
+        if ( !o.notificationConfigurationOverrides.empty() ) {
+            j["notificationConfigurationOverrides"] = o.notificationConfigurationOverrides;
         }
-        if ( o.toolExecutionNotifications.has_value() ) {
-            j["toolExecutionNotifications"] = *o.toolExecutionNotifications;
+        if ( !o.toolExecutionNotifications.empty() ) {
+            j["toolExecutionNotifications"] = o.toolExecutionNotifications;
         }
-        if ( o.toolConfigurationNotifications.has_value() ) {
-            j["toolConfigurationNotifications"] = *o.toolConfigurationNotifications;
+        if ( !o.toolConfigurationNotifications.empty() ) {
+            j["toolConfigurationNotifications"] = o.toolConfigurationNotifications;
         }
         if ( o.exitCodeDescription.has_value() ) {
             j["exitCodeDescription"] = *o.exitCodeDescription;
@@ -1315,9 +1257,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "analysisToolLogFiles" ) {
-                std::forward_list< artifact_location > field;
-                val.get_to(field);
-                o.analysisToolLogFiles = field;
+                val.get_to(o.analysisToolLogFiles);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1333,8 +1273,8 @@ namespace gap::sarif {
         if ( o.invocation.has_value() ) {
             j["invocation"] = *o.invocation;
         }
-        if ( o.analysisToolLogFiles.has_value() ) {
-            j["analysisToolLogFiles"] = *o.analysisToolLogFiles;
+        if ( !o.analysisToolLogFiles.empty() ) {
+            j["analysisToolLogFiles"] = o.analysisToolLogFiles;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1476,9 +1416,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "innerExceptions" ) {
-                std::forward_list< exception > field;
-                val.get_to(field);
-                o.innerExceptions = field;
+                val.get_to(o.innerExceptions);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1499,8 +1437,8 @@ namespace gap::sarif {
         if ( o.stack.has_value() ) {
             j["stack"] = *o.stack;
         }
-        if ( o.innerExceptions.has_value() ) {
-            j["innerExceptions"] = *o.innerExceptions;
+        if ( !o.innerExceptions.empty() ) {
+            j["innerExceptions"] = o.innerExceptions;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1539,9 +1477,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< graph > field;
-                val.get_to(field);
-                o.graphs = field;
+                val.get_to(o.graphs);
                 continue;
             }
             if ( key == "externalizedProperties" ) {
@@ -1557,33 +1493,23 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list< invocation > field;
-                val.get_to(field);
-                o.invocations = field;
+                val.get_to(o.invocations);
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< logical_location > field;
-                val.get_to(field);
-                o.logicalLocations = field;
+                val.get_to(o.logicalLocations);
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list< thread_flow_location > field;
-                val.get_to(field);
-                o.threadFlowLocations = field;
+                val.get_to(o.threadFlowLocations);
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list< result > field;
-                val.get_to(field);
-                o.results = field;
+                val.get_to(o.results);
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.taxonomies = field;
+                val.get_to(o.taxonomies);
                 continue;
             }
             if ( key == "driver" ) {
@@ -1593,39 +1519,27 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.extensions = field;
+                val.get_to(o.extensions);
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.policies = field;
+                val.get_to(o.policies);
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.translations = field;
+                val.get_to(o.translations);
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list< address > field;
-                val.get_to(field);
-                o.addresses = field;
+                val.get_to(o.addresses);
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list< web_request > field;
-                val.get_to(field);
-                o.webRequests = field;
+                val.get_to(o.webRequests);
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list< web_response > field;
-                val.get_to(field);
-                o.webResponses = field;
+                val.get_to(o.webResponses);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1652,50 +1566,50 @@ namespace gap::sarif {
         if ( o.conversion.has_value() ) {
             j["conversion"] = *o.conversion;
         }
-        if ( o.graphs.has_value() ) {
-            j["graphs"] = *o.graphs;
+        if ( !o.graphs.empty() ) {
+            j["graphs"] = o.graphs;
         }
         if ( o.externalizedProperties.has_value() ) {
             j["externalizedProperties"] = *o.externalizedProperties;
         }
-        if ( o.artifacts.has_value() ) {
-            j["artifacts"] = *o.artifacts;
+        if ( !o.artifacts.empty() ) {
+            j["artifacts"] = o.artifacts;
         }
-        if ( o.invocations.has_value() ) {
-            j["invocations"] = *o.invocations;
+        if ( !o.invocations.empty() ) {
+            j["invocations"] = o.invocations;
         }
-        if ( o.logicalLocations.has_value() ) {
-            j["logicalLocations"] = *o.logicalLocations;
+        if ( !o.logicalLocations.empty() ) {
+            j["logicalLocations"] = o.logicalLocations;
         }
-        if ( o.threadFlowLocations.has_value() ) {
-            j["threadFlowLocations"] = *o.threadFlowLocations;
+        if ( !o.threadFlowLocations.empty() ) {
+            j["threadFlowLocations"] = o.threadFlowLocations;
         }
-        if ( o.results.has_value() ) {
-            j["results"] = *o.results;
+        if ( !o.results.empty() ) {
+            j["results"] = o.results;
         }
-        if ( o.taxonomies.has_value() ) {
-            j["taxonomies"] = *o.taxonomies;
+        if ( !o.taxonomies.empty() ) {
+            j["taxonomies"] = o.taxonomies;
         }
         if ( o.driver.has_value() ) {
             j["driver"] = *o.driver;
         }
-        if ( o.extensions.has_value() ) {
-            j["extensions"] = *o.extensions;
+        if ( !o.extensions.empty() ) {
+            j["extensions"] = o.extensions;
         }
-        if ( o.policies.has_value() ) {
-            j["policies"] = *o.policies;
+        if ( !o.policies.empty() ) {
+            j["policies"] = o.policies;
         }
-        if ( o.translations.has_value() ) {
-            j["translations"] = *o.translations;
+        if ( !o.translations.empty() ) {
+            j["translations"] = o.translations;
         }
-        if ( o.addresses.has_value() ) {
-            j["addresses"] = *o.addresses;
+        if ( !o.addresses.empty() ) {
+            j["addresses"] = o.addresses;
         }
-        if ( o.webRequests.has_value() ) {
-            j["webRequests"] = *o.webRequests;
+        if ( !o.webRequests.empty() ) {
+            j["webRequests"] = o.webRequests;
         }
-        if ( o.webResponses.has_value() ) {
-            j["webResponses"] = *o.webResponses;
+        if ( !o.webResponses.empty() ) {
+            j["webResponses"] = o.webResponses;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1716,9 +1630,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "itemCount" ) {
-                int64_t field;
-                val.get_to(field);
-                o.itemCount = field;
+                val.get_to(o.itemCount);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1736,8 +1648,8 @@ namespace gap::sarif {
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
         }
-        if ( o.itemCount.has_value() ) {
-            j["itemCount"] = *o.itemCount;
+        if ( o.itemCount != -1 ) {
+            j["itemCount"] = o.itemCount;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1752,9 +1664,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.graphs = field;
+                val.get_to(o.graphs);
                 continue;
             }
             if ( key == "externalizedProperties" ) {
@@ -1764,45 +1674,31 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.artifacts = field;
+                val.get_to(o.artifacts);
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.invocations = field;
+                val.get_to(o.invocations);
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.logicalLocations = field;
+                val.get_to(o.logicalLocations);
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.threadFlowLocations = field;
+                val.get_to(o.threadFlowLocations);
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.results = field;
+                val.get_to(o.results);
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.taxonomies = field;
+                val.get_to(o.taxonomies);
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.addresses = field;
+                val.get_to(o.addresses);
                 continue;
             }
             if ( key == "driver" ) {
@@ -1812,33 +1708,23 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "extensions" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.extensions = field;
+                val.get_to(o.extensions);
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.policies = field;
+                val.get_to(o.policies);
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.translations = field;
+                val.get_to(o.translations);
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.webRequests = field;
+                val.get_to(o.webRequests);
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list< external_property_file_reference > field;
-                val.get_to(field);
-                o.webResponses = field;
+                val.get_to(o.webResponses);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1853,50 +1739,50 @@ namespace gap::sarif {
         if ( o.conversion.has_value() ) {
             j["conversion"] = *o.conversion;
         }
-        if ( o.graphs.has_value() ) {
-            j["graphs"] = *o.graphs;
+        if ( !o.graphs.empty() ) {
+            j["graphs"] = o.graphs;
         }
         if ( o.externalizedProperties.has_value() ) {
             j["externalizedProperties"] = *o.externalizedProperties;
         }
-        if ( o.artifacts.has_value() ) {
-            j["artifacts"] = *o.artifacts;
+        if ( !o.artifacts.empty() ) {
+            j["artifacts"] = o.artifacts;
         }
-        if ( o.invocations.has_value() ) {
-            j["invocations"] = *o.invocations;
+        if ( !o.invocations.empty() ) {
+            j["invocations"] = o.invocations;
         }
-        if ( o.logicalLocations.has_value() ) {
-            j["logicalLocations"] = *o.logicalLocations;
+        if ( !o.logicalLocations.empty() ) {
+            j["logicalLocations"] = o.logicalLocations;
         }
-        if ( o.threadFlowLocations.has_value() ) {
-            j["threadFlowLocations"] = *o.threadFlowLocations;
+        if ( !o.threadFlowLocations.empty() ) {
+            j["threadFlowLocations"] = o.threadFlowLocations;
         }
-        if ( o.results.has_value() ) {
-            j["results"] = *o.results;
+        if ( !o.results.empty() ) {
+            j["results"] = o.results;
         }
-        if ( o.taxonomies.has_value() ) {
-            j["taxonomies"] = *o.taxonomies;
+        if ( !o.taxonomies.empty() ) {
+            j["taxonomies"] = o.taxonomies;
         }
-        if ( o.addresses.has_value() ) {
-            j["addresses"] = *o.addresses;
+        if ( !o.addresses.empty() ) {
+            j["addresses"] = o.addresses;
         }
         if ( o.driver.has_value() ) {
             j["driver"] = *o.driver;
         }
-        if ( o.extensions.has_value() ) {
-            j["extensions"] = *o.extensions;
+        if ( !o.extensions.empty() ) {
+            j["extensions"] = o.extensions;
         }
-        if ( o.policies.has_value() ) {
-            j["policies"] = *o.policies;
+        if ( !o.policies.empty() ) {
+            j["policies"] = o.policies;
         }
-        if ( o.translations.has_value() ) {
-            j["translations"] = *o.translations;
+        if ( !o.translations.empty() ) {
+            j["translations"] = o.translations;
         }
-        if ( o.webRequests.has_value() ) {
-            j["webRequests"] = *o.webRequests;
+        if ( !o.webRequests.empty() ) {
+            j["webRequests"] = o.webRequests;
         }
-        if ( o.webResponses.has_value() ) {
-            j["webResponses"] = *o.webResponses;
+        if ( !o.webResponses.empty() ) {
+            j["webResponses"] = o.webResponses;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1940,15 +1826,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "nodes" ) {
-                std::forward_list< node > field;
-                val.get_to(field);
-                o.nodes = field;
+                val.get_to(o.nodes);
                 continue;
             }
             if ( key == "edges" ) {
-                std::forward_list< edge > field;
-                val.get_to(field);
-                o.edges = field;
+                val.get_to(o.edges);
                 continue;
             }
             if ( key == "properties" ) {
@@ -1963,11 +1845,11 @@ namespace gap::sarif {
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
         }
-        if ( o.nodes.has_value() ) {
-            j["nodes"] = *o.nodes;
+        if ( !o.nodes.empty() ) {
+            j["nodes"] = o.nodes;
         }
-        if ( o.edges.has_value() ) {
-            j["edges"] = *o.edges;
+        if ( !o.edges.empty() ) {
+            j["edges"] = o.edges;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -1976,15 +1858,11 @@ namespace gap::sarif {
     void from_json(const json &j, graph_traversal &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "runGraphIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.runGraphIndex = field;
+                val.get_to(o.runGraphIndex);
                 continue;
             }
             if ( key == "resultGraphIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.resultGraphIndex = field;
+                val.get_to(o.resultGraphIndex);
                 continue;
             }
             if ( key == "description" ) {
@@ -2006,9 +1884,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "edgeTraversals" ) {
-                std::forward_list< edge_traversal > field;
-                val.get_to(field);
-                o.edgeTraversals = field;
+                val.get_to(o.edgeTraversals);
                 continue;
             }
             if ( key == "properties" ) {
@@ -2020,11 +1896,11 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const graph_traversal &o) {
-        if ( o.runGraphIndex.has_value() ) {
-            j["runGraphIndex"] = *o.runGraphIndex;
+        if ( o.runGraphIndex != -1 ) {
+            j["runGraphIndex"] = o.runGraphIndex;
         }
-        if ( o.resultGraphIndex.has_value() ) {
-            j["resultGraphIndex"] = *o.resultGraphIndex;
+        if ( o.resultGraphIndex != -1 ) {
+            j["resultGraphIndex"] = o.resultGraphIndex;
         }
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
@@ -2035,8 +1911,8 @@ namespace gap::sarif {
         if ( o.immutableState.has_value() ) {
             j["immutableState"] = *o.immutableState;
         }
-        if ( o.edgeTraversals.has_value() ) {
-            j["edgeTraversals"] = *o.edgeTraversals;
+        if ( !o.edgeTraversals.empty() ) {
+            j["edgeTraversals"] = o.edgeTraversals;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -2069,9 +1945,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "charOffset" ) {
-                int64_t field;
-                val.get_to(field);
-                o.charOffset = field;
+                val.get_to(o.charOffset);
                 continue;
             }
             if ( key == "charLength" ) {
@@ -2081,9 +1955,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "byteOffset" ) {
-                int64_t field;
-                val.get_to(field);
-                o.byteOffset = field;
+                val.get_to(o.byteOffset);
                 continue;
             }
             if ( key == "byteLength" ) {
@@ -2131,14 +2003,14 @@ namespace gap::sarif {
         if ( o.endColumn.has_value() ) {
             j["endColumn"] = *o.endColumn;
         }
-        if ( o.charOffset.has_value() ) {
-            j["charOffset"] = *o.charOffset;
+        if ( o.charOffset != -1 ) {
+            j["charOffset"] = o.charOffset;
         }
         if ( o.charLength.has_value() ) {
             j["charLength"] = *o.charLength;
         }
-        if ( o.byteOffset.has_value() ) {
-            j["byteOffset"] = *o.byteOffset;
+        if ( o.byteOffset != -1 ) {
+            j["byteOffset"] = o.byteOffset;
         }
         if ( o.byteLength.has_value() ) {
             j["byteLength"] = *o.byteLength;
@@ -2210,9 +2082,7 @@ namespace gap::sarif {
     void from_json(const json &j, location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "id" ) {
-                int64_t field;
-                val.get_to(field);
-                o.id = field;
+                val.get_to(o.id);
                 continue;
             }
             if ( key == "physicalLocation" ) {
@@ -2222,9 +2092,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< logical_location > field;
-                val.get_to(field);
-                o.logicalLocations = field;
+                val.get_to(o.logicalLocations);
                 continue;
             }
             if ( key == "message" ) {
@@ -2234,15 +2102,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "annotations" ) {
-                std::forward_list< region > field;
-                val.get_to(field);
-                o.annotations = field;
+                val.get_to(o.annotations);
                 continue;
             }
             if ( key == "relationships" ) {
-                std::forward_list< location_relationship > field;
-                val.get_to(field);
-                o.relationships = field;
+                val.get_to(o.relationships);
                 continue;
             }
             if ( key == "properties" ) {
@@ -2254,23 +2118,23 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const location &o) {
-        if ( o.id.has_value() ) {
-            j["id"] = *o.id;
+        if ( o.id != -1 ) {
+            j["id"] = o.id;
         }
         if ( o.physicalLocation.has_value() ) {
             j["physicalLocation"] = *o.physicalLocation;
         }
-        if ( o.logicalLocations.has_value() ) {
-            j["logicalLocations"] = *o.logicalLocations;
+        if ( !o.logicalLocations.empty() ) {
+            j["logicalLocations"] = o.logicalLocations;
         }
         if ( o.message.has_value() ) {
             j["message"] = *o.message;
         }
-        if ( o.annotations.has_value() ) {
-            j["annotations"] = *o.annotations;
+        if ( !o.annotations.empty() ) {
+            j["annotations"] = o.annotations;
         }
-        if ( o.relationships.has_value() ) {
-            j["relationships"] = *o.relationships;
+        if ( !o.relationships.empty() ) {
+            j["relationships"] = o.relationships;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -2283,9 +2147,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kinds" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.kinds = field;
+                val.get_to(o.kinds);
                 continue;
             }
             if ( key == "description" ) {
@@ -2304,8 +2166,8 @@ namespace gap::sarif {
     }
     void to_json(json &j, const location_relationship &o) {
         j["target"] = o.target;
-        if ( o.kinds.has_value() ) {
-            j["kinds"] = *o.kinds;
+        if ( o.kinds != decltype(o.kinds){ "relevant" } ) {
+            j["kinds"] = o.kinds;
         }
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
@@ -2323,9 +2185,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "fullyQualifiedName" ) {
@@ -2341,9 +2201,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "parentIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.parentIndex = field;
+                val.get_to(o.parentIndex);
                 continue;
             }
             if ( key == "kind" ) {
@@ -2364,8 +2222,8 @@ namespace gap::sarif {
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.fullyQualifiedName.has_value() ) {
             j["fullyQualifiedName"] = *o.fullyQualifiedName;
@@ -2373,8 +2231,8 @@ namespace gap::sarif {
         if ( o.decoratedName.has_value() ) {
             j["decoratedName"] = *o.decoratedName;
         }
-        if ( o.parentIndex.has_value() ) {
-            j["parentIndex"] = *o.parentIndex;
+        if ( o.parentIndex != -1 ) {
+            j["parentIndex"] = o.parentIndex;
         }
         if ( o.kind.has_value() ) {
             j["kind"] = *o.kind;
@@ -2402,9 +2260,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "children" ) {
-                std::forward_list< node > field;
-                val.get_to(field);
-                o.children = field;
+                val.get_to(o.children);
                 continue;
             }
             if ( key == "properties" ) {
@@ -2423,8 +2279,8 @@ namespace gap::sarif {
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
         }
-        if ( o.children.has_value() ) {
-            j["children"] = *o.children;
+        if ( !o.children.empty() ) {
+            j["children"] = o.children;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -2433,9 +2289,7 @@ namespace gap::sarif {
     void from_json(const json &j, notification &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "locations" ) {
-                std::forward_list< location > field;
-                val.get_to(field);
-                o.locations = field;
+                val.get_to(o.locations);
                 continue;
             }
             if ( key == "message" ) {
@@ -2443,9 +2297,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "level" ) {
-                level field;
-                val.get_to(field);
-                o.level = field;
+                val.get_to(o.level);
                 continue;
             }
             if ( key == "threadId" ) {
@@ -2487,12 +2339,12 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const notification &o) {
-        if ( o.locations.has_value() ) {
-            j["locations"] = *o.locations;
+        if ( !o.locations.empty() ) {
+            j["locations"] = o.locations;
         }
         j["message"] = o.message;
-        if ( o.level.has_value() ) {
-            j["level"] = *o.level;
+        if ( o.level != ::gap::sarif::level::kWarning ) {
+            j["level"] = o.level;
         }
         if ( o.threadId.has_value() ) {
             j["threadId"] = *o.threadId;
@@ -2675,9 +2527,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "relationships" ) {
-                std::forward_list< reporting_descriptor_relationship > field;
-                val.get_to(field);
-                o.relationships = field;
+                val.get_to(o.relationships);
                 continue;
             }
             if ( key == "properties" ) {
@@ -2690,20 +2540,20 @@ namespace gap::sarif {
     }
     void to_json(json &j, const reporting_descriptor &o) {
         j["id"] = o.id;
-        if ( o.deprecatedIds.has_value() ) {
-            j["deprecatedIds"] = *o.deprecatedIds;
+        if ( !o.deprecatedIds.empty() ) {
+            j["deprecatedIds"] = o.deprecatedIds;
         }
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
         }
-        if ( o.deprecatedGuids.has_value() ) {
-            j["deprecatedGuids"] = *o.deprecatedGuids;
+        if ( !o.deprecatedGuids.empty() ) {
+            j["deprecatedGuids"] = o.deprecatedGuids;
         }
         if ( o.name.has_value() ) {
             j["name"] = *o.name;
         }
-        if ( o.deprecatedNames.has_value() ) {
-            j["deprecatedNames"] = *o.deprecatedNames;
+        if ( !o.deprecatedNames.empty() ) {
+            j["deprecatedNames"] = o.deprecatedNames;
         }
         if ( o.shortDescription.has_value() ) {
             j["shortDescription"] = *o.shortDescription;
@@ -2723,8 +2573,8 @@ namespace gap::sarif {
         if ( o.help.has_value() ) {
             j["help"] = *o.help;
         }
-        if ( o.relationships.has_value() ) {
-            j["relationships"] = *o.relationships;
+        if ( !o.relationships.empty() ) {
+            j["relationships"] = o.relationships;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -2737,9 +2587,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kinds" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.kinds = field;
+                val.get_to(o.kinds);
                 continue;
             }
             if ( key == "description" ) {
@@ -2758,8 +2606,8 @@ namespace gap::sarif {
     }
     void to_json(json &j, const reporting_descriptor_relationship &o) {
         j["target"] = o.target;
-        if ( o.kinds.has_value() ) {
-            j["kinds"] = *o.kinds;
+        if ( o.kinds != decltype(o.kinds){ "relevant" } ) {
+            j["kinds"] = o.kinds;
         }
         if ( o.description.has_value() ) {
             j["description"] = *o.description;
@@ -2795,15 +2643,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "invocationIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.invocationIndex = field;
+                val.get_to(o.invocationIndex);
                 continue;
             }
             if ( key == "conversionSources" ) {
-                std::forward_list< physical_location > field;
-                val.get_to(field);
-                o.conversionSources = field;
+                val.get_to(o.conversionSources);
                 continue;
             }
             if ( key == "properties" ) {
@@ -2827,11 +2671,11 @@ namespace gap::sarif {
         if ( o.lastDetectionRunGuid.has_value() ) {
             j["lastDetectionRunGuid"] = *o.lastDetectionRunGuid;
         }
-        if ( o.invocationIndex.has_value() ) {
-            j["invocationIndex"] = *o.invocationIndex;
+        if ( o.invocationIndex != -1 ) {
+            j["invocationIndex"] = o.invocationIndex;
         }
-        if ( o.conversionSources.has_value() ) {
-            j["conversionSources"] = *o.conversionSources;
+        if ( !o.conversionSources.empty() ) {
+            j["conversionSources"] = o.conversionSources;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -2840,9 +2684,7 @@ namespace gap::sarif {
     void from_json(const json &j, web_request &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "protocol" ) {
@@ -2896,8 +2738,8 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const web_request &o) {
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.protocol.has_value() ) {
             j["protocol"] = *o.protocol;
@@ -2927,9 +2769,7 @@ namespace gap::sarif {
     void from_json(const json &j, web_response &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "protocol" ) {
@@ -2969,9 +2809,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "noResponseReceived" ) {
-                bool field;
-                val.get_to(field);
-                o.noResponseReceived = field;
+                val.get_to(o.noResponseReceived);
                 continue;
             }
             if ( key == "properties" ) {
@@ -2983,8 +2821,8 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const web_response &o) {
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.protocol.has_value() ) {
             j["protocol"] = *o.protocol;
@@ -3004,8 +2842,8 @@ namespace gap::sarif {
         if ( o.body.has_value() ) {
             j["body"] = *o.body;
         }
-        if ( o.noResponseReceived.has_value() ) {
-            j["noResponseReceived"] = *o.noResponseReceived;
+        if ( o.noResponseReceived != false ) {
+            j["noResponseReceived"] = o.noResponseReceived;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -3020,9 +2858,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "ruleIndex" ) {
-                int64_t field;
-                val.get_to(field);
-                o.ruleIndex = field;
+                val.get_to(o.ruleIndex);
                 continue;
             }
             if ( key == "rule" ) {
@@ -3032,15 +2868,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kind" ) {
-                kind field;
-                val.get_to(field);
-                o.kind = field;
+                val.get_to(o.kind);
                 continue;
             }
             if ( key == "level" ) {
-                level field;
-                val.get_to(field);
-                o.level = field;
+                val.get_to(o.level);
                 continue;
             }
             if ( key == "message" ) {
@@ -3054,9 +2886,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "locations" ) {
-                std::forward_list< location > field;
-                val.get_to(field);
-                o.locations = field;
+                val.get_to(o.locations);
                 continue;
             }
             if ( key == "guid" ) {
@@ -3090,33 +2920,23 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "stacks" ) {
-                std::forward_list< stack > field;
-                val.get_to(field);
-                o.stacks = field;
+                val.get_to(o.stacks);
                 continue;
             }
             if ( key == "codeFlows" ) {
-                std::forward_list< code_flow > field;
-                val.get_to(field);
-                o.codeFlows = field;
+                val.get_to(o.codeFlows);
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< graph > field;
-                val.get_to(field);
-                o.graphs = field;
+                val.get_to(o.graphs);
                 continue;
             }
             if ( key == "graphTraversals" ) {
-                std::forward_list< graph_traversal > field;
-                val.get_to(field);
-                o.graphTraversals = field;
+                val.get_to(o.graphTraversals);
                 continue;
             }
             if ( key == "relatedLocations" ) {
-                std::forward_list< location > field;
-                val.get_to(field);
-                o.relatedLocations = field;
+                val.get_to(o.relatedLocations);
                 continue;
             }
             if ( key == "suppressions" ) {
@@ -3132,15 +2952,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "rank" ) {
-                double field;
-                val.get_to(field);
-                o.rank = field;
+                val.get_to(o.rank);
                 continue;
             }
             if ( key == "attachments" ) {
-                std::forward_list< attachment > field;
-                val.get_to(field);
-                o.attachments = field;
+                val.get_to(o.attachments);
                 continue;
             }
             if ( key == "hostedViewerUri" ) {
@@ -3162,15 +2978,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "fixes" ) {
-                std::forward_list< fix > field;
-                val.get_to(field);
-                o.fixes = field;
+                val.get_to(o.fixes);
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list< reporting_descriptor_reference > field;
-                val.get_to(field);
-                o.taxa = field;
+                val.get_to(o.taxa);
                 continue;
             }
             if ( key == "webRequest" ) {
@@ -3197,24 +3009,24 @@ namespace gap::sarif {
         if ( o.ruleId.has_value() ) {
             j["ruleId"] = *o.ruleId;
         }
-        if ( o.ruleIndex.has_value() ) {
-            j["ruleIndex"] = *o.ruleIndex;
+        if ( o.ruleIndex != -1 ) {
+            j["ruleIndex"] = o.ruleIndex;
         }
         if ( o.rule.has_value() ) {
             j["rule"] = *o.rule;
         }
-        if ( o.kind.has_value() ) {
-            j["kind"] = *o.kind;
+        if ( o.kind != ::gap::sarif::kind::kFail ) {
+            j["kind"] = o.kind;
         }
-        if ( o.level.has_value() ) {
-            j["level"] = *o.level;
+        if ( o.level != ::gap::sarif::level::kWarning ) {
+            j["level"] = o.level;
         }
         j["message"] = o.message;
         if ( o.analysisTarget.has_value() ) {
             j["analysisTarget"] = *o.analysisTarget;
         }
-        if ( o.locations.has_value() ) {
-            j["locations"] = *o.locations;
+        if ( !o.locations.empty() ) {
+            j["locations"] = o.locations;
         }
         if ( o.guid.has_value() ) {
             j["guid"] = *o.guid;
@@ -3231,47 +3043,47 @@ namespace gap::sarif {
         if ( o.fingerprints.has_value() ) {
             j["fingerprints"] = *o.fingerprints;
         }
-        if ( o.stacks.has_value() ) {
-            j["stacks"] = *o.stacks;
+        if ( !o.stacks.empty() ) {
+            j["stacks"] = o.stacks;
         }
-        if ( o.codeFlows.has_value() ) {
-            j["codeFlows"] = *o.codeFlows;
+        if ( !o.codeFlows.empty() ) {
+            j["codeFlows"] = o.codeFlows;
         }
-        if ( o.graphs.has_value() ) {
-            j["graphs"] = *o.graphs;
+        if ( !o.graphs.empty() ) {
+            j["graphs"] = o.graphs;
         }
-        if ( o.graphTraversals.has_value() ) {
-            j["graphTraversals"] = *o.graphTraversals;
+        if ( !o.graphTraversals.empty() ) {
+            j["graphTraversals"] = o.graphTraversals;
         }
-        if ( o.relatedLocations.has_value() ) {
-            j["relatedLocations"] = *o.relatedLocations;
+        if ( !o.relatedLocations.empty() ) {
+            j["relatedLocations"] = o.relatedLocations;
         }
-        if ( o.suppressions.has_value() ) {
-            j["suppressions"] = *o.suppressions;
+        if ( !o.suppressions.empty() ) {
+            j["suppressions"] = o.suppressions;
         }
         if ( o.baselineState.has_value() ) {
             j["baselineState"] = *o.baselineState;
         }
-        if ( o.rank.has_value() ) {
-            j["rank"] = *o.rank;
+        if ( o.rank != -1.0 ) {
+            j["rank"] = o.rank;
         }
-        if ( o.attachments.has_value() ) {
-            j["attachments"] = *o.attachments;
+        if ( !o.attachments.empty() ) {
+            j["attachments"] = o.attachments;
         }
         if ( o.hostedViewerUri.has_value() ) {
             j["hostedViewerUri"] = *o.hostedViewerUri;
         }
-        if ( o.workItemUris.has_value() ) {
-            j["workItemUris"] = *o.workItemUris;
+        if ( !o.workItemUris.empty() ) {
+            j["workItemUris"] = o.workItemUris;
         }
         if ( o.provenance.has_value() ) {
             j["provenance"] = *o.provenance;
         }
-        if ( o.fixes.has_value() ) {
-            j["fixes"] = *o.fixes;
+        if ( !o.fixes.empty() ) {
+            j["fixes"] = o.fixes;
         }
-        if ( o.taxa.has_value() ) {
-            j["taxa"] = *o.taxa;
+        if ( !o.taxa.empty() ) {
+            j["taxa"] = o.taxa;
         }
         if ( o.webRequest.has_value() ) {
             j["webRequest"] = *o.webRequest;
@@ -3365,9 +3177,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "invocations" ) {
-                std::forward_list< invocation > field;
-                val.get_to(field);
-                o.invocations = field;
+                val.get_to(o.invocations);
                 continue;
             }
             if ( key == "conversion" ) {
@@ -3377,15 +3187,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "language" ) {
-                std::string field;
-                val.get_to(field);
-                o.language = field;
+                val.get_to(o.language);
                 continue;
             }
             if ( key == "versionControlProvenance" ) {
-                std::forward_list< version_control_details > field;
-                val.get_to(field);
-                o.versionControlProvenance = field;
+                val.get_to(o.versionControlProvenance);
                 continue;
             }
             if ( key == "originalUriBaseIds" ) {
@@ -3401,15 +3207,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "logicalLocations" ) {
-                std::forward_list< logical_location > field;
-                val.get_to(field);
-                o.logicalLocations = field;
+                val.get_to(o.logicalLocations);
                 continue;
             }
             if ( key == "graphs" ) {
-                std::forward_list< graph > field;
-                val.get_to(field);
-                o.graphs = field;
+                val.get_to(o.graphs);
                 continue;
             }
             if ( key == "results" ) {
@@ -3425,9 +3227,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "runAggregates" ) {
-                std::forward_list< run_automation_details > field;
-                val.get_to(field);
-                o.runAggregates = field;
+                val.get_to(o.runAggregates);
                 continue;
             }
             if ( key == "baselineGuid" ) {
@@ -3437,9 +3237,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "redactionTokens" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.redactionTokens = field;
+                val.get_to(o.redactionTokens);
                 continue;
             }
             if ( key == "defaultEncoding" ) {
@@ -3455,9 +3253,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "newlineSequences" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.newlineSequences = field;
+                val.get_to(o.newlineSequences);
                 continue;
             }
             if ( key == "columnKind" ) {
@@ -3473,45 +3269,31 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "threadFlowLocations" ) {
-                std::forward_list< thread_flow_location > field;
-                val.get_to(field);
-                o.threadFlowLocations = field;
+                val.get_to(o.threadFlowLocations);
                 continue;
             }
             if ( key == "taxonomies" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.taxonomies = field;
+                val.get_to(o.taxonomies);
                 continue;
             }
             if ( key == "addresses" ) {
-                std::forward_list< address > field;
-                val.get_to(field);
-                o.addresses = field;
+                val.get_to(o.addresses);
                 continue;
             }
             if ( key == "translations" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.translations = field;
+                val.get_to(o.translations);
                 continue;
             }
             if ( key == "policies" ) {
-                std::forward_list< tool_component > field;
-                val.get_to(field);
-                o.policies = field;
+                val.get_to(o.policies);
                 continue;
             }
             if ( key == "webRequests" ) {
-                std::forward_list< web_request > field;
-                val.get_to(field);
-                o.webRequests = field;
+                val.get_to(o.webRequests);
                 continue;
             }
             if ( key == "webResponses" ) {
-                std::forward_list< web_response > field;
-                val.get_to(field);
-                o.webResponses = field;
+                val.get_to(o.webResponses);
                 continue;
             }
             if ( key == "specialLocations" ) {
@@ -3530,44 +3312,44 @@ namespace gap::sarif {
     }
     void to_json(json &j, const run &o) {
         j["tool"] = o.tool;
-        if ( o.invocations.has_value() ) {
-            j["invocations"] = *o.invocations;
+        if ( !o.invocations.empty() ) {
+            j["invocations"] = o.invocations;
         }
         if ( o.conversion.has_value() ) {
             j["conversion"] = *o.conversion;
         }
-        if ( o.language.has_value() ) {
-            j["language"] = *o.language;
+        if ( o.language != "en-US" ) {
+            j["language"] = o.language;
         }
-        if ( o.versionControlProvenance.has_value() ) {
-            j["versionControlProvenance"] = *o.versionControlProvenance;
+        if ( !o.versionControlProvenance.empty() ) {
+            j["versionControlProvenance"] = o.versionControlProvenance;
         }
         if ( o.originalUriBaseIds.has_value() ) {
             j["originalUriBaseIds"] = *o.originalUriBaseIds;
         }
-        if ( o.artifacts.has_value() ) {
-            j["artifacts"] = *o.artifacts;
+        if ( !o.artifacts.empty() ) {
+            j["artifacts"] = o.artifacts;
         }
-        if ( o.logicalLocations.has_value() ) {
-            j["logicalLocations"] = *o.logicalLocations;
+        if ( !o.logicalLocations.empty() ) {
+            j["logicalLocations"] = o.logicalLocations;
         }
-        if ( o.graphs.has_value() ) {
-            j["graphs"] = *o.graphs;
+        if ( !o.graphs.empty() ) {
+            j["graphs"] = o.graphs;
         }
-        if ( o.results.has_value() ) {
-            j["results"] = *o.results;
+        if ( !o.results.empty() ) {
+            j["results"] = o.results;
         }
         if ( o.automationDetails.has_value() ) {
             j["automationDetails"] = *o.automationDetails;
         }
-        if ( o.runAggregates.has_value() ) {
-            j["runAggregates"] = *o.runAggregates;
+        if ( !o.runAggregates.empty() ) {
+            j["runAggregates"] = o.runAggregates;
         }
         if ( o.baselineGuid.has_value() ) {
             j["baselineGuid"] = *o.baselineGuid;
         }
-        if ( o.redactionTokens.has_value() ) {
-            j["redactionTokens"] = *o.redactionTokens;
+        if ( !o.redactionTokens.empty() ) {
+            j["redactionTokens"] = o.redactionTokens;
         }
         if ( o.defaultEncoding.has_value() ) {
             j["defaultEncoding"] = *o.defaultEncoding;
@@ -3575,8 +3357,8 @@ namespace gap::sarif {
         if ( o.defaultSourceLanguage.has_value() ) {
             j["defaultSourceLanguage"] = *o.defaultSourceLanguage;
         }
-        if ( o.newlineSequences.has_value() ) {
-            j["newlineSequences"] = *o.newlineSequences;
+        if ( o.newlineSequences != decltype(o.newlineSequences){ "\r\n", "\n" } ) {
+            j["newlineSequences"] = o.newlineSequences;
         }
         if ( o.columnKind.has_value() ) {
             j["columnKind"] = *o.columnKind;
@@ -3584,26 +3366,26 @@ namespace gap::sarif {
         if ( o.externalPropertyFileReferences.has_value() ) {
             j["externalPropertyFileReferences"] = *o.externalPropertyFileReferences;
         }
-        if ( o.threadFlowLocations.has_value() ) {
-            j["threadFlowLocations"] = *o.threadFlowLocations;
+        if ( !o.threadFlowLocations.empty() ) {
+            j["threadFlowLocations"] = o.threadFlowLocations;
         }
-        if ( o.taxonomies.has_value() ) {
-            j["taxonomies"] = *o.taxonomies;
+        if ( !o.taxonomies.empty() ) {
+            j["taxonomies"] = o.taxonomies;
         }
-        if ( o.addresses.has_value() ) {
-            j["addresses"] = *o.addresses;
+        if ( !o.addresses.empty() ) {
+            j["addresses"] = o.addresses;
         }
-        if ( o.translations.has_value() ) {
-            j["translations"] = *o.translations;
+        if ( !o.translations.empty() ) {
+            j["translations"] = o.translations;
         }
-        if ( o.policies.has_value() ) {
-            j["policies"] = *o.policies;
+        if ( !o.policies.empty() ) {
+            j["policies"] = o.policies;
         }
-        if ( o.webRequests.has_value() ) {
-            j["webRequests"] = *o.webRequests;
+        if ( !o.webRequests.empty() ) {
+            j["webRequests"] = o.webRequests;
         }
-        if ( o.webResponses.has_value() ) {
-            j["webResponses"] = *o.webResponses;
+        if ( !o.webResponses.empty() ) {
+            j["webResponses"] = o.webResponses;
         }
         if ( o.specialLocations.has_value() ) {
             j["specialLocations"] = *o.specialLocations;
@@ -3633,9 +3415,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "parameters" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.parameters = field;
+                val.get_to(o.parameters);
                 continue;
             }
             if ( key == "properties" ) {
@@ -3656,8 +3436,8 @@ namespace gap::sarif {
         if ( o.threadId.has_value() ) {
             j["threadId"] = *o.threadId;
         }
-        if ( o.parameters.has_value() ) {
-            j["parameters"] = *o.parameters;
+        if ( !o.parameters.empty() ) {
+            j["parameters"] = o.parameters;
         }
         if ( o.properties.has_value() ) {
             j["properties"] = *o.properties;
@@ -3778,9 +3558,7 @@ namespace gap::sarif {
     void from_json(const json &j, thread_flow_location &o) {
         for( auto &[key, val] : j.items() ) {
             if ( key == "index" ) {
-                int64_t field;
-                val.get_to(field);
-                o.index = field;
+                val.get_to(o.index);
                 continue;
             }
             if ( key == "location" ) {
@@ -3796,15 +3574,11 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "kinds" ) {
-                std::forward_list< std::string > field;
-                val.get_to(field);
-                o.kinds = field;
+                val.get_to(o.kinds);
                 continue;
             }
             if ( key == "taxa" ) {
-                std::forward_list< reporting_descriptor_reference > field;
-                val.get_to(field);
-                o.taxa = field;
+                val.get_to(o.taxa);
                 continue;
             }
             if ( key == "module" ) {
@@ -3826,9 +3600,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "executionOrder" ) {
-                int64_t field;
-                val.get_to(field);
-                o.executionOrder = field;
+                val.get_to(o.executionOrder);
                 continue;
             }
             if ( key == "executionTimeUtc" ) {
@@ -3838,9 +3610,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "importance" ) {
-                importance field;
-                val.get_to(field);
-                o.importance = field;
+                val.get_to(o.importance);
                 continue;
             }
             if ( key == "webRequest" ) {
@@ -3864,8 +3634,8 @@ namespace gap::sarif {
         }
     }
     void to_json(json &j, const thread_flow_location &o) {
-        if ( o.index.has_value() ) {
-            j["index"] = *o.index;
+        if ( o.index != -1 ) {
+            j["index"] = o.index;
         }
         if ( o.location.has_value() ) {
             j["location"] = *o.location;
@@ -3873,11 +3643,11 @@ namespace gap::sarif {
         if ( o.stack.has_value() ) {
             j["stack"] = *o.stack;
         }
-        if ( o.kinds.has_value() ) {
-            j["kinds"] = *o.kinds;
+        if ( !o.kinds.empty() ) {
+            j["kinds"] = o.kinds;
         }
-        if ( o.taxa.has_value() ) {
-            j["taxa"] = *o.taxa;
+        if ( !o.taxa.empty() ) {
+            j["taxa"] = o.taxa;
         }
         if ( o.module.has_value() ) {
             j["module"] = *o.module;
@@ -3888,14 +3658,14 @@ namespace gap::sarif {
         if ( o.nestingLevel.has_value() ) {
             j["nestingLevel"] = *o.nestingLevel;
         }
-        if ( o.executionOrder.has_value() ) {
-            j["executionOrder"] = *o.executionOrder;
+        if ( o.executionOrder != -1 ) {
+            j["executionOrder"] = o.executionOrder;
         }
         if ( o.executionTimeUtc.has_value() ) {
             j["executionTimeUtc"] = *o.executionTimeUtc;
         }
-        if ( o.importance.has_value() ) {
-            j["importance"] = *o.importance;
+        if ( o.importance != ::gap::sarif::importance::kImportant ) {
+            j["importance"] = o.importance;
         }
         if ( o.webRequest.has_value() ) {
             j["webRequest"] = *o.webRequest;
