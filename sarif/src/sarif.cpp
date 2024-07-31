@@ -31,7 +31,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "inlineExternalProperties" ) {
-                std::forward_list< external_properties > field;
+                std::vector< external_properties > field;
                 val.get_to(field);
                 o.inlineExternalProperties = field;
                 continue;
@@ -1025,13 +1025,13 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "arguments" ) {
-                std::forward_list< std::string > field;
+                std::vector< std::string > field;
                 val.get_to(field);
                 o.arguments = field;
                 continue;
             }
             if ( key == "responseFiles" ) {
-                std::forward_list< artifact_location > field;
+                std::vector< artifact_location > field;
                 val.get_to(field);
                 o.responseFiles = field;
                 continue;
@@ -1487,7 +1487,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list< artifact > field;
+                std::vector< artifact > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
@@ -2461,7 +2461,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "deprecatedIds" ) {
-                std::forward_list< std::string > field;
+                std::vector< std::string > field;
                 val.get_to(field);
                 o.deprecatedIds = field;
                 continue;
@@ -2473,7 +2473,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "deprecatedGuids" ) {
-                std::forward_list< std::string > field;
+                std::vector< std::string > field;
                 val.get_to(field);
                 o.deprecatedGuids = field;
                 continue;
@@ -2485,7 +2485,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "deprecatedNames" ) {
-                std::forward_list< std::string > field;
+                std::vector< std::string > field;
                 val.get_to(field);
                 o.deprecatedNames = field;
                 continue;
@@ -2940,7 +2940,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "suppressions" ) {
-                std::forward_list< suppression > field;
+                std::vector< suppression > field;
                 val.get_to(field);
                 o.suppressions = field;
                 continue;
@@ -2966,7 +2966,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "workItemUris" ) {
-                std::forward_list< std::string > field;
+                std::vector< std::string > field;
                 val.get_to(field);
                 o.workItemUris = field;
                 continue;
@@ -3201,7 +3201,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "artifacts" ) {
-                std::forward_list< artifact > field;
+                std::vector< artifact > field;
                 val.get_to(field);
                 o.artifacts = field;
                 continue;
@@ -3215,7 +3215,7 @@ namespace gap::sarif {
                 continue;
             }
             if ( key == "results" ) {
-                std::forward_list< result > field;
+                std::vector< result > field;
                 val.get_to(field);
                 o.results = field;
                 continue;

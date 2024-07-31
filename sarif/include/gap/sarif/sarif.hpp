@@ -13,10 +13,10 @@
 //
 
 #include <cstdint>
-#include <forward_list>
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include <nlohmann/json.hpp>
 
@@ -41,7 +41,7 @@ namespace gap::sarif
         //
         // A set of distinct strings that provide additional information.
         //
-        std::forward_list< std::string > tags = {};
+        std::vector< std::string > tags = {};
 
         json additional_properties;
     };
@@ -61,12 +61,12 @@ namespace gap::sarif
         //
         // The set of runs contained in this log file.
         //
-        std::forward_list< run > runs;
+        std::vector< run > runs;
 
         //
         // References to external property files that share data between runs.
         //
-        std::forward_list< external_properties > inlineExternalProperties = {};
+        std::vector< external_properties > inlineExternalProperties = {};
 
         //
         // Key/value pairs that provide additional information about the log file.
@@ -157,7 +157,7 @@ namespace gap::sarif
         //
         // An array of strings to substitute into the message string.
         //
-        std::forward_list< std::string > arguments = {};
+        std::vector< std::string > arguments = {};
 
         //
         // Key/value pairs that provide additional information about the message.
@@ -336,7 +336,7 @@ namespace gap::sarif
         //
         // The role or roles played by the artifact in the analysis.
         //
-        std::forward_list< ::gap::sarif::roles > roles = {};
+        std::vector< ::gap::sarif::roles > roles = {};
 
         //
         // The MIME type (RFC 2045) of the artifact.
@@ -390,7 +390,7 @@ namespace gap::sarif
         //
         // An array of replacement objects, each of which represents the replacement of a single region in a single artifact specified by 'artifactLocation'.
         //
-        std::forward_list< replacement > replacements;
+        std::vector< replacement > replacements;
 
         //
         // Key/value pairs that provide additional information about the change.
@@ -420,12 +420,12 @@ namespace gap::sarif
         //
         // An array of regions of interest within the attachment.
         //
-        std::forward_list< region > regions = {};
+        std::vector< region > regions = {};
 
         //
         // An array of rectangles specifying areas of interest within the image.
         //
-        std::forward_list< rectangle > rectangles = {};
+        std::vector< rectangle > rectangles = {};
 
         //
         // Key/value pairs that provide additional information about the attachment.
@@ -449,7 +449,7 @@ namespace gap::sarif
         //
         // An array of one or more unique threadFlow objects, each of which describes the progress of a program through a thread of execution.
         //
-        std::forward_list< thread_flow > threadFlows;
+        std::vector< thread_flow > threadFlows;
 
         //
         // Key/value pairs that provide additional information about the code flow.
@@ -590,7 +590,112 @@ namespace gap::sarif
 
     void to_json(json &, const configuration_override &);
     void from_json(const json &, configuration_override &);
-    struct reporting_descriptor;
+
+    //
+    // Information about the relation of one reporting descriptor to another.
+    //
+    struct reporting_descriptor_relationship {
+        //
+        // A reference to the related reporting descriptor.
+        //
+        reporting_descriptor_reference target;
+
+        //
+        // A set of distinct strings that categorize the relationship. Well-known kinds include 'canPrecede', 'canFollow', 'willPrecede', 'willFollow', 'superset', 'subset', 'equal', 'disjoint', 'relevant', and 'incomparable'.
+        //
+        std::vector< std::string > kinds = { "relevant" };
+
+        //
+        // A description of the reporting descriptor relationship.
+        //
+        std::optional< message > description = std::nullopt;
+
+        //
+        // Key/value pairs that provide additional information about the reporting descriptor reference.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const reporting_descriptor_relationship &);
+    void from_json(const json &, reporting_descriptor_relationship &);
+
+    //
+    // Metadata that describes a specific report produced by the tool, as part of the analysis it provides or its runtime reporting.
+    //
+    struct reporting_descriptor {
+        //
+        // A stable, opaque identifier for the report.
+        //
+        std::string id;
+
+        //
+        // An array of stable, opaque identifiers by which this report was known in some previous version of the analysis tool.
+        //
+        std::vector< std::string > deprecatedIds = {};
+
+        //
+        // A unique identifer for the reporting descriptor in the form of a GUID.
+        //
+        std::optional< std::string > guid = std::nullopt;
+
+        //
+        // An array of unique identifies in the form of a GUID by which this report was known in some previous version of the analysis tool.
+        //
+        std::vector< std::string > deprecatedGuids = {};
+
+        //
+        // A report identifier that is understandable to an end user.
+        //
+        std::optional< std::string > name = std::nullopt;
+
+        //
+        // An array of readable identifiers by which this report was known in some previous version of the analysis tool.
+        //
+        std::vector< std::string > deprecatedNames = {};
+
+        //
+        // A concise description of the report. Should be a single sentence that is understandable when visible space is limited to a single line of text.
+        //
+        std::optional< multiformat_message_string > shortDescription = std::nullopt;
+
+        //
+        // A description of the report. Should, as far as possible, provide details sufficient to enable resolution of any problem indicated by the result.
+        //
+        std::optional< multiformat_message_string > fullDescription = std::nullopt;
+
+        //
+        // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
+        //
+        std::optional< std::unordered_map< std::string, multiformat_message_string > > messageStrings = std::nullopt;
+
+        //
+        // Default reporting configuration information.
+        //
+        std::optional< reporting_configuration > defaultConfiguration = std::nullopt;
+
+        //
+        // A URI where the primary documentation for the report can be found.
+        //
+        std::optional< std::string > helpUri = std::nullopt;
+
+        //
+        // Provides the primary documentation for the report, useful when there is no online documentation.
+        //
+        std::optional< multiformat_message_string > help = std::nullopt;
+
+        //
+        // An array of objects that describe relationships between this reporting descriptor and others.
+        //
+        std::vector< reporting_descriptor_relationship > relationships = {};
+
+        //
+        // Key/value pairs that provide additional information about the report.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const reporting_descriptor &);
+    void from_json(const json &, reporting_descriptor &);
 
     enum class contents {
         kLocalizedData,
@@ -727,22 +832,22 @@ namespace gap::sarif
         //
         // An array of reportingDescriptor objects relevant to the notifications related to the configuration and runtime execution of the tool component.
         //
-        std::forward_list< reporting_descriptor > notifications = {};
+        std::vector< reporting_descriptor > notifications = {};
 
         //
         // An array of reportingDescriptor objects relevant to the analysis performed by the tool component.
         //
-        std::forward_list< reporting_descriptor > rules = {};
+        std::vector< reporting_descriptor > rules = {};
 
         //
         // An array of reportingDescriptor objects relevant to the definitions of both standalone and tool-defined taxonomies.
         //
-        std::forward_list< reporting_descriptor > taxa = {};
+        std::vector< reporting_descriptor > taxa = {};
 
         //
         // An array of the artifactLocation objects associated with the tool component.
         //
-        std::forward_list< artifact_location > locations = {};
+        std::vector< artifact_location > locations = {};
 
         //
         // The language of the messages emitted into the log file during this run (expressed as an ISO 639-1 two-letter lowercase language code) and an optional region (expressed as an ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The casing is recommended but not required (in order for this data to conform to RFC5646).
@@ -752,7 +857,7 @@ namespace gap::sarif
         //
         // The kinds of data contained in this object.
         //
-        std::forward_list< ::gap::sarif::contents > contents = { ::gap::sarif::contents::kLocalizedData, ::gap::sarif::contents::kNonLocalizedData };
+        std::vector< ::gap::sarif::contents > contents = { ::gap::sarif::contents::kLocalizedData, ::gap::sarif::contents::kNonLocalizedData };
 
         //
         // Specifies whether this object contains a complete definition of the localizable and/or non-localizable data for this component, as opposed to including only data that is relevant to the results persisted to this log file.
@@ -782,7 +887,7 @@ namespace gap::sarif
         //
         // An array of toolComponentReference objects to declare the taxonomies supported by the tool component.
         //
-        std::forward_list< tool_component_reference > supportedTaxonomies = {};
+        std::vector< tool_component_reference > supportedTaxonomies = {};
 
         //
         // Key/value pairs that provide additional information about the tool component.
@@ -805,7 +910,7 @@ namespace gap::sarif
         //
         // Tool extensions that contributed to or reconfigured the analysis tool that was run.
         //
-        std::forward_list< tool_component > extensions = {};
+        std::vector< tool_component > extensions = {};
 
         //
         // Key/value pairs that provide additional information about the tool.
@@ -815,7 +920,363 @@ namespace gap::sarif
 
     void to_json(json &, const tool &);
     void from_json(const json &, tool &);
-    struct notification;
+
+    //
+    // A region within an artifact where a result was detected.
+    //
+    struct region {
+        //
+        // The line number of the first character in the region.
+        //
+        std::optional< int64_t > startLine = std::nullopt;
+
+        //
+        // The column number of the first character in the region.
+        //
+        std::optional< int64_t > startColumn = std::nullopt;
+
+        //
+        // The line number of the last character in the region.
+        //
+        std::optional< int64_t > endLine = std::nullopt;
+
+        //
+        // The column number of the character following the end of the region.
+        //
+        std::optional< int64_t > endColumn = std::nullopt;
+
+        //
+        // The zero-based offset from the beginning of the artifact of the first character in the region.
+        //
+        int64_t charOffset = -1;
+
+        //
+        // The length of the region in characters.
+        //
+        std::optional< int64_t > charLength = std::nullopt;
+
+        //
+        // The zero-based offset from the beginning of the artifact of the first byte in the region.
+        //
+        int64_t byteOffset = -1;
+
+        //
+        // The length of the region in bytes.
+        //
+        std::optional< int64_t > byteLength = std::nullopt;
+
+        //
+        // The portion of the artifact contents within the specified region.
+        //
+        std::optional< artifact_content > snippet = std::nullopt;
+
+        //
+        // A message relevant to the region.
+        //
+        std::optional< ::gap::sarif::message > message = std::nullopt;
+
+        //
+        // Specifies the source language, if any, of the portion of the artifact specified by the region object.
+        //
+        std::optional< std::string > sourceLanguage = std::nullopt;
+
+        //
+        // Key/value pairs that provide additional information about the region.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const region &);
+    void from_json(const json &, region &);
+
+    //
+    // A physical location relevant to a result. Specifies a reference to a programming artifact together with a range of bytes or characters within that artifact.
+    //
+    struct physical_location {
+        //
+        // The address of the location.
+        //
+        std::optional< ::gap::sarif::address > address = std::nullopt;
+
+        //
+        // The location of the artifact.
+        //
+        std::optional< artifact_location > artifactLocation = std::nullopt;
+
+        //
+        // Specifies a portion of the artifact.
+        //
+        std::optional< ::gap::sarif::region > region = std::nullopt;
+
+        //
+        // Specifies a portion of the artifact that encloses the region. Allows a viewer to display additional context around the region.
+        //
+        std::optional< ::gap::sarif::region > contextRegion = std::nullopt;
+
+        //
+        // Key/value pairs that provide additional information about the physical location.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const physical_location &);
+    void from_json(const json &, physical_location &);
+
+    //
+    // Information about the relation of one location to another.
+    //
+    struct location_relationship {
+        //
+        // A reference to the related location.
+        //
+        int64_t target;
+
+        //
+        // A set of distinct strings that categorize the relationship. Well-known kinds include 'includes', 'isIncludedBy' and 'relevant'.
+        //
+        std::vector< std::string > kinds = { "relevant" };
+
+        //
+        // A description of the location relationship.
+        //
+        std::optional< message > description = std::nullopt;
+
+        //
+        // Key/value pairs that provide additional information about the location relationship.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const location_relationship &);
+    void from_json(const json &, location_relationship &);
+
+    //
+    // A logical location of a construct that produced a result.
+    //
+    struct logical_location {
+        //
+        // Identifies the construct in which the result occurred. For example, this property might contain the name of a class or a method.
+        //
+        std::optional< std::string > name = std::nullopt;
+
+        //
+        // The index within the logical locations array.
+        //
+        int64_t index = -1;
+
+        //
+        // The human-readable fully qualified name of the logical location.
+        //
+        std::optional< std::string > fullyQualifiedName = std::nullopt;
+
+        //
+        // The machine-readable name for the logical location, such as a mangled function name provided by a C++ compiler that encodes calling convention, return type and other details along with the function name.
+        //
+        std::optional< std::string > decoratedName = std::nullopt;
+
+        //
+        // Identifies the index of the immediate parent of the construct in which the result was detected. For example, this property might point to a logical location that represents the namespace that holds a type.
+        //
+        int64_t parentIndex = -1;
+
+        //
+        // The type of construct this logical location component refers to. Should be one of 'function', 'member', 'module', 'namespace', 'parameter', 'resource', 'returnType', 'type', 'variable', 'object', 'array', 'property', 'value', 'element', 'text', 'attribute', 'comment', 'declaration', 'dtd' or 'processingInstruction', if any of those accurately describe the construct.
+        //
+        std::optional< std::string > kind = std::nullopt;
+
+        //
+        // Key/value pairs that provide additional information about the logical location.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const logical_location &);
+    void from_json(const json &, logical_location &);
+
+    //
+    // A location within a programming artifact.
+    //
+    struct location {
+        //
+        // Value that distinguishes this location from all other locations within a single result object.
+        //
+        int64_t id = -1;
+
+        //
+        // Identifies the artifact and region.
+        //
+        std::optional< physical_location > physicalLocation = std::nullopt;
+
+        //
+        // The logical locations associated with the result.
+        //
+        std::vector< logical_location > logicalLocations = {};
+
+        //
+        // A message relevant to the location.
+        //
+        std::optional< ::gap::sarif::message > message = std::nullopt;
+
+        //
+        // A set of regions relevant to the location.
+        //
+        std::vector< region > annotations = {};
+
+        //
+        // An array of objects that describe relationships between this location and others.
+        //
+        std::vector< location_relationship > relationships = {};
+
+        //
+        // Key/value pairs that provide additional information about the location.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const location &);
+    void from_json(const json &, location &);
+
+    //
+    // A function call within a stack trace.
+    //
+    struct stack_frame {
+        //
+        // The location to which this stack frame refers.
+        //
+        std::optional< ::gap::sarif::location > location = std::nullopt;
+
+        //
+        // The name of the module that contains the code of this stack frame.
+        //
+        std::optional< std::string > module = std::nullopt;
+
+        //
+        // The thread identifier of the stack frame.
+        //
+        std::optional< int64_t > threadId = std::nullopt;
+
+        //
+        // The parameters of the call that is executing.
+        //
+        std::vector< std::string > parameters = {};
+
+        //
+        // Key/value pairs that provide additional information about the stack frame.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const stack_frame &);
+    void from_json(const json &, stack_frame &);
+
+    //
+    // A call stack that is relevant to a result.
+    //
+    struct stack {
+        //
+        // A message relevant to this call stack.
+        //
+        std::optional< ::gap::sarif::message > message = std::nullopt;
+
+        //
+        // An array of stack frames that represents a sequence of calls, rendered in reverse chronological order, that comprise the call stack.
+        //
+        std::vector< stack_frame > frames;
+
+        //
+        // Key/value pairs that provide additional information about the stack.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const stack &);
+    void from_json(const json &, stack &);
+
+    //
+    // Describes a runtime exception encountered during the execution of an analysis tool.
+    //
+    struct exception {
+        //
+        // A string that identifies the kind of exception, for example, the fully qualified type name of an object that was thrown, or the symbolic name of a signal.
+        //
+        std::optional< std::string > kind = std::nullopt;
+
+        //
+        // A message that describes the exception.
+        //
+        std::optional< std::string > message = std::nullopt;
+
+        //
+        // The sequence of function calls leading to the exception.
+        //
+        std::optional< ::gap::sarif::stack > stack = std::nullopt;
+
+        //
+        // An array of exception objects each of which is considered a cause of this exception.
+        //
+        std::vector< exception > innerExceptions = {};
+
+        //
+        // Key/value pairs that provide additional information about the exception.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const exception &);
+    void from_json(const json &, exception &);
+
+    //
+    // Describes a condition relevant to the tool itself, as opposed to being relevant to a target being analyzed by the tool.
+    //
+    struct notification {
+        //
+        // The locations relevant to this notification.
+        //
+        std::vector< location > locations = {};
+
+        //
+        // A message that describes the condition that was encountered.
+        //
+        ::gap::sarif::message message;
+
+        //
+        // A value specifying the severity level of the notification.
+        //
+        ::gap::sarif::level level = ::gap::sarif::level::kWarning;
+
+        //
+        // The thread identifier of the code that generated the notification.
+        //
+        std::optional< int64_t > threadId = std::nullopt;
+
+        //
+        // The Coordinated Universal Time (UTC) date and time at which the analysis tool generated the notification.
+        //
+        std::optional< std::string > timeUtc = std::nullopt;
+
+        //
+        // The runtime exception, if any, relevant to this notification.
+        //
+        std::optional< ::gap::sarif::exception > exception = std::nullopt;
+
+        //
+        // A reference used to locate the descriptor relevant to this notification.
+        //
+        std::optional< reporting_descriptor_reference > descriptor = std::nullopt;
+
+        //
+        // A reference used to locate the rule descriptor associated with this notification.
+        //
+        std::optional< reporting_descriptor_reference > associatedRule = std::nullopt;
+
+        //
+        // Key/value pairs that provide additional information about the notification.
+        //
+        std::optional< property_bag > properties = std::nullopt;
+    };
+
+    void to_json(json &, const notification &);
+    void from_json(const json &, notification &);
 
     //
     // The runtime environment of the analysis tool run.
@@ -829,12 +1290,12 @@ namespace gap::sarif
         //
         // An array of strings, containing in order the command line arguments passed to the tool from the operating system.
         //
-        std::forward_list< std::string > arguments = {};
+        std::vector< std::string > arguments = {};
 
         //
         // The locations of any response files specified on the tool's command line.
         //
-        std::forward_list< artifact_location > responseFiles = {};
+        std::vector< artifact_location > responseFiles = {};
 
         //
         // The Coordinated Universal Time (UTC) date and time at which the run started. See "Date/time properties" in the SARIF spec for the required format.
@@ -854,22 +1315,22 @@ namespace gap::sarif
         //
         // An array of configurationOverride objects that describe rules related runtime overrides.
         //
-        std::forward_list< configuration_override > ruleConfigurationOverrides = {};
+        std::vector< configuration_override > ruleConfigurationOverrides = {};
 
         //
         // An array of configurationOverride objects that describe notifications related runtime overrides.
         //
-        std::forward_list< configuration_override > notificationConfigurationOverrides = {};
+        std::vector< configuration_override > notificationConfigurationOverrides = {};
 
         //
         // A list of runtime conditions detected by the tool during the analysis.
         //
-        std::forward_list< notification > toolExecutionNotifications = {};
+        std::vector< notification > toolExecutionNotifications = {};
 
         //
         // A list of conditions detected by the tool that are relevant to the tool's configuration.
         //
-        std::forward_list< notification > toolConfigurationNotifications = {};
+        std::vector< notification > toolConfigurationNotifications = {};
 
         //
         // The reason for the process exit.
@@ -972,7 +1433,7 @@ namespace gap::sarif
         //
         // The locations of the analysis tool's per-run log files.
         //
-        std::forward_list< artifact_location > analysisToolLogFiles = {};
+        std::vector< artifact_location > analysisToolLogFiles = {};
 
         //
         // Key/value pairs that provide additional information about the conversion.
@@ -1048,64 +1509,7 @@ namespace gap::sarif
 
     void to_json(json &, const edge_traversal &);
     void from_json(const json &, edge_traversal &);
-    struct stack_frame;
 
-    //
-    // A call stack that is relevant to a result.
-    //
-    struct stack {
-        //
-        // A message relevant to this call stack.
-        //
-        std::optional< ::gap::sarif::message > message = std::nullopt;
-
-        //
-        // An array of stack frames that represents a sequence of calls, rendered in reverse chronological order, that comprise the call stack.
-        //
-        std::forward_list< stack_frame > frames;
-
-        //
-        // Key/value pairs that provide additional information about the stack.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const stack &);
-    void from_json(const json &, stack &);
-    struct exception;
-
-    //
-    // Describes a runtime exception encountered during the execution of an analysis tool.
-    //
-    struct exception {
-        //
-        // A string that identifies the kind of exception, for example, the fully qualified type name of an object that was thrown, or the symbolic name of a signal.
-        //
-        std::optional< std::string > kind = std::nullopt;
-
-        //
-        // A message that describes the exception.
-        //
-        std::optional< std::string > message = std::nullopt;
-
-        //
-        // The sequence of function calls leading to the exception.
-        //
-        std::optional< ::gap::sarif::stack > stack = std::nullopt;
-
-        //
-        // An array of exception objects each of which is considered a cause of this exception.
-        //
-        std::forward_list< exception > innerExceptions = {};
-
-        //
-        // Key/value pairs that provide additional information about the exception.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const exception &);
-    void from_json(const json &, exception &);
     struct graph;
     struct logical_location;
     struct thread_flow_location;
@@ -1145,7 +1549,7 @@ namespace gap::sarif
         //
         // An array of graph objects that will be merged with a separate run.
         //
-        std::forward_list< graph > graphs = {};
+        std::vector< graph > graphs = {};
 
         //
         // Key/value pairs that provide additional information that will be merged with a separate run.
@@ -1155,32 +1559,32 @@ namespace gap::sarif
         //
         // An array of artifact objects that will be merged with a separate run.
         //
-        std::forward_list< artifact > artifacts = {};
+        std::vector< artifact > artifacts = {};
 
         //
         // Describes the invocation of the analysis tool that will be merged with a separate run.
         //
-        std::forward_list< invocation > invocations = {};
+        std::vector< invocation > invocations = {};
 
         //
         // An array of logical locations such as namespaces, types or functions that will be merged with a separate run.
         //
-        std::forward_list< logical_location > logicalLocations = {};
+        std::vector< logical_location > logicalLocations = {};
 
         //
         // An array of threadFlowLocation objects that will be merged with a separate run.
         //
-        std::forward_list< thread_flow_location > threadFlowLocations = {};
+        std::vector< thread_flow_location > threadFlowLocations = {};
 
         //
         // An array of result objects that will be merged with a separate run.
         //
-        std::forward_list< result > results = {};
+        std::vector< result > results = {};
 
         //
         // Tool taxonomies that will be merged with a separate run.
         //
-        std::forward_list< tool_component > taxonomies = {};
+        std::vector< tool_component > taxonomies = {};
 
         //
         // The analysis tool object that will be merged with a separate run.
@@ -1190,32 +1594,32 @@ namespace gap::sarif
         //
         // Tool extensions that will be merged with a separate run.
         //
-        std::forward_list< tool_component > extensions = {};
+        std::vector< tool_component > extensions = {};
 
         //
         // Tool policies that will be merged with a separate run.
         //
-        std::forward_list< tool_component > policies = {};
+        std::vector< tool_component > policies = {};
 
         //
         // Tool translations that will be merged with a separate run.
         //
-        std::forward_list< tool_component > translations = {};
+        std::vector< tool_component > translations = {};
 
         //
         // Addresses that will be merged with a separate run.
         //
-        std::forward_list< address > addresses = {};
+        std::vector< address > addresses = {};
 
         //
         // Requests that will be merged with a separate run.
         //
-        std::forward_list< web_request > webRequests = {};
+        std::vector< web_request > webRequests = {};
 
         //
         // Responses that will be merged with a separate run.
         //
-        std::forward_list< web_response > webResponses = {};
+        std::vector< web_response > webResponses = {};
 
         //
         // Key/value pairs that provide additional information about the external properties.
@@ -1266,7 +1670,7 @@ namespace gap::sarif
         //
         // An array of external property files containing a run.graphs object to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > graphs = {};
+        std::vector< external_property_file_reference > graphs = {};
 
         //
         // An external property file containing a run.properties object to be merged with the root log file.
@@ -1276,37 +1680,37 @@ namespace gap::sarif
         //
         // An array of external property files containing run.artifacts arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > artifacts = {};
+        std::vector< external_property_file_reference > artifacts = {};
 
         //
         // An array of external property files containing run.invocations arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > invocations = {};
+        std::vector< external_property_file_reference > invocations = {};
 
         //
         // An array of external property files containing run.logicalLocations arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > logicalLocations = {};
+        std::vector< external_property_file_reference > logicalLocations = {};
 
         //
         // An array of external property files containing run.threadFlowLocations arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > threadFlowLocations = {};
+        std::vector< external_property_file_reference > threadFlowLocations = {};
 
         //
         // An array of external property files containing run.results arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > results = {};
+        std::vector< external_property_file_reference > results = {};
 
         //
         // An array of external property files containing run.taxonomies arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > taxonomies = {};
+        std::vector< external_property_file_reference > taxonomies = {};
 
         //
         // An array of external property files containing run.addresses arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > addresses = {};
+        std::vector< external_property_file_reference > addresses = {};
 
         //
         // An external property file containing a run.driver object to be merged with the root log file.
@@ -1316,27 +1720,27 @@ namespace gap::sarif
         //
         // An array of external property files containing run.extensions arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > extensions = {};
+        std::vector< external_property_file_reference > extensions = {};
 
         //
         // An array of external property files containing run.policies arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > policies = {};
+        std::vector< external_property_file_reference > policies = {};
 
         //
         // An array of external property files containing run.translations arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > translations = {};
+        std::vector< external_property_file_reference > translations = {};
 
         //
         // An array of external property files containing run.requests arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > webRequests = {};
+        std::vector< external_property_file_reference > webRequests = {};
 
         //
         // An array of external property files containing run.responses arrays to be merged with the root log file.
         //
-        std::forward_list< external_property_file_reference > webResponses = {};
+        std::vector< external_property_file_reference > webResponses = {};
 
         //
         // Key/value pairs that provide additional information about the external property files.
@@ -1359,7 +1763,7 @@ namespace gap::sarif
         //
         // One or more artifact changes that comprise a fix for a result.
         //
-        std::forward_list< artifact_change > artifactChanges;
+        std::vector< artifact_change > artifactChanges;
 
         //
         // Key/value pairs that provide additional information about the fix.
@@ -1383,12 +1787,12 @@ namespace gap::sarif
         //
         // An array of node objects representing the nodes of the graph.
         //
-        std::forward_list< node > nodes = {};
+        std::vector< node > nodes = {};
 
         //
         // An array of edge objects representing the edges of the graph.
         //
-        std::forward_list< edge > edges = {};
+        std::vector< edge > edges = {};
 
         //
         // Key/value pairs that provide additional information about the graph.
@@ -1431,7 +1835,7 @@ namespace gap::sarif
         //
         // The sequences of edges traversed by this graph traversal.
         //
-        std::forward_list< edge_traversal > edgeTraversals = {};
+        std::vector< edge_traversal > edgeTraversals = {};
 
         //
         // Key/value pairs that provide additional information about the graph traversal.
@@ -1441,222 +1845,6 @@ namespace gap::sarif
 
     void to_json(json &, const graph_traversal &);
     void from_json(const json &, graph_traversal &);
-
-    //
-    // A region within an artifact where a result was detected.
-    //
-    struct region {
-        //
-        // The line number of the first character in the region.
-        //
-        std::optional< int64_t > startLine = std::nullopt;
-
-        //
-        // The column number of the first character in the region.
-        //
-        std::optional< int64_t > startColumn = std::nullopt;
-
-        //
-        // The line number of the last character in the region.
-        //
-        std::optional< int64_t > endLine = std::nullopt;
-
-        //
-        // The column number of the character following the end of the region.
-        //
-        std::optional< int64_t > endColumn = std::nullopt;
-
-        //
-        // The zero-based offset from the beginning of the artifact of the first character in the region.
-        //
-        int64_t charOffset = -1;
-
-        //
-        // The length of the region in characters.
-        //
-        std::optional< int64_t > charLength = std::nullopt;
-
-        //
-        // The zero-based offset from the beginning of the artifact of the first byte in the region.
-        //
-        int64_t byteOffset = -1;
-
-        //
-        // The length of the region in bytes.
-        //
-        std::optional< int64_t > byteLength = std::nullopt;
-
-        //
-        // The portion of the artifact contents within the specified region.
-        //
-        std::optional< artifact_content > snippet = std::nullopt;
-
-        //
-        // A message relevant to the region.
-        //
-        std::optional< ::gap::sarif::message > message = std::nullopt;
-
-        //
-        // Specifies the source language, if any, of the portion of the artifact specified by the region object.
-        //
-        std::optional< std::string > sourceLanguage = std::nullopt;
-
-        //
-        // Key/value pairs that provide additional information about the region.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const region &);
-    void from_json(const json &, region &);
-
-    //
-    // A physical location relevant to a result. Specifies a reference to a programming artifact together with a range of bytes or characters within that artifact.
-    //
-    struct physical_location {
-        //
-        // The address of the location.
-        //
-        std::optional< ::gap::sarif::address > address = std::nullopt;
-
-        //
-        // The location of the artifact.
-        //
-        std::optional< artifact_location > artifactLocation = std::nullopt;
-
-        //
-        // Specifies a portion of the artifact.
-        //
-        std::optional< ::gap::sarif::region > region = std::nullopt;
-
-        //
-        // Specifies a portion of the artifact that encloses the region. Allows a viewer to display additional context around the region.
-        //
-        std::optional< ::gap::sarif::region > contextRegion = std::nullopt;
-
-        //
-        // Key/value pairs that provide additional information about the physical location.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const physical_location &);
-    void from_json(const json &, physical_location &);
-    struct location_relationship;
-
-    //
-    // A location within a programming artifact.
-    //
-    struct location {
-        //
-        // Value that distinguishes this location from all other locations within a single result object.
-        //
-        int64_t id = -1;
-
-        //
-        // Identifies the artifact and region.
-        //
-        std::optional< physical_location > physicalLocation = std::nullopt;
-
-        //
-        // The logical locations associated with the result.
-        //
-        std::forward_list< logical_location > logicalLocations = {};
-
-        //
-        // A message relevant to the location.
-        //
-        std::optional< ::gap::sarif::message > message = std::nullopt;
-
-        //
-        // A set of regions relevant to the location.
-        //
-        std::forward_list< region > annotations = {};
-
-        //
-        // An array of objects that describe relationships between this location and others.
-        //
-        std::forward_list< location_relationship > relationships = {};
-
-        //
-        // Key/value pairs that provide additional information about the location.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const location &);
-    void from_json(const json &, location &);
-
-    //
-    // Information about the relation of one location to another.
-    //
-    struct location_relationship {
-        //
-        // A reference to the related location.
-        //
-        int64_t target;
-
-        //
-        // A set of distinct strings that categorize the relationship. Well-known kinds include 'includes', 'isIncludedBy' and 'relevant'.
-        //
-        std::forward_list< std::string > kinds = { "relevant" };
-
-        //
-        // A description of the location relationship.
-        //
-        std::optional< message > description = std::nullopt;
-
-        //
-        // Key/value pairs that provide additional information about the location relationship.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const location_relationship &);
-    void from_json(const json &, location_relationship &);
-
-    //
-    // A logical location of a construct that produced a result.
-    //
-    struct logical_location {
-        //
-        // Identifies the construct in which the result occurred. For example, this property might contain the name of a class or a method.
-        //
-        std::optional< std::string > name = std::nullopt;
-
-        //
-        // The index within the logical locations array.
-        //
-        int64_t index = -1;
-
-        //
-        // The human-readable fully qualified name of the logical location.
-        //
-        std::optional< std::string > fullyQualifiedName = std::nullopt;
-
-        //
-        // The machine-readable name for the logical location, such as a mangled function name provided by a C++ compiler that encodes calling convention, return type and other details along with the function name.
-        //
-        std::optional< std::string > decoratedName = std::nullopt;
-
-        //
-        // Identifies the index of the immediate parent of the construct in which the result was detected. For example, this property might point to a logical location that represents the namespace that holds a type.
-        //
-        int64_t parentIndex = -1;
-
-        //
-        // The type of construct this logical location component refers to. Should be one of 'function', 'member', 'module', 'namespace', 'parameter', 'resource', 'returnType', 'type', 'variable', 'object', 'array', 'property', 'value', 'element', 'text', 'attribute', 'comment', 'declaration', 'dtd' or 'processingInstruction', if any of those accurately describe the construct.
-        //
-        std::optional< std::string > kind = std::nullopt;
-
-        //
-        // Key/value pairs that provide additional information about the logical location.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const logical_location &);
-    void from_json(const json &, logical_location &);
 
     //
     // Represents a node in a graph.
@@ -1680,7 +1868,7 @@ namespace gap::sarif
         //
         // Array of child nodes.
         //
-        std::forward_list< node > children = {};
+        std::vector< node > children = {};
 
         //
         // Key/value pairs that provide additional information about the node.
@@ -1690,59 +1878,6 @@ namespace gap::sarif
 
     void to_json(json &, const node &);
     void from_json(const json &, node &);
-
-    //
-    // Describes a condition relevant to the tool itself, as opposed to being relevant to a target being analyzed by the tool.
-    //
-    struct notification {
-        //
-        // The locations relevant to this notification.
-        //
-        std::forward_list< location > locations = {};
-
-        //
-        // A message that describes the condition that was encountered.
-        //
-        ::gap::sarif::message message;
-
-        //
-        // A value specifying the severity level of the notification.
-        //
-        ::gap::sarif::level level = ::gap::sarif::level::kWarning;
-
-        //
-        // The thread identifier of the code that generated the notification.
-        //
-        std::optional< int64_t > threadId = std::nullopt;
-
-        //
-        // The Coordinated Universal Time (UTC) date and time at which the analysis tool generated the notification.
-        //
-        std::optional< std::string > timeUtc = std::nullopt;
-
-        //
-        // The runtime exception, if any, relevant to this notification.
-        //
-        std::optional< ::gap::sarif::exception > exception = std::nullopt;
-
-        //
-        // A reference used to locate the descriptor relevant to this notification.
-        //
-        std::optional< reporting_descriptor_reference > descriptor = std::nullopt;
-
-        //
-        // A reference used to locate the rule descriptor associated with this notification.
-        //
-        std::optional< reporting_descriptor_reference > associatedRule = std::nullopt;
-
-        //
-        // Key/value pairs that provide additional information about the notification.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const notification &);
-    void from_json(const json &, notification &);
 
     //
     // An area within an image.
@@ -1804,113 +1939,6 @@ namespace gap::sarif
 
     void to_json(json &, const replacement &);
     void from_json(const json &, replacement &);
-    struct reporting_descriptor_relationship;
-
-    //
-    // Metadata that describes a specific report produced by the tool, as part of the analysis it provides or its runtime reporting.
-    //
-    struct reporting_descriptor {
-        //
-        // A stable, opaque identifier for the report.
-        //
-        std::string id;
-
-        //
-        // An array of stable, opaque identifiers by which this report was known in some previous version of the analysis tool.
-        //
-        std::forward_list< std::string > deprecatedIds = {};
-
-        //
-        // A unique identifer for the reporting descriptor in the form of a GUID.
-        //
-        std::optional< std::string > guid = std::nullopt;
-
-        //
-        // An array of unique identifies in the form of a GUID by which this report was known in some previous version of the analysis tool.
-        //
-        std::forward_list< std::string > deprecatedGuids = {};
-
-        //
-        // A report identifier that is understandable to an end user.
-        //
-        std::optional< std::string > name = std::nullopt;
-
-        //
-        // An array of readable identifiers by which this report was known in some previous version of the analysis tool.
-        //
-        std::forward_list< std::string > deprecatedNames = {};
-
-        //
-        // A concise description of the report. Should be a single sentence that is understandable when visible space is limited to a single line of text.
-        //
-        std::optional< multiformat_message_string > shortDescription = std::nullopt;
-
-        //
-        // A description of the report. Should, as far as possible, provide details sufficient to enable resolution of any problem indicated by the result.
-        //
-        std::optional< multiformat_message_string > fullDescription = std::nullopt;
-
-        //
-        // A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString object, which holds message strings in plain text and (optionally) Markdown format. The strings can include placeholders, which can be used to construct a message in combination with an arbitrary number of additional string arguments.
-        //
-        std::optional< std::unordered_map< std::string, multiformat_message_string > > messageStrings = std::nullopt;
-
-        //
-        // Default reporting configuration information.
-        //
-        std::optional< reporting_configuration > defaultConfiguration = std::nullopt;
-
-        //
-        // A URI where the primary documentation for the report can be found.
-        //
-        std::optional< std::string > helpUri = std::nullopt;
-
-        //
-        // Provides the primary documentation for the report, useful when there is no online documentation.
-        //
-        std::optional< multiformat_message_string > help = std::nullopt;
-
-        //
-        // An array of objects that describe relationships between this reporting descriptor and others.
-        //
-        std::forward_list< reporting_descriptor_relationship > relationships = {};
-
-        //
-        // Key/value pairs that provide additional information about the report.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const reporting_descriptor &);
-    void from_json(const json &, reporting_descriptor &);
-
-    //
-    // Information about the relation of one reporting descriptor to another.
-    //
-    struct reporting_descriptor_relationship {
-        //
-        // A reference to the related reporting descriptor.
-        //
-        reporting_descriptor_reference target;
-
-        //
-        // A set of distinct strings that categorize the relationship. Well-known kinds include 'canPrecede', 'canFollow', 'willPrecede', 'willFollow', 'superset', 'subset', 'equal', 'disjoint', 'relevant', and 'incomparable'.
-        //
-        std::forward_list< std::string > kinds = { "relevant" };
-
-        //
-        // A description of the reporting descriptor relationship.
-        //
-        std::optional< message > description = std::nullopt;
-
-        //
-        // Key/value pairs that provide additional information about the reporting descriptor reference.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const reporting_descriptor_relationship &);
-    void from_json(const json &, reporting_descriptor_relationship &);
 
     enum class kind {
         kNotApplicable,
@@ -1977,7 +2005,7 @@ namespace gap::sarif
         //
         // An array of physicalLocation objects which specify the portions of an analysis tool's output that a converter transformed into the result.
         //
-        std::forward_list< physical_location > conversionSources = {};
+        std::vector< physical_location > conversionSources = {};
 
         //
         // Key/value pairs that provide additional information about the result.
@@ -2136,7 +2164,7 @@ namespace gap::sarif
         //
         // The set of locations where the result was detected. Specify only one location unless the problem indicated by the result can only be corrected by making a change at every specified location.
         //
-        std::forward_list< location > locations = {};
+        std::vector< location > locations = {};
 
         //
         // A stable, unique identifer for the result in the form of a GUID.
@@ -2166,32 +2194,32 @@ namespace gap::sarif
         //
         // An array of 'stack' objects relevant to the result.
         //
-        std::forward_list< stack > stacks = {};
+        std::vector< stack > stacks = {};
 
         //
         // An array of 'codeFlow' objects relevant to the result.
         //
-        std::forward_list< code_flow > codeFlows = {};
+        std::vector< code_flow > codeFlows = {};
 
         //
         // An array of zero or more unique graph objects associated with the result.
         //
-        std::forward_list< graph > graphs = {};
+        std::vector< graph > graphs = {};
 
         //
         // An array of one or more unique 'graphTraversal' objects.
         //
-        std::forward_list< graph_traversal > graphTraversals = {};
+        std::vector< graph_traversal > graphTraversals = {};
 
         //
         // A set of locations relevant to this result.
         //
-        std::forward_list< location > relatedLocations = {};
+        std::vector< location > relatedLocations = {};
 
         //
         // A set of suppressions relevant to this result.
         //
-        std::forward_list< suppression > suppressions = {};
+        std::vector< suppression > suppressions = {};
 
         //
         // The state of a result relative to a baseline of a previous run.
@@ -2206,7 +2234,7 @@ namespace gap::sarif
         //
         // A set of artifacts relevant to the result.
         //
-        std::forward_list< attachment > attachments = {};
+        std::vector< attachment > attachments = {};
 
         //
         // An absolute URI at which the result can be viewed.
@@ -2216,7 +2244,7 @@ namespace gap::sarif
         //
         // The URIs of the work items associated with this result.
         //
-        std::forward_list< std::string > workItemUris = {};
+        std::vector< std::string > workItemUris = {};
 
         //
         // Information about how and when the result was detected.
@@ -2226,12 +2254,12 @@ namespace gap::sarif
         //
         // An array of 'fix' objects, each of which represents a proposed fix to the problem indicated by the result.
         //
-        std::forward_list< fix > fixes = {};
+        std::vector< fix > fixes = {};
 
         //
         // An array of references to taxonomy reporting descriptors that are applicable to the result.
         //
-        std::forward_list< reporting_descriptor_reference > taxa = {};
+        std::vector< reporting_descriptor_reference > taxa = {};
 
         //
         // A web request associated with this result.
@@ -2326,7 +2354,7 @@ namespace gap::sarif
         //
         // Describes the invocation of the analysis tool.
         //
-        std::forward_list< invocation > invocations = {};
+        std::vector< invocation > invocations = {};
 
         //
         // A conversion object that describes how a converter transformed an analysis tool's native reporting format into the SARIF format.
@@ -2341,7 +2369,7 @@ namespace gap::sarif
         //
         // Specifies the revision in version control of the artifacts that were scanned.
         //
-        std::forward_list< version_control_details > versionControlProvenance = {};
+        std::vector< version_control_details > versionControlProvenance = {};
 
         //
         // The artifact location specified by each uriBaseId symbol on the machine where the tool originally ran.
@@ -2351,22 +2379,22 @@ namespace gap::sarif
         //
         // An array of artifact objects relevant to the run.
         //
-        std::forward_list< artifact > artifacts = {};
+        std::vector< artifact > artifacts = {};
 
         //
         // An array of logical locations such as namespaces, types or functions.
         //
-        std::forward_list< logical_location > logicalLocations = {};
+        std::vector< logical_location > logicalLocations = {};
 
         //
         // An array of zero or more unique graph objects associated with the run.
         //
-        std::forward_list< graph > graphs = {};
+        std::vector< graph > graphs = {};
 
         //
         // The set of results contained in an SARIF log. The results array can be omitted when a run is solely exporting rules metadata. It must be present (but may be empty) if a log file represents an actual scan.
         //
-        std::forward_list< result > results = {};
+        std::vector< result > results = {};
 
         //
         // Automation details that describe this run.
@@ -2376,7 +2404,7 @@ namespace gap::sarif
         //
         // Automation details that describe the aggregate of runs to which this run belongs.
         //
-        std::forward_list< run_automation_details > runAggregates = {};
+        std::vector< run_automation_details > runAggregates = {};
 
         //
         // The 'guid' property of a previous SARIF 'run' that comprises the baseline that was used to compute result 'baselineState' properties for the run.
@@ -2386,7 +2414,7 @@ namespace gap::sarif
         //
         // An array of strings used to replace sensitive information in a redaction-aware property.
         //
-        std::forward_list< std::string > redactionTokens = {};
+        std::vector< std::string > redactionTokens = {};
 
         //
         // Specifies the default encoding for any artifact object that refers to a text file.
@@ -2401,7 +2429,7 @@ namespace gap::sarif
         //
         // An ordered list of character sequences that were treated as line breaks when computing region information for the run.
         //
-        std::forward_list< std::string > newlineSequences = { "\r\n", "\n" };
+        std::vector< std::string > newlineSequences = { "\r\n", "\n" };
 
         //
         // Specifies the unit in which the tool measures columns.
@@ -2416,37 +2444,37 @@ namespace gap::sarif
         //
         // An array of threadFlowLocation objects cached at run level.
         //
-        std::forward_list< thread_flow_location > threadFlowLocations = {};
+        std::vector< thread_flow_location > threadFlowLocations = {};
 
         //
         // An array of toolComponent objects relevant to a taxonomy in which results are categorized.
         //
-        std::forward_list< tool_component > taxonomies = {};
+        std::vector< tool_component > taxonomies = {};
 
         //
         // Addresses associated with this run instance, if any.
         //
-        std::forward_list< address > addresses = {};
+        std::vector< address > addresses = {};
 
         //
         // The set of available translations of the localized data provided by the tool.
         //
-        std::forward_list< tool_component > translations = {};
+        std::vector< tool_component > translations = {};
 
         //
         // Contains configurations that may potentially override both reportingDescriptor.defaultConfiguration (the tool's default severities) and invocation.configurationOverrides (severities established at run-time from the command line).
         //
-        std::forward_list< tool_component > policies = {};
+        std::vector< tool_component > policies = {};
 
         //
         // An array of request objects cached at run level.
         //
-        std::forward_list< web_request > webRequests = {};
+        std::vector< web_request > webRequests = {};
 
         //
         // An array of response objects cached at run level.
         //
-        std::forward_list< web_response > webResponses = {};
+        std::vector< web_response > webResponses = {};
 
         //
         // A specialLocations object that defines locations of special significance to SARIF consumers.
@@ -2461,39 +2489,6 @@ namespace gap::sarif
 
     void to_json(json &, const run &);
     void from_json(const json &, run &);
-
-    //
-    // A function call within a stack trace.
-    //
-    struct stack_frame {
-        //
-        // The location to which this stack frame refers.
-        //
-        std::optional< ::gap::sarif::location > location = std::nullopt;
-
-        //
-        // The name of the module that contains the code of this stack frame.
-        //
-        std::optional< std::string > module = std::nullopt;
-
-        //
-        // The thread identifier of the stack frame.
-        //
-        std::optional< int64_t > threadId = std::nullopt;
-
-        //
-        // The parameters of the call that is executing.
-        //
-        std::forward_list< std::string > parameters = {};
-
-        //
-        // Key/value pairs that provide additional information about the stack frame.
-        //
-        std::optional< property_bag > properties = std::nullopt;
-    };
-
-    void to_json(json &, const stack_frame &);
-    void from_json(const json &, stack_frame &);
 
     enum class state {
         kAccepted,
@@ -2572,7 +2567,7 @@ namespace gap::sarif
         //
         // A temporally ordered array of 'threadFlowLocation' objects, each of which describes a location visited by the tool while producing the result.
         //
-        std::forward_list< thread_flow_location > locations;
+        std::vector< thread_flow_location > locations;
 
         //
         // Key/value pairs that provide additional information about the thread flow.
@@ -2617,12 +2612,12 @@ namespace gap::sarif
         //
         // A set of distinct strings that categorize the thread flow location. Well-known kinds include 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false', 'true', 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock', 'memory', 'resource', 'scope' and 'value'.
         //
-        std::forward_list< std::string > kinds = {};
+        std::vector< std::string > kinds = {};
 
         //
         // An array of references to rule or taxonomy reporting descriptors that are applicable to the thread flow location.
         //
-        std::forward_list< reporting_descriptor_reference > taxa = {};
+        std::vector< reporting_descriptor_reference > taxa = {};
 
         //
         // The name of the module that contains the code that is executing.
