@@ -2,7 +2,8 @@
     "name": "main",
     "version-string": "latest",
     "dependencies": [
-      "spdlog"
+      "spdlog",
+      "nlohmann-json"
     ],
     "features": {
       "with-doctest": {
