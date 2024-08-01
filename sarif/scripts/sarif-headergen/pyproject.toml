@@ -1,0 +1,19 @@
+[project]
+name = "sarif-headergen"
+version = "0.1.0"
+description = "Generates nlohmann::json (de)serialization files from the JSON schema for SARIF files"
+authors = [
+    {name = "Francesco Bertolaccini", email = "francesco.bertolaccini@trailofbits.com"},
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

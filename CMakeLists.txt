@@ -103,6 +103,7 @@ endif()
 add_subdirectory(core)
 add_subdirectory(coro)
 add_subdirectory(graph)
+add_subdirectory(sarif)
 
 option(GAP_ENABLE_MLIR "Enable MLIR support" OFF)
 
@@ -167,6 +168,7 @@ if (GAP_INSTALL)
   install_gap_target(gap-settings core)
   install_gap_target(gap-coro coro)
   install_gap_target(gap-graph graph)
+  install_gap_target(gap-sarif sarif)
 
   if (${GAP_ENABLE_MLIR})
     install_gap_target(gap-mlir mlir)
