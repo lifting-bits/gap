@@ -12,7 +12,7 @@ env:
   # Tells vcpkg where binary packages are stored.
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
   # Use specific vcpkg version
-  VCPKG_COMMIT_ID: '5568f110b509a9fd90711978a7cb76bae75bb092'
+  VCPKG_COMMIT_ID: '8e7e48eb0f61427bd5c18ba80bac7f33aa184ba5'
 
 jobs:
   build:
@@ -50,6 +50,6 @@ jobs:
     - name: Run cmake
       uses: lukka/run-cmake@v10
       with:
-          configurePreset: 'ninja-multi-vcpkg'
-          buildPreset: 'ninja-vcpkg-deb'
-          testPreset: 'ninja-vcpkg-deb'
+          configurePreset: 'ninja-multi-vcpkg-full'
+          buildPreset: 'ninja-vcpkg-deb-full'
+          testPreset: 'ninja-vcpkg-deb-full'
