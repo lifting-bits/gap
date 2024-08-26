@@ -2,14 +2,19 @@
     "name": "main",
     "version-string": "latest",
     "dependencies": [
-      "spdlog",
-      "nlohmann-json"
+      "spdlog"
     ],
     "features": {
       "with-doctest": {
         "description": "Use doctest package",
         "dependencies": [
           "doctest"
+        ]
+      },
+      "sarif": {
+        "description": "Enable SARIF support",
+        "dependencies": [
+          "nlohmann-json"
         ]
       }
     }

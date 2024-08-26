@@ -104,7 +104,9 @@ add_subdirectory(core)
 add_subdirectory(coro)
 add_subdirectory(graph)
 
-option(GAP_ENABLE_SARIF "Enable SARIF support" OFF)
+option(GAP_ENABLE_SARIF "Enable SARIF support" 
+  $<IN_LIST:sarif,VCPKG_MANIFEST_FEATURES>
+)
 
 if (${GAP_ENABLE_SARIF})
   add_subdirectory(sarif)

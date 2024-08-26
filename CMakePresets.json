@@ -15,6 +15,14 @@
       }
     },
     {
+      "name": "all-vcpkg-features",
+      "hidden": true,
+      "description": "Use doctest package and enable SARIF",
+      "cacheVariables": {
+        "VCPKG_MANIFEST_FEATURES": "with-doctest;sarif"
+      }
+    },
+    {
       "name": "ninja-multi-vcpkg",
       "displayName": "Ninja Multi-Config Configure Settings",
       "description": "Configure with vcpkg toolchain",
@@ -27,9 +35,9 @@
       }
     },
     {
-      "name": "ninja-multi-vcpkg-doctest",
+      "name": "ninja-multi-vcpkg-full",
       "displayName": "Ninja Multi-Config Configure Settings with doctest",
-      "inherits": [ "ninja-multi-vcpkg", "with-doctest" ]
+      "inherits": [ "ninja-multi-vcpkg", "all-vcpkg-features" ]
     }
   ],
 
@@ -47,15 +55,15 @@
       "configuration": "Release"
     },
     {
-      "name": "ninja-vcpkg-deb-doctest",
-      "configurePreset": "ninja-multi-vcpkg-doctest",
-      "displayName": "Build ninja-multi-vcpkg-debug-doctest",
+      "name": "ninja-vcpkg-deb-full",
+      "configurePreset": "ninja-multi-vcpkg-full",
+      "displayName": "Build ninja-multi-vcpkg-debug-full",
       "configuration": "Debug"
     },
     {
-      "name": "ninja-vcpkg-rel-doctest",
-      "configurePreset": "ninja-multi-vcpkg-doctest",
-      "displayName": "Build ninja-multi-vcpkg-release-doctest",
+      "name": "ninja-vcpkg-rel-full",
+      "configurePreset": "ninja-multi-vcpkg-full",
+      "displayName": "Build ninja-multi-vcpkg-release-full",
       "configuration": "Release"
     }
   ],
@@ -70,8 +78,8 @@
       "configuration": "Debug"
     },
     {
-      "name": "ninja-vcpkg-deb-doctest",
-      "configurePreset": "ninja-multi-vcpkg-doctest",
+      "name": "ninja-vcpkg-deb-full",
+      "configurePreset": "ninja-multi-vcpkg-full",
       "output": {
         "verbosity": "verbose"
       },

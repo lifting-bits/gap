@@ -12,13 +12,15 @@
 // Enum value names are converted from camelCase to PascalCase and prefixed with `k`.
 //
 
-#include <cstdint>
-#include <optional>
-#include <string>
-#include <unordered_map>
-#include <vector>
+#ifdef GAP_ENABLE_SARIF
 
-#include <nlohmann/json.hpp>
+    #include <cstdint>
+    #include <optional>
+    #include <string>
+    #include <unordered_map>
+    #include <vector>
+
+    #include <nlohmann/json.hpp>
 
 namespace gap::sarif
 {
@@ -2697,3 +2699,5 @@ namespace gap::sarif
     void to_json(json &, const root &);
     void from_json(const json &, root &);
 } // namespace gap::sarif
+
+#endif // GAP_ENABLE_SARIF
