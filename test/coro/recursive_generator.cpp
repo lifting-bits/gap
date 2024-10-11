@@ -11,8 +11,9 @@
 
 #ifdef GAP_ENABLE_COROUTINES
 
-    #include <doctest/doctest.h>
-    #include <gap/coro/recursive_generator.hpp>
+#include <cstdint>
+#include <doctest/doctest.h>
+#include <gap/coro/recursive_generator.hpp>
 
 namespace gap::test
 {

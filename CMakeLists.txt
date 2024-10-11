@@ -115,6 +115,7 @@ endif()
 option(GAP_ENABLE_MLIR "Enable MLIR support" OFF)
 
 if (${GAP_ENABLE_MLIR})
+  find_package(LLVM REQUIRED CONFIG)
   find_package(MLIR REQUIRED CONFIG)
   list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
   include(AddMLIR)
