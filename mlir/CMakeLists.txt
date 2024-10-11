@@ -15,6 +15,7 @@ add_gap_static_library(gap-mlir
 	"${GAP_MLIR_SOURCES}"
 	SYSTEM_INCLUDE_DIRECTORIES
 		"${MLIR_INCLUDE_DIRS}"
+		"${LLVM_INCLUDE_DIRS}"
 	LINK_LIBRARIES
 		MLIRIR
 		MLIRSupport

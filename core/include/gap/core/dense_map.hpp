@@ -3,6 +3,7 @@
 #pragma once
 
 #include <gap/core/concepts.hpp>
+#include <algorithm>
 #include <utility>
 #include <vector>
 
