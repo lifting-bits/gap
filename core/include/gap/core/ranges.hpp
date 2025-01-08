@@ -49,12 +49,12 @@ namespace gap::ranges
     template< typename container_t, std::ranges::input_range R >
     void move_or_copy_elements(R&& rng, container_t& container) {
         if constexpr (std::is_rvalue_reference_v< decltype(rng) >) {
-            std::move(std::ranges::begin(rng), std::ranges::end(rng),
-                std::back_inserter(container)
+            std::ranges::move(
+                std::ranges::begin(rng), std::ranges::end(rng), std::back_inserter(container)
             );
         } else {
-            std::copy(std::ranges::begin(rng), std::ranges::end(rng),
-                std::back_inserter(container)
+            std::ranges::copy(
+                std::ranges::begin(rng), std::ranges::end(rng), std::back_inserter(container)
             );
         }
     }
@@ -69,7 +69,7 @@ namespace gap::ranges
             result_container_t container;
 
             if constexpr (has_reserve< result_container_t >) {
-                if constexpr (requires { std::ranges::size(range); }) {
+                if constexpr (std::ranges::sized_range<R>) {
                     container.reserve(std::ranges::size(range));
                 }
             }
